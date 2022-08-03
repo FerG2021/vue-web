@@ -36,23 +36,23 @@
         </el-tooltip>
       </div>
 
-      <!-- Presupuestacion -->
+      <!-- Provisión -->
       <div>
         <router-link class="button" to="/presupuestacion" v-if="is_expanded">
           <span class="material-icons">assignment</span>
-          <span class="text">Presupuestación</span>
+          <span class="text">Provisión</span>
         </router-link>
 
         <el-tooltip
           class="box-item"
           effect="dark"
-          content="Presupuestación"
+          content="Provisión"
           placement="right-start"
           v-if="!is_expanded"
         >
           <router-link class="button" to="/presupuestacion" v-if="!is_expanded || is_expanded">
             <span class="material-icons">assignment</span>
-            <span class="text">Presupuestación</span>
+            <span class="text">Provisión</span>
           </router-link>
         </el-tooltip>
       </div>

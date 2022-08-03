@@ -162,12 +162,13 @@
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
             <el-col :span="6">
-              <span>Forma de pago</span>
+              <!-- <span>Forma de pago</span>
               <el-select 
                 v-model="condicionpago" 
                 placeholder="Forma de pago"
                 style="width: 100%"
                 filterable
+                @change="cambiaCondicionPago()"
               >
                 <el-option
                   v-for="item in arrayCondicionesPago"
@@ -175,7 +176,7 @@
                   :label="item.condicionpago_nombre"
                   :value="item.condicionpago_id"
                 />
-              </el-select>
+              </el-select> -->
             </el-col>
             <!-- {{condicionpago}} -->
             <el-col :span="3">
@@ -212,7 +213,13 @@
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
-            <el-col :span="6"></el-col>
+            <el-col :span="6">
+              <span>Se debe pagar el día:</span>
+              <el-input
+                v-model="diaPago"
+                disabled
+              ></el-input>
+            </el-col>
             <el-col :span="3"></el-col>
             <el-col :span="3">
               <span style="text-align: center">Flete</span>
@@ -321,6 +328,7 @@ export default {
       descuentosyBonificaciones: null,
       totalHomogeneo: null,
       loadingBtnGuardar: false,
+      diaPago: null,
 
       opcionesFacturaA: [
         {
@@ -364,6 +372,7 @@ export default {
       this.condicionpago = null
       this.descuentosyBonificaciones = null;
       this.totalHomogeneo = null;
+      this.diaPago = null
 
 
       console.log("this.idProveedor");
@@ -705,6 +714,26 @@ export default {
       let totalHomogeneoVar = parseFloat(this.totalPP) + parseFloat(this.precioFlete) + parseFloat(this.descuentosyBonificaciones) + parseFloat(this.montoIVA)
 
       this.totalHomogeneo = totalHomogeneoVar.toFixed(2)
+    },
+
+    cambiaCondicionPago(){
+      console.log("cambia condicion pago");
+
+      console.log("this.condicionpago");
+      console.log(this.condicionpago);
+
+      let date = new Date()
+      console.log("date");
+      console.log(date);
+
+      date.setDate(date.getDate() + 39)
+
+      console.log("date");
+      console.log(date);
+
+      // if (this.condicionpago == 39) {
+      //   this.diaPago = 
+      // }
     },
 
     async onSubmit(){
