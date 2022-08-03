@@ -61,6 +61,29 @@
               </template>
             </el-table-column>
 
+            <el-table-column prop="factor" label="Factor" align="center">
+              <template #default="props">
+                <el-input-number
+                  v-model="props.row.factor"
+                  :controls="false"
+                  style="width: 100%"
+                  @change="cambiarCantidadProveedor(props)"
+                  disabled
+                ></el-input-number>            
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="cantidadProveedor" label="Cant. prov." align="center">
+              <template #default="props">
+                <el-input-number
+                  v-model="props.row.cantidad_proveedor"
+                  :controls="false"
+                  style="width: 100%"
+                  disabled
+                ></el-input-number>            
+              </template>
+            </el-table-column>
+
             <el-table-column prop="png" label="PNG" align="center">
               <template #default="props">
                 <el-input-number
@@ -415,6 +438,8 @@ export default {
           producto_nombre: ele.productoPresupuestacion.producto_nombre,
           producto_cantidad_a_comprar: ele.productoPresupuestacion.producto_cantidad_a_comprar,
           precio_png: ele.productoPresupuestacion.precio_png,
+          factor: 1,
+          cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
           iva: ele.productoPresupuestacion.iva,
           precio_pu: ele.productoPresupuestacion.precio_pu,
           precio_pp: ele.productoPresupuestacion.precio_pp,
@@ -510,6 +535,10 @@ export default {
               elemento.producto_nombre = ele.producto_nombre
               
               elemento.producto_cantidad_real_a_comprar = ele.producto_cantidad_a_comprar
+
+              elemento.factor = ele.factor
+
+              elemento.cantidad_proveedor= ele.cantidad_proveedor
               
               elemento.precio_png = ele.precio_png
               
