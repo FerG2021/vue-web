@@ -162,7 +162,7 @@
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
             <el-col :span="6">
-              <!-- <span>Forma de pago</span>
+              <span>Forma de pago</span>
               <el-select 
                 v-model="condicionpago" 
                 placeholder="Forma de pago"
@@ -176,7 +176,7 @@
                   :label="item.condicionpago_nombre"
                   :value="item.condicionpago_id"
                 />
-              </el-select> -->
+              </el-select>
             </el-col>
             <!-- {{condicionpago}} -->
             <el-col :span="3">
@@ -214,11 +214,11 @@
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
             <el-col :span="6">
-              <span>Se debe pagar el día:</span>
+              <!-- <span>Se debe pagar el día:</span>
               <el-input
                 v-model="diaPago"
                 disabled
-              ></el-input>
+              ></el-input> -->
             </el-col>
             <el-col :span="3"></el-col>
             <el-col :span="3">

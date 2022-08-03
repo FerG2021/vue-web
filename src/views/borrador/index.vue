@@ -45,7 +45,7 @@
             </template>
           </el-table-column> -->
 
-          <!-- <el-table-column prop="presupuestacion_plan_nombre" label="Fecha de incio">
+          <el-table-column prop="presupuestacion_plan_nombre" label="Fecha de incio">
             <template #default="props">
               {{ formatearFecha(props.row.borrador_presupuestacion_fecha_incio) }}  
             </template>
@@ -55,16 +55,16 @@
             <template #default="props">
               {{ formatearFecha(props.row.borrador_presupuestacion_fecha_fin) }}  
             </template>
-          </el-table-column> -->
+          </el-table-column>
 
-          <el-table-column
+          <!-- <el-table-column
             prop="rangoProvisión"
             label="Rango"
           >
             <template #default="props">
               {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }} - {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
           <el-table-column prop="borrador_presupuestado" label="Estado">
             <template #default="props">
@@ -201,7 +201,7 @@
       formatearFechaSinDia(fecha) {
       let fecha1 = new Date(fecha);
       let fechaMostrar = (fecha1.getMonth() + 1) + '/' + fecha1.getFullYear()
-      return fechaMostrar
+      return fecha1
     },
     },
 
