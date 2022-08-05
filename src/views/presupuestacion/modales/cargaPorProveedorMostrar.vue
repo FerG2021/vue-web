@@ -36,6 +36,8 @@
             stripe 
             style="width: 100%; margin-top: 15px"
             :cell-class-name="classChecker"
+            :summary-method="getSummaries"
+            show-summary
           >
             <el-table-column prop="ID" label="ID" width="80">
               <template #default="props">
@@ -103,6 +105,17 @@
                   :controls="false"
                   style="width: 100%"
                   @change="calcularPrecioPP(props)"
+                  disabled
+                ></el-input-number>            
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="montoIva" label="Total IVA" align="center"> 
+              <template #default="props">
+                <el-input-number
+                  v-model="props.row.total_iva"
+                  :controls="false"
+                  style="width: 100%"
                   disabled
                 ></el-input-number>            
               </template>
@@ -422,6 +435,40 @@ export default {
         })
     },
 
+    getSummaries(param) {
+      console.log("param de getSummaries");
+      console.log(param);
+
+      const  tabla = this.$refs.tablaComparativa
+      const { columns, data } = param;
+      const sums = [];
+      let ind = 8
+      sums[ind] = 0
+      
+      this.arrayInformacionParaCarga.forEach((elemento, index) => {
+        console.log("elemento");
+        console.log(elemento);
+
+        if (index == 0) {
+          sums[index] = 'Total'          
+        }
+        // elemento.productos.forEach((ele) => {
+        //   sums[ind] = sums[ind] + ele.precio_pp
+        // })
+
+        sums[ind] = sums[ind] + Number(elemento.total_iva)
+
+        // sums[ind] = sums[ind] +
+
+        // ind=ind+6
+      })
+
+      console.log("sums");
+      console.log(sums);
+
+      return sums;
+    },
+
     mostrarInformacionParaCargar(){
       this.datosProductos.forEach((ele) => {
         let fila = {
@@ -441,6 +488,7 @@ export default {
           factor: 1,
           cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
           iva: ele.productoPresupuestacion.iva,
+          total_iva: null,
           precio_pu: ele.productoPresupuestacion.precio_pu,
           precio_pp: ele.productoPresupuestacion.precio_pp,
           ya_agregado: 0,
@@ -543,6 +591,8 @@ export default {
               elemento.precio_png = ele.precio_png
               
               elemento.iva = ele.iva
+
+              elemento.total_iva = ele.total_iva
 
               elemento.precio_pu = ele.precio_pu
 

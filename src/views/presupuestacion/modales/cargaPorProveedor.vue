@@ -36,6 +36,8 @@
             stripe 
             style="width: 100%; margin-top: 15px"
             :cell-class-name="classChecker"
+            :summary-method="getSummaries"
+            show-summary
           >
             <el-table-column prop="ID" label="ID" width="80">
               <template #default="props">
@@ -101,6 +103,17 @@
                   :controls="false"
                   style="width: 100%"
                   @change="calcularPrecioPP(props)"
+                ></el-input-number>            
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="montoIva" label="Total IVA" align="center"> 
+              <template #default="props">
+                <el-input-number
+                  v-model="props.row.total_iva"
+                  :controls="false"
+                  style="width: 100%"
+                  disabled
                 ></el-input-number>            
               </template>
             </el-table-column>
@@ -197,7 +210,7 @@
             </el-col>
             <!-- {{facturaA}} -->
             <el-col :span="3">
-              <span style="text-align: center">IVA</span>
+              <span style="text-align: center">Monto factura A</span>
               <el-input-number
                 :controls="false"
                 v-model="montoIVA"
@@ -329,6 +342,7 @@ export default {
       totalHomogeneo: null,
       loadingBtnGuardar: false,
       diaPago: null,
+      diaPagoSinFormatear: null,
 
       opcionesFacturaA: [
         {
@@ -373,6 +387,7 @@ export default {
       this.descuentosyBonificaciones = null;
       this.totalHomogeneo = null;
       this.diaPago = null
+      this.diaPagoSinFormatear = null
 
 
       console.log("this.idProveedor");
@@ -480,6 +495,7 @@ export default {
           factor: 1,
           cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
           iva: ele.productoPresupuestacion.iva,
+          total_iva: null,
           precio_pu: ele.productoPresupuestacion.precio_pu,
           precio_pp: ele.productoPresupuestacion.precio_pp,
           ya_agregado: 0,
@@ -588,6 +604,8 @@ export default {
               elemento.precio_png = ele.precio_png
               
               elemento.iva = ele.iva
+              
+              elemento.total_iva = ele.total_iva
 
               elemento.precio_pu = ele.precio_pu
 
@@ -605,6 +623,37 @@ export default {
 
         // this.sumarPP()
     },
+
+    getSummaries(param) {
+      console.log("param de getSummaries");
+      console.log(param);
+
+      const  tabla = this.$refs.tablaComparativa
+      const { columns, data } = param;
+      const sums = [];
+      let ind = 8
+      sums[ind] = 0
+      
+      this.arrayInformacionParaCarga.forEach((elemento, index) => {
+        if (index == 0) {
+          sums[index] = 'Total'          
+        }
+        // elemento.productos.forEach((ele) => {
+        //   sums[ind] = sums[ind] + ele.precio_pp
+        // })
+
+        sums[ind] = sums[ind] + Number(elemento.total_iva)
+
+        // sums[ind] = sums[ind] +
+
+        // ind=ind+6
+      })
+
+      console.log("sums");
+      console.log(sums);
+
+      return sums;
+    },
     
     cambiarCantidadProveedor(props){
       console.log("cambia");
@@ -613,6 +662,8 @@ export default {
       console.log(props);
 
       this.arrayInformacionParaCarga[props.$index].cantidad_proveedor = this.arrayInformacionParaCarga[props.$index].producto_cantidad_a_comprar * this.arrayInformacionParaCarga[props.$index].factor 
+
+      this.calcularPrecioPP(props)
     },
 
     calcularPrecioPP(props){
@@ -634,6 +685,9 @@ export default {
         console.log("precioParcial");
         console.log(precioParcial);
 
+        this.arrayInformacionParaCarga[props.$index].total_iva = precioParcial.toFixed(2)
+
+
         let precio_png = parseFloat(this.arrayInformacionParaCarga[props.$index].precio_png)
 
         let precio_pu = (precio_png + precioParcial).toFixed(2)
@@ -650,13 +704,24 @@ export default {
         console.log(this.arrayInformacionParaCarga[props.$index].precio_pu);
 
         // calculo pp
-        this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].producto_cantidad_a_comprar
+        // this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].producto_cantidad_a_comprar
+
+        this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].cantidad_proveedor
 
         let precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pp
         
         this.arrayInformacionParaCarga[props.$index].precio_pp = precio_pp.toFixed(2)
         this.sumarPP(props)
+
+        this.calcularMontoIVA(props)
       } 
+    },
+
+    calcularMontoIVA(props){
+      console.log("props de monto iva");
+      console.log(props);
+
+
     },
 
     sumarPP(props){
@@ -722,18 +787,291 @@ export default {
       console.log("this.condicionpago");
       console.log(this.condicionpago);
 
-      let date = new Date()
+      let date = null
+      date = new Date()
       console.log("date");
       console.log(date);
 
-      date.setDate(date.getDate() + 39)
+      console.log(date.setDate(date.getDate()));
 
-      console.log("date");
-      console.log(date);
+      let nuevoDate = Date()
+      nuevoDate = date.setDate(date.getDate() + 180)
 
-      // if (this.condicionpago == 39) {
-      //   this.diaPago = 
-      // }
+      console.log("nuevoDate");
+      console.log(nuevoDate);
+
+      // 0 - 180
+      if (this.condicionpago == 39) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 180))
+        console.log("date dentro");
+        console.log(date.setDate(date.getDate() + 180));
+        // this.diaPagoSinFormatear = date.setDate(date.getDate() + 180)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 0 -30
+      if (this.condicionpago == 26) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 30))
+        // this.diaPagoSinFormatear = date.setDate(date.getDate() + 30)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 0 - 30 - 60
+      if (this.condicionpago == 25) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 60))
+        // this.diaPagoSinFormatear = date.setDate(date.getDate() + 60)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 0 - 45
+      if (this.condicionpago == 30) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 45))
+        // this.diaPagoSinFormatear = date.setDate(date.getDate() + 45)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 0 - 10
+      if (this.condicionpago == 17) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 10))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 10)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 15 - 20
+      if (this.condicionpago == 20) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 20))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 20)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 15 - 30
+      if (this.condicionpago == 18) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 30))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 30)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 15 - 30 - 45 - 60 - 75
+      if (this.condicionpago == 34) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 75))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 75)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 15 - 45 - 75
+      if (this.condicionpago == 24) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 75))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 75)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+      // 20 - 45
+      if (this.condicionpago == 19) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 45))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 75)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 30
+      if (this.condicionpago == 22) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 30))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 30)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 30 - 60
+      if (this.condicionpago == 10) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 60))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 60)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 45
+      if (this.condicionpago == 27) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 45))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 45)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 45 - 60
+      if (this.condicionpago == 16) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 60))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 60)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 45 - 60 - 75 - 105
+      if (this.condicionpago == 36) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 105))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 105)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 45 - 60 - 90
+      if (this.condicionpago == 14) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 90))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 90)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 60
+      if (this.condicionpago == 28) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 60))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 60)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 60 - 90
+      if (this.condicionpago == 37) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 90))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 90)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 60 - 90 - 120
+      if (this.condicionpago == 38) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 120))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 120)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 90
+      if (this.condicionpago == 12) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 90))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 90)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 1 
+      if (this.condicionpago == 23) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 1))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 1)        
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 0 - 30 - 60
+      if (this.condicionpago == 32) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 60))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 60)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 0 - 30 - 60 - 90
+      if (this.condicionpago == 33) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 90))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 90)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      // 30 - 70
+      if (this.condicionpago == 35) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 70))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 70)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      }   
+
+      // 90
+      if (this.condicionpago == 29) {
+        let nuevoDate = this.formatearFecha(date.setDate(date.getDate() + 90))
+        this.diaPagoSinFormatear = date.setDate(date.getDate() + 90)
+        console.log("nuevoDate");
+        console.log(nuevoDate);
+        this.diaPago = nuevoDate
+      } 
+
+      if (this.condicionpago != 39 &&
+          this.condicionpago != 26 &&
+          this.condicionpago != 25 &&
+          this.condicionpago != 30 &&
+          this.condicionpago != 17 &&
+          this.condicionpago != 20 &&
+          this.condicionpago != 18 &&
+          this.condicionpago != 34 &&
+          this.condicionpago != 24 &&
+          this.condicionpago != 19 &&
+          this.condicionpago != 22 &&
+          this.condicionpago != 10 &&
+          this.condicionpago != 27 &&
+          this.condicionpago != 16 &&
+          this.condicionpago != 36 &&
+          this.condicionpago != 14 &&
+          this.condicionpago != 28 &&
+          this.condicionpago != 37 &&
+          this.condicionpago != 38 &&
+          this.condicionpago != 12 &&
+          this.condicionpago != 23 &&
+          this.condicionpago != 32 &&
+          this.condicionpago != 33 &&
+          this.condicionpago != 35 &&
+          this.condicionpago != 29
+      ) {
+        this.diaPago = null
+      }
+    },
+
+    formatearFecha(fecha) {
+      console.log("fecha en form");
+      console.log(fecha);
+
+      let fecha1 = new Date(fecha);
+      console.log("fecha1");
+      console.log(fecha1);
+
+      this.diaPagoSinFormatear = fecha1.getUTCDate();
+      console.log("this.diaPagoSinFormatear");
+      console.log(this.diaPagoSinFormatear);
+
+
+      // let fecha2 = fecha1.toLocaleString();
+      let fecha2 = fecha1.toLocaleDateString();
+      return fecha2;
     },
 
     async onSubmit(){
@@ -758,7 +1096,11 @@ export default {
           descuentosyBonificaciones: this.descuentosyBonificaciones,
           totalHomogeneo: this.totalHomogeneo,
           arrProductosProveedores: JSON.stringify(this.arrayInformacionParaCarga)
-        }
+        } 
+
+        // if (this.diaPago != null) {
+        //   params.diaPago = this.diaPagoSinFormatear
+        // }
 
         // if (this.facturaA == "Si") {
         //   params.facturaA = 1

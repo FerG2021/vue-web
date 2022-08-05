@@ -195,21 +195,33 @@
 
             <!-- muestro la informacion de los proveedores -->
             <!-- {{arrayInfoProveedores}} -->
+            <!-- {{arrayInfoProveedores}} -->
             <el-table
               stripe
               :data="arrayTotal"
-              :cell-style="classChecker"
-              :header-cell-style="headerStyle"
+              :cell-style="classCheckerIntermedio"
+              :header-cell-style="headerStyleIntermedio"
               id="tabla2"
             >
               <el-table-column></el-table-column>
               <el-table-column></el-table-column>
               <el-table-column v-for="(item, index) in arrayInfoProveedores" :key="index" align="center">
                 <!-- <template #default="scope"> -->
-                <el-table-column width="100px" label="F.P." align="center">
+                <el-table-column width="85,71px" label="F.P." align="center">
                   {{item.proveedor_forma_de_pago_nombre}}
                 </el-table-column>
-                <el-table-column width="100px" label="Fact. A" align="center">
+
+                <el-table-column width="85,71px" label="Notas" align="center">
+                  <el-input
+                    :controls="false"
+                    style="width: 100%"
+                    v-model="item.proveedor_notas"
+                  ></el-input>
+                  <!-- {{item.proveedor_forma_de_pago_nombre}} -->
+                </el-table-column>
+
+
+                <el-table-column width="85,71px" label="Fact. A" align="center">
                   <span v-if="item.proveedor_factura_A == 0">
                     No
                   </span>
@@ -219,16 +231,34 @@
                   </span>
                   <!-- {{item.proveedor_factura_A}} -->
                 </el-table-column>
-                <el-table-column width="100px" label="Monto" align="center">
-                  {{item.proveedor_monto_factura_A}}
+                <el-table-column width="85,71px" label="$ Fact. A" align="center">
+                  <el-input-number
+                    :controls="false"
+                    style="width: 100%"
+                    v-model="item.proveedor_monto_factura_A"
+                    @change="actualizarPrecioTotal()"
+                  ></el-input-number>
+                  <!-- {{item.proveedor_monto_factura_A}} -->
                 </el-table-column>
-                <el-table-column width="100px" label="Flete" align="center">
-                  {{item.proveedor_monto_flete}}
+                <el-table-column width="85,71px" label="Flete" align="center">
+                  <el-input-number
+                    :controls="false"
+                    style="width: 100%"
+                    v-model="item.proveedor_monto_flete"
+                    @change="actualizarPrecioTotal()"
+                  ></el-input-number>
+                  <!-- {{item.proveedor_monto_flete}} -->
                 </el-table-column>
-                <el-table-column width="100px" label="DyB" align="center">
-                  {{item.proveedor_monto_descuentos_bonificaciones}}
+                <el-table-column width="85,71px" label="DyB" align="center">
+                  <el-input-number
+                    :controls="false"
+                    style="width: 100%"
+                    v-model="item.proveedor_monto_descuentos_bonificaciones"
+                    @change="actualizarPrecioTotal()"
+                  ></el-input-number>
+                  <!-- {{item.proveedor_monto_descuentos_bonificaciones}} -->
                 </el-table-column>
-                <el-table-column width="100px" label="Total" align="center">
+                <el-table-column width="85,71px" label="Total" align="center">
                   <!-- {{item.proveedor_monto_totalPP}} -->
                   {{item.proveedor_monto_total_homogeneo}}
                 </el-table-column>
@@ -513,6 +543,11 @@ export default {
       console.log("this.arrayProductos");
       console.log(this.arrayProductos);
 
+      
+      this.marcarMenor()
+    },
+
+    marcarMenor(){
       let yaExisteElemento;
 
       this.arraySoloProductos.forEach((elemento) => {
@@ -539,24 +574,26 @@ export default {
           }
         })
 
+        console.log("min");
+        console.log(min);
+
         // console.log("producto");
         // console.log(producto);
 
         this.datosAPI.forEach((elemento) => {
-          elemento.productos.forEach((ele) => {
+          elemento.productos.forEach((ele1) => {
             // console.log("ele para datos API");
             // console.log(ele);
+            if (ele1.producto_id == producto.producto_id && ele1.proveedor_id == producto.proveedor_id) {
+              ele1.productoSeleccionado = true
+            } 
 
-            if (ele.producto_id == producto.producto_id && ele.proveedor_id == producto.proveedor_id) {
-              ele.productoSeleccionado = true
-            }
+            if (ele1.producto_id == producto.producto_id && ele1.proveedor_id != producto.proveedor_id) {
+            ele1.productoSeleccionado = false
+          }
           })
         })
       })
-      
-
-
-      
     },
 
     cambiarCantidad(props){
@@ -580,6 +617,7 @@ export default {
       })
 
       this.actualizarPrecioTotal()
+      this.marcarMenor()
     },
 
     actualizarPrecioTotal(){
@@ -661,6 +699,7 @@ export default {
       item.precio_pp = precio_pp_aux.toFixed(2)
 
       this.actualizarPrecioTotal()
+      this.marcarMenor()
     },
 
     cambiarPNG(item, scope){
@@ -679,6 +718,7 @@ export default {
       item.precio_pp = Number(precio_pp_aux).toFixed(2)
 
       this.actualizarPrecioTotal()
+      this.marcarMenor()
     },
 
     agregar(scope, item, precio, index) {
@@ -800,7 +840,7 @@ export default {
       this.datosAPI.forEach((elemento) => {
         elemento.productos.forEach((ele) => {
           if (ele.productoSeleccionado == true) {
-            this.totalHomogeneo = this.totalHomogeneo + ele.precio_pp
+            this.totalHomogeneo = this.totalHomogeneo + Number(ele.precio_pp)
           }
         })
       })
@@ -889,6 +929,7 @@ export default {
           proveedor_monto_total_homogeneo: elemento.proveedor_monto_total_homogeneo,
           proveedor_nombre: elemento.proveedor_nombre,
           proveedor_rubro_id: elemento.proveedor_rubro_id,
+          proveedor_notas: null,
           updated_at: elemento.updated_at,
         }
 
@@ -967,6 +1008,7 @@ export default {
       })
 
       this.calcularTotalHomogeneo()
+      this.marcarMenor()
       
     },
 
@@ -1454,6 +1496,189 @@ export default {
       
     },
 
+    headerStyleIntermedio(row, column, rowIndex, columnIndex) {
+      // console.log("row de headerStyle");
+      // console.log(row);
+      
+      // console.log("column de headerStyle");
+      // console.log(column);
+
+      // console.log("rowIndex de headerStyle");
+      // console.log(rowIndex);
+
+      // console.log("columnIndex de headerStyle");
+      // console.log(columnIndex);
+
+      // P1
+      if (row.rowIndex == 0 && row.columnIndex == 2) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 0) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 1) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 2) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 3) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 4) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 5) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 6) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+
+      // P2
+      if (row.rowIndex == 0 && row.columnIndex == 3) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 7) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 8) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 9) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 10) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 11) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 12) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 13) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+
+      // P3
+      if (row.rowIndex == 0 && row.columnIndex == 4) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 14) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 15) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 16) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 17) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 18) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 19) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 20) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+
+      // P4
+      if (row.rowIndex == 0 && row.columnIndex == 5) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 21) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 22) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 23) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 24) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 25) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 26) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 27) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+
+      // P4
+      if (row.rowIndex == 0 && row.columnIndex == 6) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 28) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 29) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 30) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 31) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 32) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 33) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 34) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+    },
+
     headerCellStyle({ row, column, rowIndex, columnIndex }){
       if (column.label == "PP") {
         // console.log("row de cell style");
@@ -1850,6 +2075,357 @@ export default {
 
     },
 
+    classCheckerIntermedio({ row, column, rowIndex, columnIndex }){
+      // Proveedor1
+      if (columnIndex == 2) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 3) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 4) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+     
+      if (columnIndex == 5) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 6) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 7) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 8) {
+        return {'background': '#96ceb4' , 'color': 'black'}
+      }
+
+      // P2
+      if (columnIndex == 9) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 10) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 11) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 12) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 13) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 14) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 15) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      // P3
+      if (columnIndex == 16) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+
+      if (columnIndex == 17) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+
+      if (columnIndex == 18) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+
+      if (columnIndex == 19) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+
+      if (columnIndex == 20) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+
+      if (columnIndex == 21) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 22) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+
+      // P4
+      if (columnIndex == 23) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 24) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 25) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 26) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 27) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 28) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 29) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+
+      //P5
+      if (columnIndex == 30) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 31) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 32) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 33) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 34) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 35) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 36) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      //P6
+      if (columnIndex == 37) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 38) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 39) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 40) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }      
+
+      if (columnIndex == 41) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 42) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 43) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      // P7
+      if (columnIndex == 44) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 45) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 46) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 47) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 48) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 49) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 50) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+      
+      // P8
+      if (columnIndex == 51) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 52) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 53) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 54) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 55) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 56) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 57) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      //P9
+      if (columnIndex == 58) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 59) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 60) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 61) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 62) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 63) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 64) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      // P10
+      if (columnIndex == 65) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 66) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 67) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 68) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 69) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 70) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 71) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      // P11
+      if (columnIndex == 72) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 73) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 74) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 75) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 76) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 77) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      if (columnIndex == 78) {
+        return {'background': '#e7eff6' , 'color': 'black'}
+      }
+
+      // P12 ff6f69
+      if (columnIndex == 79) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 80) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 81) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 82) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 83) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 84) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 85) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+    },
+
     classCheckerTotal({ row, column, rowIndex, columnIndex }) {
       // console.log("*******************************");
       // console.log("rowIndex de classchecker");
@@ -1987,7 +2563,7 @@ export default {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
       
-      //P5
+      //P6
       if (columnIndex == 32) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
@@ -2012,7 +2588,7 @@ export default {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
 
-      // P6
+      // P7
       if (columnIndex == 38) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
@@ -2037,7 +2613,7 @@ export default {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      // P7
+      // P8
       if (columnIndex == 44) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
@@ -2062,7 +2638,7 @@ export default {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
 
-      //P8
+      //P9
       if (columnIndex == 50) {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
@@ -2087,7 +2663,7 @@ export default {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
 
-      // P9
+      // P10
       if (columnIndex == 56) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
@@ -2112,7 +2688,7 @@ export default {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
 
-      // P10
+      // P11
       if (columnIndex == 62) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
@@ -2137,7 +2713,7 @@ export default {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      // P11
+      // P12
       if (columnIndex == 68) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
