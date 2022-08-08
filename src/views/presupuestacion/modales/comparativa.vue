@@ -12,285 +12,330 @@
             <!-- {{datosAPI}} -->
                 
             <!-- :summary-method="getSummaries" -->
-            <div id="tabla1">
-              <el-table
-                :data="arraySoloProductos"
-                border
-                stripe
-                style="width: 100%;"
-                show-summary
-                @sort-change="sortChange()"
-                @cell-click="cellClick"
-                ref="tablaComparativa"
-                :cell-style="classChecker"
-                :header-cell-style="headerStylePrincipalTable"
-                :scrollbar-always-on="false"
-              >
-                <el-table-column
-                  label="Productos"
-                  align="center"
-                  style="background-color: red"
-                  fixed
-                >
-                  <!-- <el-table-column prop="date" label="ID" align="center" fixed>
-                    <template #default="props">
-                      {{ props.row.producto_id }}
-                    </template>
-                  </el-table-column> -->
 
-                  <el-table-column 
-                    prop="date" 
-                    label="Nombre" 
-                    align="center"
-                    fixed
-                  >
-                    <template #default="props">
-                      {{ props.row.producto_nombre }}
-                    </template>
-                  </el-table-column>
+            <div style="display: flex; margin-bottom: 10px">
+              <div style="margin: auto">
+                <!-- <el-button
+                  type="primary"
+                  @click="moverscroll()"
+                >1</el-button>   -->
 
-                  <el-table-column
-                    prop="date"
-                    label="Cant. a comprar"
-                    align="center"
-                    fixed
-                  >
-                    <template #default="props">
-                      <!-- {{props.row.cantidad_a_comprar}} -->
-                      <el-input-number
-                        v-model="props.row.cantidad_a_comprar"
-                        style="width: 100%"
-                        :controls="false"
-                        @change="cambiarCantidad(props)"
-                      ></el-input-number>
-                    </template>
-                  </el-table-column>
-                </el-table-column>
-
-                <el-table-column label="Proveedores" align="center">
-                  <el-table-column
-                    v-for="(item, index) in datosAPI"
-                    :key="index"
-                    :label="item.proveedor_nombre"
-                    align="center"
-                    :column-key="item.proveedor_id"
-                    :cell-style="colorColumnas(index)"
-                  > 
-                  <template #header>
-                    <el-checkbox 
-                      v-model="item.proveedorSeleccionado" 
-                      :label="item.proveedor_nombre" 
-                      size="large" 
-                      @change="cambiarProveedorSeleccionado(item)"
-                    />
-                    <el-button
-                      type="primary"
-                      size="small"
-                      circle
-                      style="margin-left: 5px"
-                      @click="$refs.modalCargaPorProveedorMostrar.abrir(item.proveedor_id, item.presupuestacion_id)"
+                <el-button-group>
+                  <el-button 
+                    type="primary" 
+                    :icon="ArrowLeft"
+                    @click="moverscroll(-80)"
                     >
-                      <!-- <span class="material-icons">info</span> -->
-                      i
+                      Mover a la izquierda
                     </el-button>
-                  </template>
-
-                    <!-- Factor -->
-                    <el-table-column 
-                      label="Factor" 
-                      align="center"
-                      prop="factor"
-                      width="100px"
-                    >
-                      <template #default="scope" >
-                        <el-input-number
-                          v-model="item.productos[scope.$index].factor"
-                          :controls="false"
-                          style="width: 100%"
-                          @change="cambiarCantidadFactor(item.productos[scope.$index], scope)"
-                        ></el-input-number>
-                      </template>
-                    </el-table-column>
-
-                    <!-- Cantidad proveedor -->
-                    <el-table-column 
-                      label="Cant" 
-                      align="center"
-                      prop="cantProv"
-                      width="100px"
-                    >
-                      <template #default="scope" >
-                        {{parseFloat(item.productos[scope.$index].cantidad_proveedor)}}
-                      </template>
-                    </el-table-column>    
-                    
-                    <!-- PNG -->
-                    <el-table-column 
-                      label="PNG" 
-                      align="center"
-                      prop="png"
-                      width="100px"
-                    >
-                      <template #default="scope" >
-                        <el-input-number
-                          v-model="item.productos[scope.$index].precio_png"
-                          :controls="false"
-                          style="width: 100%"
-                          @change="cambiarPNG(item.productos[scope.$index], scope)"
-                        ></el-input-number>
-                        <!-- {{parseFloat(item.productos[scope.$index].precio_png)}} -->
-                      </template>
-                    </el-table-column>
-
-                    <!-- IVA -->
-                    <el-table-column 
-                      label="IVA" 
-                      align="center"
-                      prop="iva"
-                      width="100px"
-                    >
-                      <template #default="scope" >
-                        {{parseFloat(item.productos[scope.$index].iva)}}
-                      </template>
-                    </el-table-column>
-
-                    <!-- PU -->
-                    <el-table-column 
-                      label="PU" 
-                      align="center"
-                      prop="pu"
-                      width="100px"
-                    >
-                      <template #default="scope" >
-                        {{parseFloat(item.productos[scope.$index].precio_pu)}}
-                      </template>
-                    </el-table-column>
-                    
-                    <!-- PP -->
-                    <el-table-column 
-                      label="PP" 
-                      align="center"
-                      @select="seleccionar(param)"
-                      style="background-color: red;"
-                      prop="pp"
-                      width="100px"
-                      size="small"
-                    >
-                      <template #default="scope" >
-                        <el-checkbox 
-                          v-model="item.productos[scope.$index].productoSeleccionado" 
-                          :label="parseFloat(item.productos[scope.$index].precio_pp)" 
-                          size="small" 
-                          @change="cambiarSeleccionProductoSegmentado(scope, item.productos[scope.$index])"
-                          style="color: black"
-                        />
-                      </template>
-                    </el-table-column>
-
-
-                  </el-table-column>
-                </el-table-column>
-              </el-table>
+                  <el-button  
+                    type="primary"
+                    @click="moverscroll(80)"
+                  >
+                    Mover a la derecha
+                  </el-button>
+                </el-button-group>  
+              </div>
             </div>
 
-            <!-- muestro la informacion de los proveedores -->
-            <!-- {{arrayInfoProveedores}} -->
-            <!-- {{arrayInfoProveedores}} -->
-            <el-table
-              stripe
-              :data="arrayTotal"
-              :cell-style="classCheckerIntermedio"
-              :header-cell-style="headerStyleIntermedio"
-              id="tabla2"
+            <div 
+              style="width: 100%;overflow: auto;" 
+              id="midiv"
             >
-              <el-table-column></el-table-column>
-              <el-table-column></el-table-column>
-              <el-table-column v-for="(item, index) in arrayInfoProveedores" :key="index" align="center">
-                <!-- <template #default="scope"> -->
-                <el-table-column width="85,71px" label="F.P." align="center">
-                  {{item.proveedor_forma_de_pago_nombre}}
-                </el-table-column>
+              <div 
+                id="tablaprueba" 
+                style="height: 800px; width: 3300px;"
+              > 
 
-                <el-table-column width="85,71px" label="Notas" align="center">
-                  <el-input
-                    :controls="false"
-                    style="width: 100%"
-                    v-model="item.proveedor_notas"
-                  ></el-input>
-                  <!-- {{item.proveedor_forma_de_pago_nombre}} -->
-                </el-table-column>
+                <el-table
+                  :data="arraySoloProductos"
+                  border
+                  stripe
+                  style="width: 100%;"
+                  show-summary
+                  @sort-change="sortChange()"
+                  @cell-click="cellClick"
+                  ref="tablaComparativa"
+                  :cell-style="classChecker"
+                  :header-cell-style="headerStylePrincipalTable"
+                  scrollbar-always-on
+                >
+                  <el-table-column
+                    label="Productos"
+                    align="center"
+                    style="background-color: red"
+                    fixed
+                  >
+                    <!-- <el-table-column prop="date" label="ID" align="center" fixed>
+                      <template #default="props">
+                        {{ props.row.producto_id }}
+                      </template>
+                    </el-table-column> -->
+
+                    <el-table-column 
+                      prop="date" 
+                      label="Nombre" 
+                      align="center"
+                      width="200px"
+                    >
+                      <template #default="props">
+                        {{ props.row.producto_nombre }}
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column
+                      prop="date"
+                      label="Cant. a comprar"
+                      align="center"
+                      width="100px"
+                    >
+                      <template #default="props">
+                        <!-- {{props.row.cantidad_a_comprar}} -->
+                        <el-input-number
+                          v-model="props.row.cantidad_a_comprar"
+                          style="width: 100%"
+                          :controls="false"
+                          @change="cambiarCantidad(props)"
+                        ></el-input-number>
+                      </template>
+                    </el-table-column>
+                  </el-table-column>
+
+                  <el-table-column label="Proveedores" align="center">
+                    <el-table-column
+                      v-for="(item, index) in datosAPI"
+                      :key="index"
+                      :label="item.proveedor_nombre"
+                      align="center"
+                      :column-key="item.proveedor_id"
+                      :cell-style="colorColumnas(index)"
+                    > 
+                    <template #header>
+                      <el-checkbox 
+                        v-model="item.proveedorSeleccionado" 
+                        :label="item.proveedor_nombre" 
+                        size="large" 
+                        @change="cambiarProveedorSeleccionado(item)"
+                      />
+                      <el-button
+                        type="primary"
+                        size="small"
+                        circle
+                        style="margin-left: 5px"
+                        @click="$refs.modalCargaPorProveedorMostrar.abrir(item.proveedor_id, item.presupuestacion_id)"
+                      >
+                        <!-- <span class="material-icons">info</span> -->
+                        i
+                      </el-button>
+                    </template>
+
+                      <!-- Factor -->
+                      <el-table-column 
+                        label="Factor" 
+                        align="center"
+                        prop="factor"
+                        width="100px"
+                      >
+                        <template #default="scope" >
+                          <el-input-number
+                            v-model="item.productos[scope.$index].factor"
+                            :controls="false"
+                            style="width: 100%"
+                            @change="cambiarCantidadFactor(item.productos[scope.$index], scope)"
+                          ></el-input-number>
+                        </template>
+                      </el-table-column>
+
+                      <!-- Cantidad proveedor -->
+                      <el-table-column 
+                        label="Cant" 
+                        align="center"
+                        prop="cantProv"
+                        width="100px"
+                      >
+                        <template #default="scope" >
+                          {{parseFloat(item.productos[scope.$index].cantidad_proveedor)}}
+                        </template>
+                      </el-table-column>    
+                      
+                      <!-- PNG -->
+                      <el-table-column 
+                        label="PNG" 
+                        align="center"
+                        prop="png"
+                        width="100px"
+                      >
+                        <template #default="scope" >
+                          <el-input-number
+                            v-model="item.productos[scope.$index].precio_png"
+                            :controls="false"
+                            style="width: 100%"
+                            @change="cambiarPNG(item.productos[scope.$index], scope)"
+                          ></el-input-number>
+                          <!-- {{parseFloat(item.productos[scope.$index].precio_png)}} -->
+                        </template>
+                      </el-table-column>
+
+                      <!-- IVA -->
+                      <el-table-column 
+                        label="IVA" 
+                        align="center"
+                        prop="iva"
+                        width="100px"
+                      >
+                        <template #default="scope" >
+                          {{parseFloat(item.productos[scope.$index].iva)}}
+                        </template>
+                      </el-table-column>
+
+                      <!-- Monto iva -->
+                      <!-- <el-table-column 
+                        label="$ IVA" 
+                        align="center"
+                        prop="montoIva"
+                        width="100px"
+                      >
+                        <template #default="scope" >
+                          {{parseFloat(item.productos[scope.$index].totaliva)}}
+                        </template>
+                      </el-table-column> -->
+
+                      <!-- PU -->
+                      <el-table-column 
+                        label="PU" 
+                        align="center"
+                        prop="pu"
+                        width="100px"
+                      >
+                        <template #default="scope" >
+                          {{parseFloat(item.productos[scope.$index].precio_pu)}}
+                        </template>
+                      </el-table-column>
+                      
+                      <!-- PP -->
+                      <el-table-column 
+                        label="PP" 
+                        align="center"
+                        @select="seleccionar(param)"
+                        style="background-color: red;"
+                        prop="pp"
+                        width="100px"
+                        size="small"
+                      >
+                        <template #default="scope" >
+                          <el-checkbox 
+                            v-model="item.productos[scope.$index].productoSeleccionado" 
+                            :label="parseFloat(item.productos[scope.$index].precio_pp)" 
+                            size="small" 
+                            @change="cambiarSeleccionProductoSegmentado(scope, item.productos[scope.$index])"
+                            style="color: black"
+                          />
+                        </template>
+                      </el-table-column>
 
 
-                <el-table-column width="85,71px" label="Fact. A" align="center">
-                  <span v-if="item.proveedor_factura_A == 0">
-                    No
-                  </span>
+                    </el-table-column>
+                  </el-table-column>
+                </el-table>
 
-                  <span v-if="item.proveedor_factura_A == 1">
-                    Si
-                  </span>
-                  <!-- {{item.proveedor_factura_A}} -->
-                </el-table-column>
-                <el-table-column width="85,71px" label="$ Fact. A" align="center">
-                  <el-input-number
-                    :controls="false"
-                    style="width: 100%"
-                    v-model="item.proveedor_monto_factura_A"
-                    @change="actualizarPrecioTotal()"
-                  ></el-input-number>
-                  <!-- {{item.proveedor_monto_factura_A}} -->
-                </el-table-column>
-                <el-table-column width="85,71px" label="Flete" align="center">
-                  <el-input-number
-                    :controls="false"
-                    style="width: 100%"
-                    v-model="item.proveedor_monto_flete"
-                    @change="actualizarPrecioTotal()"
-                  ></el-input-number>
-                  <!-- {{item.proveedor_monto_flete}} -->
-                </el-table-column>
-                <el-table-column width="85,71px" label="DyB" align="center">
-                  <el-input-number
-                    :controls="false"
-                    style="width: 100%"
-                    v-model="item.proveedor_monto_descuentos_bonificaciones"
-                    @change="actualizarPrecioTotal()"
-                  ></el-input-number>
-                  <!-- {{item.proveedor_monto_descuentos_bonificaciones}} -->
-                </el-table-column>
-                <el-table-column width="85,71px" label="Total" align="center">
-                  <!-- {{item.proveedor_monto_totalPP}} -->
-                  {{item.proveedor_monto_total_homogeneo}}
-                </el-table-column>
-                <!-- </template> -->
-              </el-table-column>
-            </el-table>
+                <!-- muestro la informacion de los proveedores -->
+                <!-- {{arrayInfoProveedores}} -->
+                <!-- {{arrayInfoProveedores}} -->
+                <el-table
+                  stripe
+                  :data="arrayTotal"
+                  :cell-style="classCheckerIntermedio"
+                  :header-cell-style="headerStyleIntermedio"
+                  id="tabla2"
+                >
+                  <el-table-column width="200px"></el-table-column>
+                  <el-table-column width="100px"></el-table-column>
+                  <el-table-column v-for="(item, index) in arrayInfoProveedores" :key="index" align="center">
+                    <!-- <template #default="scope"> -->
+                    <el-table-column width="86px" label="F.P." align="center">
+                      {{item.proveedor_forma_de_pago_nombre}}
+                    </el-table-column>
 
+                    <el-table-column width="86px" label="Notas" align="center">
+                      <el-input
+                        :controls="false"
+                        style="width: 100%"
+                        v-model="item.proveedor_notas"
+                      ></el-input>
+                      <!-- {{item.proveedor_forma_de_pago_nombre}} -->
+                    </el-table-column>
+
+
+                    <el-table-column width="86px" label="Fact. A" align="center">
+                      <span v-if="item.proveedor_factura_A == 0">
+                        No
+                      </span>
+
+                      <span v-if="item.proveedor_factura_A == 1">
+                        Si
+                      </span>
+                      <!-- {{item.proveedor_factura_A}} -->
+                    </el-table-column>
+                    <el-table-column width="86px" label="$ Fact. A" align="center">
+                      <el-input-number
+                        :controls="false"
+                        style="width: 100%"
+                        v-model="item.proveedor_monto_factura_A"
+                        @change="actualizarPrecioTotal()"
+                      ></el-input-number>
+                      <!-- {{item.proveedor_monto_factura_A}} -->
+                    </el-table-column>
+                    <el-table-column width="86px" label="Flete" align="center">
+                      <el-input-number
+                        :controls="false"
+                        style="width: 100%"
+                        v-model="item.proveedor_monto_flete"
+                        @change="actualizarPrecioTotal()"
+                      ></el-input-number>
+                      <!-- {{item.proveedor_monto_flete}} -->
+                    </el-table-column>
+                    <el-table-column width="86px" label="DyB" align="center">
+                      <el-input-number
+                        :controls="false"
+                        style="width: 100%"
+                        v-model="item.proveedor_monto_descuentos_bonificaciones"
+                        @change="actualizarPrecioTotal()"
+                      ></el-input-number>
+                      <!-- {{item.proveedor_monto_descuentos_bonificaciones}} -->
+                    </el-table-column>
+                    <el-table-column width="86px" label="Total" align="center">
+                      <!-- {{item.proveedor_monto_totalPP}} -->
+                      {{item.proveedor_monto_total_homogeneo}}
+                    </el-table-column>
+                    <!-- </template> -->
+                  </el-table-column>
+                </el-table>
             
-            
-            <!-- muestro el total -->
-            <el-table 
-              :data="arrayTotal"
-              style="margin-top: 15px"
-              :cell-style="classCheckerTotal"
-              :header-cell-style="headerStyleTotal"
-              stripe
-            >
-              <!-- <el-table-column label=""></el-table-column> -->
-              <el-table-column label="Compra seg." align="center">
-                <template #default="props">
-                  {{props.row.totalHomogeneo}}
-                </template>
-              </el-table-column>
-              <el-table-column label=""></el-table-column>
-              
-              <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="100px">
-                <!-- <template #default="scope"> -->
-                  {{item.totalPP}}
-                <!-- </template> -->
-              </el-table-column>
+                <!-- muestro el total -->
+                <el-table 
+                  :data="arrayTotal"
+                  style="margin-top: 15px"
+                  :cell-style="classCheckerTotal"
+                  :header-cell-style="headerStyleTotal"
+                  stripe
+                >
+                  <!-- <el-table-column label=""></el-table-column> -->
+                  <el-table-column label="Compra seg." align="center">
+                    <template #default="props">
+                      {{props.row.totalHomogeneo}}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label=""></el-table-column>
+                  
+                  <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="100px">
+                    <!-- <template #default="scope"> -->
+                      {{item.totalPP}}
+                    <!-- </template> -->
+                  </el-table-column>
 
-            </el-table>
+                </el-table>
+              </div>
+            </div>
           </div>
         </el-scrollbar>
 
@@ -333,6 +378,7 @@ export default {
       arrayInfoProveedores: [],
       infoProveedores: [],
       condicionesPago: [],
+      valorScroll: 0,
     };
   },
 
@@ -357,6 +403,7 @@ export default {
       this.arrayInfoProveedores = []
       this.infoProveedores = []
       this.condicionesPago = []
+      this.valorScroll = 0
       
 
 
@@ -387,6 +434,9 @@ export default {
         .then((response) => {
 
           this.arrAux = response.data;
+          console.log("this.arrAux");
+          console.log(this.arrAux);
+
 
           this.arrAux.forEach((elemento) => {
             let fila = {
@@ -413,6 +463,7 @@ export default {
               let filaProd = {
                 created_at: ele.created_at ,
                 iva: ele.iva ,
+                totaliva: ele.total_iva,
                 precio_png: ele.precio_png ,
                 precio_pp: Number(ele.precio_pp) ,
                 precio_pu: ele.precio_pu ,
@@ -595,6 +646,21 @@ export default {
         })
       })
     },
+
+    moverscroll(cantidad){
+      const element = document.getElementById("midiv");
+      console.log("element");
+      console.log(element);
+
+      this.valorScroll = this.valorScroll + cantidad
+
+      element.scrollLeft = this.valorScroll;
+
+      console.log("element.scrollLeft"); 
+      console.log(element.scrollLeft); 
+
+    },
+
 
     cambiarCantidad(props){
       console.log("props");
@@ -999,8 +1065,15 @@ export default {
       console.log("productos");
       console.log(producto);
 
+      // producto.
+
       this.datosAPI.forEach((elemento, index) => {
         elemento.productos.forEach((ele, ind) => {
+          // ele.productoSeleccionado = false
+          if (ele.producto_id == producto.producto_id && ele.proveedor_id == producto.proveedor_id) {
+            ele.productoSeleccionado = true
+          } 
+
           if (ele.producto_id == producto.producto_id && ele.proveedor_id != producto.proveedor_id) {
             ele.productoSeleccionado = false
           }
@@ -1008,7 +1081,7 @@ export default {
       })
 
       this.calcularTotalHomogeneo()
-      this.marcarMenor()
+      // this.marcarMenor()
       
     },
 
