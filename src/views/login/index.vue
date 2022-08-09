@@ -54,10 +54,12 @@
 </template>
 
 <script>
+import { watch } from '@vue/runtime-core';
 export default {
   data() {
     return {
       user: {},
+      ejemplo: null,
       form: {
         email: "",
         password: "",
@@ -80,8 +82,44 @@ export default {
       },
     };
   },
+  watch: {
+    
+  
+    // console.log("this.user");
+    // console.log(this.user);
+
+    // this.ejemplo = this.$route
+
+    // console.log("this.$route"); 
+    // console.log(this.$route); 
+
+    // if (this.$route.query != {}) {
+    //   // this.form.username = this.$route.query.user
+    //   console.log("hay datos");
+    //   console.log(this.$route.fullPath);   
+    // } 
+
+    "$route.query.user": {
+      inmediate: true,
+      handler(user){
+        console.log(user);
+      }
+    },
+
+    "$route.query.password": {
+      inmediate: true,
+      handler(password){
+        console.log(password);
+      }
+    }
+
+  },
+  
   methods: {
     async login() {
+      console.log("this.form");
+      console.log(this.form);
+
       await this.$store.dispatch("login", this.form);
       console.log("hace algo");
       return this.$router.replace("/");
