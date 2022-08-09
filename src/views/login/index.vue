@@ -10,43 +10,52 @@
         <div class="formulario">
           <div class="material-icons">account_circle</div>
           <span v-if="$store.state.auth">{{ $store.state.user.name }}</span>
-          <el-card>
-            <el-form
-              label-width="120px"
-              ref="form"
-              :model="form"
-              :rules="rules"
-              status-icon
-            >
-              <!-- email -->
-              <el-form-item label="Email" prop="email">
-                <el-input
-                  v-model="form.email"
-                  placeholder="Ingrese su email..."
-                />
-              </el-form-item>
-
-              <!-- contrasena -->
-              <el-form-item label="Contraseña" prop="password">
-                <el-input
-                  v-model="form.password"
-                  placeholder="Ingrese su contraseña..."
-                  type="password"
-                />
-              </el-form-item>
-
-              <el-form-item>
-                <el-button
-                  class="btnEnviar"
-                  type="primary"
-                  @click="login()"
-                  :disabled="deshabilitarBtnIngresar()"
+          <div v-if="deshabilitarInputEmail == false">
+          
+            <el-card>
+                <el-form
+                  label-width="120px"
+                  ref="form"
+                  :model="form"
+                  :rules="rules"
+                  status-icon
                 >
-                  Ingresar
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </el-card>
+                  <!-- email -->
+                  <el-form-item label="Email" prop="email" v-if="deshabilitarInputEmail == false">
+                    <el-input
+                      :disabled="deshabilitarInputEmail"
+                      v-model="form.email"
+                      placeholder="Ingrese su email..."
+                    />
+                  </el-form-item>
+
+                  <!-- contrasena -->
+                  <el-form-item label="Contraseña" prop="password" v-if="deshabilitarInputPassword == false">
+                    <el-input
+                      :disabled="deshabilitarInputPassword"
+                      v-model="form.password"
+                      placeholder="Ingrese su contraseña..."
+                      type="password"
+                    />
+                  </el-form-item>
+
+                  <el-form-item v-if="deshabilitarInputPassword == false">
+                    <el-button
+                      class="btnEnviar"
+                      type="primary"
+                      @click="login()"
+                      :disabled="deshabilitarBtnIngresar()"
+                    >
+                      Ingresar
+                    </el-button>
+                  </el-form-item>
+                </el-form>
+              
+            </el-card>
+          </div>
+          <div v-else>
+            <div v-loading="loadingProveedor"></div>
+          </div>
         </div>
       </div>
     </el-card>
@@ -64,6 +73,11 @@ export default {
         email: "",
         password: "",
       },
+      emailDirecto: null,
+      passwordDirecto: null,
+      deshabilitarInputEmail: false,
+      deshabilitarInputPassword: false,
+      loadingProveedor: false,
       rules: {
         email: [
           {
@@ -99,10 +113,15 @@ export default {
     //   console.log(this.$route.fullPath);   
     // } 
 
-    "$route.query.user": {
+    "$route.query": {
       inmediate: true,
-      handler(user){
-        console.log(user);
+      handler(query){
+        console.log("watch");
+        console.log(query);  
+
+        if (query.user) {
+          this.loginDirecto(query.user, query.password)
+        }
       }
     },
 
@@ -114,6 +133,11 @@ export default {
     }
 
   },
+
+  created() {
+    console.log("this.$route created");
+    console.log(this.$route);
+  },
   
   methods: {
     async login() {
@@ -123,6 +147,28 @@ export default {
       await this.$store.dispatch("login", this.form);
       console.log("hace algo");
       return this.$router.replace("/");
+    },
+
+    async loginDirecto(user, password){
+      this.deshabilitarInputEmail = true
+      this.deshabilitarInputPassword = true
+      this.loadingProveedor = true
+      console.log("user en logindirecto");
+      console.log(user);
+
+      console.log("password en logindirecto");
+      console.log(password);
+
+      this.form.email = user
+      this.form.password = password
+
+      console.log("this.form");
+      console.log(this.form);
+
+      await this.$store.dispatch("login", this.form);
+      console.log("hace algo");
+      return this.$router.replace("/");
+      
     },
 
     me() {
