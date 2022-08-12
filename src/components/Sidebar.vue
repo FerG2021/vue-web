@@ -37,7 +37,7 @@
       </div>
 
       <!-- Provisión -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/presupuestacion" v-if="is_expanded">
           <span class="material-icons">assignment</span>
           <span class="text">Provisión</span>
@@ -376,6 +376,7 @@
   import {ref} from 'vue'
 
   const is_expanded = ref(false)
+  const tipoUsuario = localStorage.getItem("tipoUsuario")
 
   // const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
 
@@ -384,17 +385,32 @@
     is_expanded.value = !is_expanded.value
 
     // localStorage.setItem("is_expanded", is_expanded.value) 
+    // console.log("entra");
   }
 </script>
 
 <script>
   export default {
+    created() {
+      this.ver()
+    },
+
+   
+
     methods: {
       async logout(){
         await this.$store.dispatch("logout")
         // redirect
         return this.$router.replace("/login")
-      }
+      },
+
+      ver(){
+        console.log("tipo");
+        console.log(localStorage.getItem("tipoUsuario"));
+        // this.tipoUsuario = localStorage.getItem("tipoUsuario")
+        // console.log("tipo");
+        // console.log(tipoUsuario);
+      },
     },
   }
 </script>

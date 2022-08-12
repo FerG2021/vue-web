@@ -4,131 +4,135 @@
       <template #header>
         <h1>Provisión</h1>
       </template>
-      <el-button
-        type="primary"
-        @click="$refs.modalNuevo.abrir()"
-        class="btnElement"
-        style="margin-left: 10px"
-      >
-        Nuevo
-      </el-button>
-
-      <!-- Tabla para mostrar los datos -->
-      <div class="contenedor-tabla" style="margin-top: 15px">
-        <el-table
-          :data="presupuestaciones"
-          stripe
-          style="width: 100%"
-          v-loading="loading"
+      <div v-if="tipoUsuario == 1">
+        <el-button
+          type="primary"
+          @click="$refs.modalNuevo.abrir()"
+          class="btnElement"
+          style="margin-left: 10px"
         >
-          <el-table-column prop="presupuestacion_id" label="Nro." />
+          Nuevo
+        </el-button>
 
-          <el-table-column
-            prop="presupuestacion_plan_nombre"
-            label="Fecha de creación"
+        <!-- Tabla para mostrar los datos -->
+        <div class="contenedor-tabla" style="margin-top: 15px">
+          <el-table
+            :data="presupuestaciones"
+            stripe
+            style="width: 100%"
+            v-loading="loading"
           >
-            <template #default="props">
-              {{ formatearFecha(props.row.presupuestacion_fecha_creacion) }}
-            </template>
-          </el-table-column>
+            <el-table-column prop="presupuestacion_id" label="Nro." />
 
-          <el-table-column prop="presupuestacion_plan_nombre" label="Plan" />
+            <el-table-column
+              prop="presupuestacion_plan_nombre"
+              label="Fecha de creación"
+            >
+              <template #default="props">
+                {{ formatearFecha(props.row.presupuestacion_fecha_creacion) }}
+              </template>
+            </el-table-column>
 
-          <el-table-column prop="presupuestacion_rubro_nombre" label="Rubro">
-            <template #default="props">
-              {{ props.row.presupuestacion_rubro_nombre }}
-            </template>
-          </el-table-column>
+            <el-table-column prop="presupuestacion_plan_nombre" label="Plan" />
 
-          <!-- <el-table-column
-            prop="presupuestacion_plan_nombre"
-            label="Fecha de incio"
-          >
-            <template #default="props">
-              {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }}
-            </template>
-          </el-table-column>
+            <el-table-column prop="presupuestacion_rubro_nombre" label="Rubro">
+              <template #default="props">
+                {{ props.row.presupuestacion_rubro_nombre }}
+              </template>
+            </el-table-column>
 
-          <el-table-column
-            prop="presupuestacion_plan_nombre"
-            label="Fecha de fin"
-          >
-            <template #default="props">
-              {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
-            </template>
-          </el-table-column> -->
+            <!-- <el-table-column
+              prop="presupuestacion_plan_nombre"
+              label="Fecha de incio"
+            >
+              <template #default="props">
+                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }}
+              </template>
+            </el-table-column>
 
-          <el-table-column
-            prop="rangoProvisión"
-            label="Rango"
-          >
-            <template #default="props">
-              {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }} - {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
-            </template>
-          </el-table-column>
+            <el-table-column
+              prop="presupuestacion_plan_nombre"
+              label="Fecha de fin"
+            >
+              <template #default="props">
+                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
+              </template>
+            </el-table-column> -->
 
-          <!-- Aregar rubro -->
-          <el-table-column
-            label="Carga"
-            prop="editar"
-            header-align="right"
-            align="right"
-            width="90px"
-          >
-            <template #default="props">
-              <el-button
-                type="primary"
-                circle
-                @click="$refs.modalCarga.abrir(props.row.presupuestacion_id)"
-              >
-                <span class="material-icons">add_shopping_cart</span>
-              </el-button>
-            </template>
-          </el-table-column>
+            <el-table-column
+              prop="rangoProvisión"
+              label="Rango"
+            >
+              <template #default="props">
+                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }} - {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
+              </template>
+            </el-table-column>
 
-          <!-- Crear presupuestacion -->
-          <el-table-column
-            label="Comparativa"
-            prop="comparativa"
-            header-align="center"
-            align="center"
-            width="110px"
-          >
-            <template #default="props">
-              <el-button
-                type="primary"
-                circle
-                @click="
-                  $refs.modalComparativa.abrir(props.row.presupuestacion_id)
-                "
-              >
-                <span class="material-icons">view_week</span>
-              </el-button>
-            </template>
-          </el-table-column>
+            <!-- Aregar rubro -->
+            <el-table-column
+              label="Carga"
+              prop="editar"
+              header-align="right"
+              align="right"
+              width="90px"
+            >
+              <template #default="props">
+                <el-button
+                  type="primary"
+                  circle
+                  @click="$refs.modalCarga.abrir(props.row.presupuestacion_id)"
+                >
+                  <span class="material-icons">add_shopping_cart</span>
+                </el-button>
+              </template>
+            </el-table-column>
 
-          <!-- Ver datos -->
-          <el-table-column
-            label="Detalle"
-            prop="detalle"
-            header-align="right"
-            align="right"
-            width="90px"
-          >
-            <template #default="props">
-              <el-button
-                type="primary"
-                circle
-                @click="$refs.modalDetalle.abrir(props.row.presupuestacion_id)"
-              >
-                <span class="material-icons">visibility</span>
-              </el-button>
-            </template>
-          </el-table-column>
+            <!-- Crear presupuestacion -->
+            <el-table-column
+              label="Comparativa"
+              prop="comparativa"
+              header-align="center"
+              align="center"
+              width="110px"
+            >
+              <template #default="props">
+                <el-button
+                  type="primary"
+                  circle
+                  @click="
+                    $refs.modalComparativa.abrir(props.row.presupuestacion_id)
+                  "
+                >
+                  <span class="material-icons">view_week</span>
+                </el-button>
+              </template>
+            </el-table-column>
 
-          <!-- <el-table-column prop="address" label="Address" /> -->
-        </el-table>
+            <!-- Ver datos -->
+            <el-table-column
+              label="Detalle"
+              prop="detalle"
+              header-align="right"
+              align="right"
+              width="90px"
+            >
+              <template #default="props">
+                <el-button
+                  type="primary"
+                  circle
+                  @click="$refs.modalDetalle.abrir(props.row.presupuestacion_id)"
+                >
+                  <span class="material-icons">visibility</span>
+                </el-button>
+              </template>
+            </el-table-column>
+
+            <!-- <el-table-column prop="address" label="Address" /> -->
+          </el-table>
+        </div>
       </div>
+      <div v-else><h1>No tiene permisos para realizar esta acción</h1></div>
+
     </el-card>
   </main>
 
@@ -174,15 +178,20 @@ export default {
       loading: false,
       presupuestaciones: [],
       loading: false,
+      tipoUsuario: null,
     };
   },
 
   mounted() {
+    this.obtenerTipoUsuario();
     this.obtenerTodos();
     this.obtenerTodosArticulo();
   },
 
   methods: {
+    obtenerTipoUsuario(){
+      this.tipoUsuario = localStorage.getItem("tipoUsuario")
+    },
     async obtenerTodos() {
       this.loading = true;
       await this.axios

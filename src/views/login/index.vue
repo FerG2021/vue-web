@@ -143,9 +143,31 @@ export default {
     async login() {
       console.log("this.form");
       console.log(this.form);
+      // this.me()
+      let params = {
+        mail_usuario: this.form.email,
+      }
+      await this.axios.post("/api/usuario/obtenerDatosMail", params)
+        .then(response => {
+          if (response) {
+            console.log("response");
+            console.log(response.data.data);
+            if (response.data.data) {
+              localStorage.setItem("usuarioID", response.data.data.id)
+              localStorage.setItem("tipoUsuario", response.data.data.tipo_usuario)
+              
+
+            }
+          }
+        })
 
       await this.$store.dispatch("login", this.form);
       console.log("hace algo");
+      
+      
+
+      
+
       return this.$router.replace("/");
     },
 
@@ -178,6 +200,23 @@ export default {
       console.log("this.form");
       console.log(this.form);
 
+      let params = {
+        mail_usuario: this.form.email,
+      }
+      await this.axios.post("/api/usuario/obtenerDatosMail", params)
+        .then(response => {
+          if (response) {
+            console.log("response");
+            console.log(response.data.data);
+            if (response.data.data) {
+              localStorage.setItem("usuarioID", response.data.data.id)
+              localStorage.setItem("tipoUsuario", response.data.data.tipo_usuario)
+              
+
+            }
+          }
+        })
+
       await this.$store.dispatch("login", this.form);
       console.log("hace algo");
 
@@ -188,10 +227,11 @@ export default {
       
     },
 
-    me() {
-      this.axios.get(this.base_url + "/user").then((res) => {
+    async me() {
+      console.log("entra me");
+      await this.axios.get("/api/user").then((res) => {
         console.log(res.data);
-        this.user = res.data;
+        // this.user = res.data;
       });
     },
 

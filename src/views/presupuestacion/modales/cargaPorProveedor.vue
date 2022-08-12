@@ -643,7 +643,7 @@ export default {
         // elemento.productos.forEach((ele) => {
         //   sums[ind] = sums[ind] + ele.precio_pp
         // })
-        num =  sums[ind] + Number(elemento.total_iva)
+        num =  Number(sums[ind]) + Number(elemento.total_iva)
         sums[ind] = num.toFixed(2)
 
         // sums[ind] = sums[ind] +
