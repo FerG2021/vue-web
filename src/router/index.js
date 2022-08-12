@@ -40,10 +40,13 @@ const router = createRouter({
             component: () => import('../views/proveedor/index.vue')
         },
         {
+            path: '/cargaproveedores',
+            component: () => import('../views/cargaproveedores/index.vue')
+        },
+        {
             path: '/rubro',
             component: () => import('../views/rubro/index.vue')
         },
-        
         {
             path: '/usuarios',
             component: () => import('../views/usuarios/index.vue')

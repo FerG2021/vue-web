@@ -78,6 +78,27 @@
         </el-tooltip>
       </div>
 
+      <!-- Carga proveedores propio -->
+      <div>
+        <router-link class="button" to="/cargaproveedores" v-if="is_expanded">
+          <span class="material-icons">add_business</span>
+          <span class="text">Carga proveedores</span>
+        </router-link>
+
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="Carga proveedores"
+          placement="right-start"
+          v-if="!is_expanded"
+        >
+          <router-link class="button" to="/cargaproveedores" v-if="!is_expanded || is_expanded">
+            <span class="material-icons">add_business</span>
+            <span class="text">Carga proveedores</span>
+          </router-link>
+        </el-tooltip>
+      </div>
+
       <!-- Planes -->
       <div>
         <router-link class="button" to="/plan" v-if="is_expanded">

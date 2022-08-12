@@ -120,7 +120,7 @@ export default {
         console.log(query);  
 
         if (query.user) {
-          this.loginDirecto(query.user, query.password)
+          this.loginDirecto(query.user, query.password, query.proveedorID,  query.presupuestacionID)
         }
       }
     },
@@ -149,7 +149,7 @@ export default {
       return this.$router.replace("/");
     },
 
-    async loginDirecto(user, password){
+    async loginDirecto(user, password, proveedorID, presupuestacionID){
       this.deshabilitarInputEmail = true
       this.deshabilitarInputPassword = true
       this.loadingProveedor = true
@@ -159,15 +159,32 @@ export default {
       console.log("password en logindirecto");
       console.log(password);
 
+      console.log("proveedorID en login directo");
+      console.log(proveedorID);
+
+      console.log("presupuestacionID en login directo");
+      console.log(presupuestacionID);
+
+      localStorage.setItem("proveedorID", proveedorID)
+      localStorage.setItem("presupuestacionID", presupuestacionID)
+
+
       this.form.email = user
       this.form.password = password
+
+      this.$store.state.proveedorID = proveedorID
+      this.$store.state.presupuestacionID = presupuestacionID
 
       console.log("this.form");
       console.log(this.form);
 
       await this.$store.dispatch("login", this.form);
       console.log("hace algo");
-      return this.$router.replace("/");
+
+
+
+
+      return this.$router.replace("/cargaproveedores");
       
     },
 
