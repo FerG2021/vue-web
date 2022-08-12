@@ -134,7 +134,7 @@
                         label="Factor" 
                         align="center"
                         prop="factor"
-                        width="100px"
+                        width="80px"
                       >
                         <template #default="scope" >
                           <el-input-number
@@ -151,7 +151,7 @@
                         label="Cant" 
                         align="center"
                         prop="cantProv"
-                        width="100px"
+                        width="80px"
                       >
                         <template #default="scope" >
                           {{parseFloat(item.productos[scope.$index].cantidad_proveedor)}}
@@ -181,7 +181,7 @@
                         label="IVA" 
                         align="center"
                         prop="iva"
-                        width="100px"
+                        width="60px"
                       >
                         <template #default="scope" >
                           {{parseFloat(item.productos[scope.$index].iva)}}
@@ -193,7 +193,7 @@
                         label="$ IVA" 
                         align="center"
                         prop="montoIva"
-                        width="100px"
+                        width="90px"
                       >
                         <template #default="scope" >
                           {{parseFloat(item.productos[scope.$index].totaliva)}}
@@ -219,14 +219,15 @@
                         @select="seleccionar(param)"
                         style="background-color: red;"
                         prop="pp"
-                        width="100px"
+                        width="190px"
                         size="small"
+                        
                       >
                         <template #default="scope" >
                           <el-checkbox 
                             v-model="item.productos[scope.$index].productoSeleccionado" 
                             :label="parseFloat(item.productos[scope.$index].precio_pp)" 
-                            size="small" 
+                            text-color="#ffff"
                             @change="cambiarSeleccionProductoSegmentado(scope, item.productos[scope.$index])"
                             style="color: black"
                           />
@@ -736,7 +737,9 @@ export default {
             console.log(elemento1);
 
             let parcial = 0
-            parcial = ppParcial + Number(elemento1.proveedor_monto_descuentos_bonificaciones) + Number(elemento1.proveedor_monto_factura_A) + Number(elemento1.proveedor_monto_flete )+ Number(elemento1.proveedor_monto_descuentos_bonificaciones)
+            // parcial = ppParcial + Number(elemento1.proveedor_monto_descuentos_bonificaciones) + Number(elemento1.proveedor_monto_factura_A) + Number(elemento1.proveedor_monto_flete )+ Number(elemento1.proveedor_monto_descuentos_bonificaciones)
+
+            parcial = ppParcial + Number(elemento1.proveedor_monto_descuentos_bonificaciones) + Number(elemento1.proveedor_monto_factura_A) + Number(elemento1.proveedor_monto_flete)
 
             elemento1.proveedor_monto_total_homogeneo = Number(parcial).toFixed(2)
             console.log( "elemento1.proveedor_monto_total_homogeneo");

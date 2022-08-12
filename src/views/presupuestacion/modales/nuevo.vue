@@ -1574,18 +1574,24 @@
 
         // presupuestacion_proveedores
         this.arrayProveedoresMostrar.forEach((elemento) => {
-          let fila = {
-            presupuestacion_proveedor_id: 0,
-            presupuestacion_id: 0,
-            presupuestacion_plan_id: this.form.nombreObra,
-            proveedor_id: elemento.proveedor.proveedor_id,
-            proveedor_nombre: elemento.proveedor.proveedor_nombre,
-            proveedor_rubro_id: elemento.rubro.rubro_id,
-            proveedor_mail: elemento.proveedor.proveedor_email
-          }
+          if (elemento.proveedor_elegido == true) {
+            let fila = {
+              presupuestacion_proveedor_id: 0,
+              presupuestacion_id: 0,
+              presupuestacion_plan_id: this.form.nombreObra,
+              proveedor_id: elemento.proveedor.proveedor_id,
+              proveedor_nombre: elemento.proveedor.proveedor_nombre,
+              proveedor_rubro_id: elemento.rubro.rubro_id,
+              proveedor_mail: elemento.proveedor.proveedor_email
+            }
 
-          this.arrayProveedoresMostrarEnviar.push(fila)
+            this.arrayProveedoresMostrarEnviar.push(fila)
+          }
         })
+
+        console.log("this.arrayProveedoresMostrarEnviar");
+        console.log(this.arrayProveedoresMostrarEnviar);
+
 
         params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
 

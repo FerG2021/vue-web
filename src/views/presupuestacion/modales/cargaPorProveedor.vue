@@ -346,12 +346,12 @@ export default {
 
       opcionesFacturaA: [
         {
-          value: '0',
-          label: 'No',
-        },
-        {
           value: '1',
           label: 'Si',
+        },
+        {
+          value: '0',
+          label: 'No',
         },
       ]
           
@@ -633,6 +633,8 @@ export default {
       const sums = [];
       let ind = 8
       sums[ind] = 0
+      let num = 0
+
       
       this.arrayInformacionParaCarga.forEach((elemento, index) => {
         if (index == 0) {
@@ -641,8 +643,8 @@ export default {
         // elemento.productos.forEach((ele) => {
         //   sums[ind] = sums[ind] + ele.precio_pp
         // })
-
-        sums[ind] = sums[ind] + Number(elemento.total_iva)
+        num =  sums[ind] + Number(elemento.total_iva)
+        sums[ind] = num.toFixed(2)
 
         // sums[ind] = sums[ind] +
 
