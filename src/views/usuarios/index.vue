@@ -12,11 +12,20 @@
         style="margin-left: 10px"
       > 
         Nuevo
-      </el-button>     
+      </el-button>  
+
+      <!-- <el-button 
+        type="primary" 
+        @click="generarUsuariosProveedores()"
+        class="btnElement"
+        style="margin-left: 10px"
+      > 
+        Generar usuarios proveedores
+      </el-button>      -->
 
       <!-- Tabla para mostrar los datos -->
       <div class="contenedor-tabla">
-        <el-table :data="usuarios" fixed v-loading="loading">
+        <el-table :data="usuariosSinProveedores" fixed v-loading="loading">
           <!-- Nombre -->
           <el-table-column            
             label="Nombre" 
@@ -102,6 +111,9 @@
   import ModalModificar from './modales/modificar.vue'
   import ModalEliminar from './modales/eliminar.vue'
 
+  import { ElMessage, ElMessageBox } from 'element-plus'
+
+
   export default {
     components: {
       ModalNuevo,
@@ -112,6 +124,7 @@
     data() {
       return {
         usuarios: [],
+        usuariosSinProveedores: [],
         loading: false,
       }
     },
@@ -127,9 +140,31 @@
           .then(res => {
             this.usuarios = res.data;
             console.log(this.usuarios);
+            console.log("this.usuarios");
+            console.log(this.usuarios);
+
+            this.usuarios.forEach((elemento) => {
+              if (elemento.tipo_usuario == 1) {
+                this.usuariosSinProveedores.push(elemento)
+              }
+            })
+
         })
 
         this.loading = false
+      },
+
+      async generarUsuariosProveedores(){
+        console.log("usuarios proveedores");
+
+        this.axios.post("api/usuario/crearUsuarioProveedor")
+          .then(response => {
+            ElMessage({
+              type: 'success',
+              message: '¡Usuarios proveedores añadidos con éxito!',
+            })
+            this.obtenerTodos()
+          })
       }
     },
   }

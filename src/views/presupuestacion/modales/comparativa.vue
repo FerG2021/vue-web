@@ -232,6 +232,7 @@
                             style="color: black"
                           />
                         </template>
+                        <!-- :label="parseFloat(item.productos[scope.$index].precio_pp)"  -->
                       </el-table-column>
 
 
@@ -742,6 +743,8 @@ export default {
             parcial = ppParcial + Number(elemento1.proveedor_monto_descuentos_bonificaciones) + Number(elemento1.proveedor_monto_factura_A) + Number(elemento1.proveedor_monto_flete)
 
             elemento1.proveedor_monto_total_homogeneo = Number(parcial).toFixed(2)
+
+            // elemento1.proveedor_monto_total_homogeneo = Number(parcial).toFixed(2)
             console.log( "elemento1.proveedor_monto_total_homogeneo");
             console.log( elemento1.proveedor_monto_total_homogeneo);
 
@@ -766,6 +769,7 @@ export default {
 
       // cambio el precio pp
       let precio_pp_aux = item.cantidad_proveedor * Number(item.precio_pu)
+      
       item.precio_pp = precio_pp_aux.toFixed(2)
 
       this.actualizarPrecioTotal()

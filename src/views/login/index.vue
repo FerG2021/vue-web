@@ -120,7 +120,7 @@ export default {
         console.log(query);  
 
         if (query.user) {
-          this.loginDirecto(query.user, query.password, query.proveedorID,  query.presupuestacionID)
+          this.loginDirecto(query.user, query.password, query.proveedorID,  query.presupuestacionID, query.fechaLimiteCarga)
         }
       }
     },
@@ -171,7 +171,7 @@ export default {
       return this.$router.replace("/");
     },
 
-    async loginDirecto(user, password, proveedorID, presupuestacionID){
+    async loginDirecto(user, password, proveedorID, presupuestacionID, fechaLimiteCarga){
       this.deshabilitarInputEmail = true
       this.deshabilitarInputPassword = true
       this.loadingProveedor = true
@@ -189,6 +189,7 @@ export default {
 
       localStorage.setItem("proveedorID", proveedorID)
       localStorage.setItem("presupuestacionID", presupuestacionID)
+      localStorage.setItem("fechaLimiteCarga", fechaLimiteCarga)
 
 
       this.form.email = user

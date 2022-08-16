@@ -22,7 +22,7 @@
             style="width: 100%"
             v-loading="loading"
           >
-            <el-table-column prop="presupuestacion_id" label="Nro." />
+            <el-table-column prop="presupuestacion_id" label="Nro." width="100px"/>
 
             <el-table-column
               prop="presupuestacion_plan_nombre"

@@ -9,7 +9,7 @@
         <!-- <h3>Buscar producto en depósito</h3> -->
 
         <!-- Tabla para mostrar por deposito -->
-        <!-- {{datosDeposito}} -->
+        {{datosDeposito}}
         <el-table :data="datosDeposito" v-loading="loading" stripe style="width: 100%">
           <el-table-column prop="date" label="Depósito" >
             <template #default="props">
@@ -137,17 +137,7 @@ export default {
           console.log(this.arrayCantidadesDeposito);
 
 
-          // recorro el array de cantidades del deposito y datos del deposito para mostrar el input con datos
-          this.arrayCantidadesDeposito.forEach((elemento) => {
-            this.datosDeposito.forEach((ele) => {
-              if (elemento.deposito_id == ele.deposito_id &&
-                  elemento.producto_id == ele.producto_id &&
-                  elemento.deposito_producto_id == ele.deposito_producto_id                  
-              ) {
-                ele.cantidadAUtilizar = elemento.cantidad_utilizar
-              }
-            })
-          })          
+          
 
         })    
       this.loading = false

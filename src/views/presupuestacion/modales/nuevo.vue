@@ -395,7 +395,7 @@
               <el-button
                 type="primary"
                 style="width: 10%; margin-bottom: 3px; margin-left: 3px"
-                @click="$refs.modalBuscarProductoDeposito.abrir(scope)"
+                @click="$refs.modalBuscarProductoDeposito.abrir(scope, arrayCantidadesDeposito)"
               >
                 <span class="material-icons">search</span>
               </el-button>
@@ -526,11 +526,27 @@
       <!-- Resumen -->
       <div v-show="active == 3" style="padding: 30px">
         <h1 style="text-align: center; margin: 0px"><u><b>Resumen de presupuestación</b></u></h1>
+            <!-- {{arrayProductosAComprar}} -->
+          {{arrayCantidadesDeposito}}
+
+        <el-row>
+          <el-col :span="12">
+            <div class="block">
+              <span style="margin-right: 10px" class="demonstration">Fecha límite de carga proveedor</span>
+              <el-date-picker
+                v-model="fehaLimiteCarga"
+                type="date"
+                placeholder="Ingrese la fecha límite"
+                :size="size"
+              />
+            </div>
+          </el-col>
+          <!-- {{fehaLimiteCarga}} -->
+        </el-row>
 
         <el-row :gutter="10" style="margin-top: 10px">
           <el-col :span="12">
             <h3><b>Productos</b></h3>
-            <!-- {{arrayProductosAComprar}} -->
 
 
             <div v-for="(item, index) in arrayRubrosAComprar" :key="index">
@@ -538,9 +554,25 @@
                 <b>{{item.rubro_nombre}}</b>
               </h4>
 
+              <el-row>
+                <el-col :span="11">
+                  Nombre
+                </el-col> 
+                <el-col :span="3">
+                  <span style="margin-left: 0px">U. medida</span>
+                </el-col> 
+                <el-col :span="4">
+                  Cant. a comprar
+                </el-col> 
+                <el-col :span="5">
+                  Observaciones
+                </el-col> 
+              </el-row>
+
               <div 
                 v-for="(item1, index1) in arrayProductosAComprar" :key="index1"
               >
+                
                 <ul>
                   <div 
                     v-if="item1.rubro_id == item.rubro_id" style="margin-bottom: 5px"
@@ -548,11 +580,17 @@
                     <!-- <li>{{item1.producto_nombre}}</li> -->
                     <li>
                       <el-row>
-                        <el-col :span="18">
+                        <el-col :span="11">
                           {{ item1.producto_nombre }}
                         </el-col> 
+                        <el-col :span="3">
+                          {{ item1.producto_unidad }}
+                        </el-col> 
                         <el-col :span="4">
-                          {{ item1.cantidadRealAComprar }}
+                          <span style="margin-left: 5px">{{ item1.cantidadRealAComprar }}</span>
+                        </el-col> 
+                        <el-col :span="5">
+                          {{ item1.observaciones }}
                         </el-col> 
                       </el-row>
                     </li>
@@ -657,7 +695,7 @@
 
   <modal-buscar-producto-deposito
     ref="modalBuscarProductoDeposito"
-    @update:cantidadSacarDeposito="cantidadSacadaDeposito($event)"
+    @update:cantidadSacarDeposito="cantidadSacadaDeposito($event, arrayCantidadesDeposito)"
   ></modal-buscar-producto-deposito>
 </template>
 
@@ -732,6 +770,9 @@
           arrayDatosParaCantidadPresupestacion: [],
           loadingCantidadAComprar: false,
 
+          // array donde se van a ir guardando las cantidades que se vayan tomando de los diferentes depósitos
+          arrayCantidadesDeposito: [],
+
         // PASO 3
         loadingProveedoresParaMail: false,
         arrayProveedoresRecibidos: [],
@@ -742,6 +783,9 @@
 
         loadingOnSubmitBorrador: false,
         loadingOnSubmit: false,
+
+        // PASO 4
+        fehaLimiteCarga: null,
 
       }
     },
@@ -875,6 +919,9 @@
 
           // array para mandar datos para buscar la cantidad de la prevision del producto
           this.arrayDatosParaCantidadPresupestacion = []
+
+          // array donde se van a ir guardando las cantidades que se vayan tomando de los diferentes depósitos
+          this.arrayCantidadesDeposito = []
 
         // PASO 3
         this.arrayProveedoresRecibidos = []
@@ -1421,9 +1468,12 @@
 
       },
 
-      cantidadSacadaDeposito(elemento){
+      cantidadSacadaDeposito(elemento, arrayCantidadesDeposito){
         console.log("elemento desde modal" );
         console.log(elemento);
+
+        console.log("arrayCantidadesDeposito");
+        console.log(arrayCantidadesDeposito);
 
         if (this.arrayProductosAComprar[elemento.indice].cantidadAComprar < elemento.cantidadUsar) {
           ElMessage({
@@ -1548,6 +1598,7 @@
           presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
           presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
           presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
+          presupuestacion_fecha_limite: this.fehaLimiteCarga
         }
 
         // presupuestacion_productos
@@ -1596,6 +1647,10 @@
         params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
 
         params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
+
+        if (this.arrayCantidadesDeposito.length > 0) {
+          params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+        }
 
         await this.axios.post("/api/presupuestacion/crear", params)
           .then(response => {
@@ -1660,6 +1715,9 @@
         params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
 
         params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
+
+        
+        
 
         await this.axios.post("/api/borradorpresupuestacion/crear", params)
           .then(response => {

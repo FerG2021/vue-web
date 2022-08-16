@@ -7,7 +7,24 @@
       
        <div v-loading="loadingDatosProveedor">
         <div v-if="datosProveedor" >
-          <el-descriptions title="Datos del proveedor" :column="3" border >
+          <!-- mostrar mensaje si se superó la fecha límite -->
+          <div v-if="deshabilitarPorFecha == true">
+            <el-alert
+              title="Información importante"
+              type="warning"
+              description="Ya no podrá modificar ninguno de los datos debido a que ya se superó la fecha límite de carga"
+              show-icon
+              :closable="false"
+              effect="light"
+            />
+          </div>
+
+          <el-descriptions 
+            title="Datos del proveedor" 
+            :column="4" 
+            border 
+            style="margin-top: 15px"
+          >
             <el-descriptions-item
               label="Proveedor"
               label-align="center"
@@ -30,6 +47,14 @@
               align="center"
             >
               <el-tag class="ml-2" type="success">{{datosGenerales.presupuestacion_rubro_nombre}}</el-tag>
+            </el-descriptions-item>
+
+            <el-descriptions-item 
+              label="Fecha límite" 
+              label-align="center" 
+              align="center"
+            >
+              <el-tag class="ml-2" type="success">{{formatearFecha(fechaLimiteCarga)}}</el-tag>
             </el-descriptions-item>
 
           </el-descriptions>
@@ -105,6 +130,7 @@
                   :controls="false"
                   style="width: 100%"
                   @change="calcularPrecioPP(props)"
+                  :disabled="deshabilitarPorFecha"
                 ></el-input-number>            
               </template>
             </el-table-column>
@@ -124,6 +150,7 @@
                   placeholder="Seleccione" 
                   style="width: 100%"
                   @change="calcularPrecioPP(props)"
+                  :disabled="deshabilitarPorFecha"
                 >
                   <el-option
                     v-for="item in opcionesIVA"
@@ -211,6 +238,7 @@
                 style="width: 100%"
                 filterable
                 @change="cambiaCondicionPago()"
+                :disabled="deshabilitarPorFecha"
               >
                 <el-option
                   v-for="item in arrayCondicionesPago"
@@ -236,6 +264,7 @@
                   placeholder="Seleccione" 
                   style="width: 100%"
                   @change="cambiarDisabledEmiteFactura()"
+                  :disabled="deshabilitarPorFecha"
                 >
                   <el-option
                     v-for="item in opcionesFacturaA"
@@ -286,6 +315,7 @@
                 style="width: 100%"
                 :min="0"
                 @change="calcularTotalHomegeno()"
+                :disabled="deshabilitarPorFecha"
               ></el-input-number>
             </el-col>
           </el-row>
@@ -311,6 +341,7 @@
                 v-model="descuentosyBonificaciones"
                 style="width: 100%"
                 @change="calcularTotalHomegeno()"
+                :disabled="deshabilitarPorFecha"
               ></el-input-number>
             </el-col>
           </el-row>
@@ -330,6 +361,8 @@
                 style="width: 100%"
                 :min="0"
                 disabled
+                align="center"
+                text-align="center"
               ></el-input-number>
             </el-col>
           </el-row>
@@ -351,7 +384,7 @@
             class="btnSiguiente"
             @click="onSubmit()"
             :loading="loadingBtnGuardar"
-
+            :disabled="deshabilitarPorFecha"
           >
             Guardar
           </el-button>
@@ -406,6 +439,11 @@
         diaPago: null,
         diaPagoSinFormatear: null,
 
+        fechaLimiteCarga: localStorage.getItem("fechaLimiteCarga"),
+
+        // disabled si se pasa la fecha limite para la carga de los precios por el proveedor
+        deshabilitarPorFecha: false,
+
         opcionesFacturaA: [
           {
             value: '1',
@@ -423,7 +461,7 @@
             label: '21',
           },
           {
-            value: '10,5',
+            value: '10.5',
             label: '10,5',
           },
           {
@@ -436,7 +474,7 @@
 
     mounted() {
       this.getCondicionesPago();
-        this.getDatos();
+      this.getDatos();
     },
 
     // created() {
@@ -505,6 +543,31 @@
         // this.presupuestacionID = this.$store.state.presupuestacionID
         this.presupuestacionID = localStorage.getItem("presupuestacionID")
         this.idPresupuestacion = localStorage.getItem("presupuestacionID")
+
+        
+        // comparo los fechas
+        let fechaActual = new Date()
+        let fechaLimiteCarga = new Date(this.fechaLimiteCarga)
+
+        console.log("fechaActual");
+        console.log(fechaActual);
+
+        console.log("fechaLimiteCarga");
+        console.log(fechaLimiteCarga);
+
+
+        console.log("comp fecha");
+        console.log(fechaLimiteCarga > fechaActual);
+
+        if (fechaLimiteCarga > fechaActual) {
+          console.log("mayor fecha carga");
+          this.deshabilitarPorFecha = false
+        } else {
+          console.log("menor fecha carga");
+          console.log(this.fechaLimiteCarga);
+          console.log(fechaActual);
+          this.deshabilitarPorFecha = true
+        }
         
         //console.log("this.proveedorID");
         //console.log(this.proveedorID);
@@ -820,6 +883,7 @@
           let precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pp
           
           this.arrayInformacionParaCarga[props.$index].precio_pp = precio_pp.toFixed(2)
+          
           this.sumarPP(props)
 
           this.calcularMontoIVA(props)
@@ -887,7 +951,11 @@
       
         let totalHomogeneoVar = parseFloat(this.totalPP) + parseFloat(this.precioFlete) + parseFloat(this.descuentosyBonificaciones) + parseFloat(this.montoIVA)
 
+        let totalHomogeneoVar2 = totalHomogeneoVar.toLocaleString('de-DE')
+
         this.totalHomogeneo = totalHomogeneoVar.toFixed(2)
+        // this.totalHomogeneo = totalHomogeneoVar2
+
       },
 
       cambiaCondicionPago(){
@@ -1272,7 +1340,14 @@
         // } else {
         //   return "redClass";
         // }
-      }
+      },
+
+      formatearFecha(fecha){
+        let fecha1 = new Date(fecha)
+        // let fecha2 = fecha1.toLocaleString();
+        let fecha2 = fecha1.toLocaleDateString();        
+        return fecha2
+      },
     },
   };
 </script>

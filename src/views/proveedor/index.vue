@@ -25,7 +25,7 @@
             </template>
             <div>
               <el-row :gutter="10">
-                <el-col :span="8">
+                <el-col :span="6">
                   <!-- Filtro por nombre -->
                   <el-input
                     v-model="filtroNombre"
@@ -34,7 +34,16 @@
                   ></el-input>
                 </el-col>
 
-                <el-col :span="8">
+                <el-col :span="6">
+                  <!-- Filtro por razon social -->
+                  <el-input
+                    v-model="filtroRazonSocial"
+                    placeholder="Buscar por razón social"
+                    clearable 
+                  ></el-input>
+                </el-col>
+
+                <el-col :span="6">
                   <!-- Filtro por codigo -->
                   <el-input
                     v-model="filtroCodigo"
@@ -45,7 +54,7 @@
                   ></el-input>
                 </el-col>  
 
-                <el-col :span="8">
+                <el-col :span="6">
                   <!-- Filtro por codigo -->
                   <el-input
                     v-model="filtroCuit"
@@ -101,19 +110,20 @@
           </el-table-column>
 
           <!-- Razon social -->
-          <!-- <el-table-column            
+          <el-table-column            
             label="Razón social" 
             prop="razonsocial"           
           >
               <template #default="props">
                 <span>{{ props.row.proveedor_razonsocial }}</span>
               </template>
-          </el-table-column> -->
+          </el-table-column>
           
           <!-- Codigo -->
           <el-table-column            
             label="Código" 
-            prop="codigo"           
+            prop="codigo"   
+            width="200px"        
           >
               <template #default="props">
                 <span>{{ props.row.proveedor_codigo }}</span>
@@ -123,7 +133,8 @@
           <!-- CUIT -->
           <el-table-column 
             label="CUIT" 
-            prop="cuit"             
+            prop="cuit"    
+            width="300px"         
           >
               <template #default="props">
                 <span>{{ props.row.proveedor_cuit }}</span>
@@ -144,7 +155,8 @@
           <!-- Activo -->
           <el-table-column 
             label="Activo" 
-            prop="activo"             
+            prop="activo"    
+            width="100px"         
           >
               <template #default="props">
                 <span v-if="props.row.proveedor_activo == 1">
@@ -321,6 +333,7 @@
 
         // filtros
         filtroNombre: '',
+        filtroRazonSocial: '',
         filtroCodigo: null,
         filtroCuit: '',
         filtroRubro: '',
@@ -340,6 +353,14 @@
           this.proveedoresNuevo = this.proveedores
         }else{
           this.proveedoresNuevo = this.buscarNombre(val)
+        }
+      },
+
+      filtroRazonSocial(val) {
+        if(val == ''){
+          this.proveedoresNuevo = this.proveedores
+        }else{
+          this.proveedoresNuevo = this.buscarRazonSocial(val)
         }
       },
 
@@ -397,6 +418,18 @@
         console.log("entra buscar");
         return this.proveedores.filter(item =>{
           let nombreLower = item.proveedor_nombre.toLowerCase()
+          let keywordsLower = keywords.toLowerCase()
+          if(nombreLower.includes(keywordsLower)){
+            console.log("retorna");
+            return item
+          }
+        })
+      },
+
+      buscarRazonSocial(keywords){
+        console.log("entra buscar");
+        return this.proveedores.filter(item =>{
+          let nombreLower = item.proveedor_razonsocial.toLowerCase()
           let keywordsLower = keywords.toLowerCase()
           if(nombreLower.includes(keywordsLower)){
             console.log("retorna");
