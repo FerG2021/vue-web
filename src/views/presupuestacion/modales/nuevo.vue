@@ -527,7 +527,7 @@
       <div v-show="active == 3" style="padding: 30px">
         <h1 style="text-align: center; margin: 0px"><u><b>Resumen de presupuestación</b></u></h1>
             <!-- {{arrayProductosAComprar}} -->
-          {{arrayCantidadesDeposito}}
+          <!-- {{arrayCantidadesDeposito}} -->
 
         <el-row>
           <el-col :span="12">
