@@ -352,6 +352,7 @@
           </el-col>
         </el-row>
 
+        <!-- {{arrayProductosAComprar}} -->
         <!-- tabla para mostrar los productos a comprar -->
         <el-table :data="arrayProductosAComprar" stripe style="width: 100%">
           <el-table-column prop="nombre" label="Nombre">
@@ -525,7 +526,9 @@
 
       <!-- Resumen -->
       <div v-show="active == 3" style="padding: 30px">
-        <h1 style="text-align: center; margin: 0px"><u><b>Resumen de presupuestación</b></u></h1>
+        <h1 style="text-align: center; margin: 0px">
+          <u><b>Resumen de presupuestación</b></u>
+        </h1>
             <!-- {{arrayProductosAComprar}} -->
           <!-- {{arrayCantidadesDeposito}} -->
 
@@ -534,14 +537,14 @@
             <div class="block">
               <span style="margin-right: 10px" class="demonstration">Fecha límite de carga proveedor</span>
               <el-date-picker
-                v-model="fehaLimiteCarga"
+                v-model="fechaLimiteCarga"
                 type="date"
                 placeholder="Ingrese la fecha límite"
                 :size="size"
               />
             </div>
           </el-col>
-          <!-- {{fehaLimiteCarga}} -->
+          <!-- {{fechaLimiteCarga}} -->
         </el-row>
 
         <el-row :gutter="10" style="margin-top: 10px">
@@ -785,7 +788,7 @@
         loadingOnSubmit: false,
 
         // PASO 4
-        fehaLimiteCarga: null,
+        fechaLimiteCarga: null,
 
       }
     },
@@ -922,6 +925,7 @@
 
           // array donde se van a ir guardando las cantidades que se vayan tomando de los diferentes depósitos
           this.arrayCantidadesDeposito = []
+          this.fechaLimiteCarga = null
 
         // PASO 3
         this.arrayProveedoresRecibidos = []
@@ -1598,7 +1602,7 @@
           presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
           presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
           presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
-          presupuestacion_fecha_limite: this.fehaLimiteCarga
+          presupuestacion_fecha_limite: this.fechaLimiteCarga
         }
 
         // presupuestacion_productos
@@ -1611,7 +1615,8 @@
             producto_nombre: elemento.producto_nombre,
             producto_rubro_id: elemento.rubro_id,
             producto_rubro_nombre: elemento.rubro_nombre,
-            producto_cantidad_a_comprar: elemento.cantidadRealAComprar,
+            producto_unidad_medida: elemento.producto_unidad,
+            producto_cantidad_a_comprar: elemento.cantidadAComprar,
             producto_cantidad_deposito: elemento.cantidadDeposito,
             producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
             producto_observaciones: elemento.observaciones
@@ -1676,6 +1681,7 @@
           presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
           presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
           presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
+          presupuestacion_fecha_limite: this.fechaLimiteCarga
         }
 
         // presupuestacion_productos
@@ -1688,7 +1694,7 @@
             producto_nombre: elemento.producto_nombre,
             producto_rubro_id: elemento.rubro_id,
             producto_rubro_nombre: elemento.rubro_nombre,
-            producto_cantidad_a_comprar: elemento.cantidadRealAComprar,
+            producto_cantidad_a_comprar: elemento.cantidadAComprar,
             producto_cantidad_deposito: elemento.cantidadDeposito,
             producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
             producto_observaciones: elemento.observaciones
@@ -1716,8 +1722,9 @@
 
         params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
 
-        
-        
+        if (this.arrayCantidadesDeposito.length > 0) {
+          params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+        }
 
         await this.axios.post("/api/borradorpresupuestacion/crear", params)
           .then(response => {

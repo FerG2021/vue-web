@@ -82,7 +82,7 @@
           </el-form-item>
 
           <!-- Fecha presupuestada -->
-          <el-form-item label="Fecha presup.">
+          <!-- <el-form-item label="Fecha presup.">
             <el-row :gutter="10" style="width: 100%">
               <el-col :span="12" style="width: 100%">
                 <el-input
@@ -103,7 +103,7 @@
                 ></el-input>
               </el-col>
             </el-row>
-          </el-form-item>
+          </el-form-item> -->
 
           <!-- Fecha a presupuestar -->
           <el-form-item label="Fecha a presup.">
@@ -418,7 +418,7 @@
               />
             </template> -->
             <template #default="props">
-              <span>{{ props.row.cantidadDeposito }}</span>
+              <span>{{ parseFloat(props.row.cantidadDeposito) }}</span>
             </template>
           </el-table-column>
 
@@ -427,7 +427,7 @@
               <el-button
                 type="primary"
                 style="width: 10%; margin-bottom: 3px; margin-left: 3px"
-                @click="$refs.modalBuscarProductoDeposito.abrir(scope)"
+                @click="$refs.modalBuscarProductoDeposito.abrir(scope, arrayCantidadesDeposito)"
               >
                 <span class="material-icons">search</span>
               </el-button>
@@ -557,6 +557,21 @@
         <h1 style="text-align: center; margin: 0px">
           <u><b>Resumen de presupuestación</b></u>
         </h1>
+        {{arrayCantidadesDeposito}}
+        <el-row style="margin-top: 10px">
+          <el-col :span="12">
+            <div class="block">
+              <span style="margin-right: 10px" class="demonstration">Fecha límite de carga proveedor</span>
+              <el-date-picker
+                v-model="fechaLimiteCarga"
+                type="date"
+                placeholder="Ingrese la fecha límite"
+                :size="size"
+              />
+            </div>
+          </el-col>
+          <!-- {{fechaLimiteCarga}} -->
+        </el-row>
 
         <el-row :gutter="10" style="margin-top: 10px">
           <el-col :span="12">
@@ -757,11 +772,15 @@ export default {
       arrayDatosParaCantidadPresupestacion: [],
       loadingCantidadAComprar: false,
 
+      // array donde se van a ir guardando las cantidades que se vayan tomando de los diferentes depósitos
+        arrayCantidadesDeposito: [],
+
       // PASO 3
       loadingProveedoresParaMail: false,
       arrayProveedoresRecibidos: [],
       arrayProveedoresMostrar: [],
       arrayProveedoresMostrarEnviar: [],
+      fechaLimiteCarga: null,
 
       checked2: null,
 
@@ -905,6 +924,9 @@ export default {
       // array para mandar datos para buscar la cantidad de la prevision del producto
       this.arrayDatosParaCantidadPresupestacion = [];
 
+      // array donde se van a ir guardando las cantidades que se vayan tomando de los diferentes depósitos
+        this.arrayCantidadesDeposito = []
+
       // PASO 3
       this.arrayProveedoresRecibidos = [];
       this.arrayProveedoresMostrar = [];
@@ -918,6 +940,7 @@ export default {
       this.datosGenerales = [];
       this.productosYaPresupuestados = [];
       this.proveedoresYaPresupuestados = [];
+      this.fechaLimiteCarga = null
 
       this.loadingOnSubmitBorrador = false
       this.loadingOnSubmit = false
@@ -936,7 +959,9 @@ export default {
         .get("/api/borradorpresupuestacion/obtenerDatos/" + this.id)
         .then((response) => {
           const respuestaApi = response;
-          console.log(respuestaApi);
+          console.log("respuestaApi");
+          console.log(respuestaApi.data);
+
 
           if (respuestaApi != null) {
             // this.datos = respuestaApi.data;
@@ -952,9 +977,39 @@ export default {
             // this.datosProveedores = respuestaApi.data.proveedores;
 
             this.datosGenerales = respuestaApi.data;
+
+            // genero el array para mostrar las cantidades obtenidas de cada uno de los depositos
+
+            this.datosGenerales.transferencias.forEach((elemento) => {
+              console.log("elemento trans");
+
+              let fila = {
+                deposito_id: elemento.itemTransferencia.transferencia_deposito_id,
+                deposito_producto_id: elemento.itemTransferencia.transferencia_deposito_producto_id,
+                producto_activo: elemento.itemTransferencia.transferencia_producto_activo,
+                producto_id: elemento.itemTransferencia.transferencia_producto_id,
+                producto_nombre: elemento.itemTransferencia.transferencia_producto_nombre,
+                producto_stock: elemento.itemTransferencia.transferencia_producto_stock,
+                producto_unidad: elemento.itemTransferencia.transferencia_producto_unidad,
+                rubro_id: elemento.itemTransferencia.transferencia_producto_rubro_id,
+                cantidad_utilizar: elemento.itemTransferencia.transferencia_cantidad_utilizar,            
+              }
+
+              this.arrayCantidadesDeposito.push(fila)
+            })
+
+
+            console.log("this.arrayCantidadesDeposito");
+            console.log(this.arrayCantidadesDeposito);
+
+            this.fechaLimiteCarga = this.datosGenerales.borrador_presupuesto_fecha_limite
+
             console.log("this.datosGenerales");
             console.log(this.datosGenerales);
 
+            this.form.fechaaPresupuestar[0] = this.datosGenerales.borrador_presupuestacion_fecha_incio
+
+            this.form.fechaaPresupuestar[1] = this.datosGenerales.borrador_presupuestacion_fecha_fin
 
             // this.form.nombreObra = this.datosGenerales.borrador_presupuestacion_plan_nombre
 
@@ -1050,6 +1105,8 @@ export default {
             this.cerrar();
           }
         });
+      this.cantidadMeses()
+      
     },
 
     activar1YRecargar() {
@@ -1149,6 +1206,7 @@ export default {
     },
 
     seleccionarRubroPresupuestar() {
+
       if (this.filtroRubro != "") {
         this.rubrosSelect.forEach((elemento) => {
           // console.log(this.rubrosSelect);
@@ -1297,31 +1355,61 @@ export default {
       // console.log(this.form.mesesaPresupuestar[1].getFullYear());
 
       // console.log(this.form.mesesaPresupuestar[1].getMonth() - this.form.mesesaPresupuestar[0].getMonth());
+      let fechaaPresupuestar0 = new Date(this.form.fechaaPresupuestar[0])
+      console.log("fechaaPresupuestar0");
+      console.log(fechaaPresupuestar0.getMonth());
+
+      let fechaaPresupuestar1 = new Date(this.form.fechaaPresupuestar[1])
+      console.log("fechaaPresupuestar1");
+      console.log(fechaaPresupuestar1.getMonth());
+      // let meses =
+      //   this.form.fechaaPresupuestar[1].getMonth() -
+      //   this.form.fechaaPresupuestar[0].getMonth() +
+      //   12 *
+      //     (this.form.fechaaPresupuestar[1].getFullYear() -
+      //       this.form.fechaaPresupuestar[0].getFullYear()) +
+      //   1;
 
       let meses =
-        this.form.fechaaPresupuestar[1].getMonth() -
-        this.form.fechaaPresupuestar[0].getMonth() +
+        fechaaPresupuestar1.getMonth() -
+        fechaaPresupuestar0.getMonth() +
         12 *
-          (this.form.fechaaPresupuestar[1].getFullYear() -
-            this.form.fechaaPresupuestar[0].getFullYear()) +
+          (fechaaPresupuestar1.getFullYear() -
+            fechaaPresupuestar0.getFullYear()) +
         1;
+
 
       this.form.mesesaPresupuestar = meses;
 
       // declaro los valores para mostrar en el paso 2
+      // let mostrarFechaIncio =
+      //   this.form.fechaaPresupuestar[0].getDate() +
+      //   "/" +
+      //   (this.form.fechaaPresupuestar[0].getMonth() + 1) +
+      //   "/" +
+      //   this.form.fechaaPresupuestar[0].getFullYear();
+
       let mostrarFechaIncio =
-        this.form.fechaaPresupuestar[0].getDate() +
+        fechaaPresupuestar0.getDate() +
         "/" +
-        (this.form.fechaaPresupuestar[0].getMonth() + 1) +
+        (fechaaPresupuestar0.getMonth() + 1) +
         "/" +
-        this.form.fechaaPresupuestar[0].getFullYear();
+        fechaaPresupuestar0.getFullYear();
+
+
+      // let mostrarFechaFin =
+      //   this.form.fechaaPresupuestar[1].getDate() +
+      //   "/" +
+      //   (this.form.fechaaPresupuestar[1].getMonth() + 1) +
+      //   "/" +
+      //   this.form.fechaaPresupuestar[1].getFullYear();
 
       let mostrarFechaFin =
-        this.form.fechaaPresupuestar[1].getDate() +
+        fechaaPresupuestar1.getDate() +
         "/" +
-        (this.form.fechaaPresupuestar[1].getMonth() + 1) +
+        (fechaaPresupuestar1.getMonth() + 1) +
         "/" +
-        this.form.fechaaPresupuestar[1].getFullYear();
+        fechaaPresupuestar1.getFullYear();
 
       this.mostrarFechaIncioPresupuestacion = mostrarFechaIncio;
       this.mostrarFechaFinPresupuestacion = mostrarFechaFin;
@@ -1605,8 +1693,8 @@ export default {
       let b = 0;
       this.arrayProductosAComprar.forEach((elemento) => {
         if (
-          elemento.cantidadRealAComprar == 0 ||
-          elemento.cantidadRealAComprar == null ||
+          // elemento.cantidadRealAComprar == 0 ||
+          // elemento.cantidadRealAComprar == null ||
           elemento.cantidadDeposito == null
         ) {
           b = 1;
@@ -1723,9 +1811,11 @@ export default {
         presupuestacion_id: this.id,
         presupuestacion_plan_id: this.form.nombreObra,
         presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
-        presupuestacion_fecha_incio: this.form.fDesdePresupuestada,
-        presupuestacion_fecha_fin: this.form.fHastaPresupuestada
-        
+        // presupuestacion_fecha_incio: this.form.fDesdePresupuestada,
+        presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
+        // presupuestacion_fecha_fin: this.form.fHastaPresupuestada,
+        presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
+        presupuestacion_fecha_limite: this.fechaLimiteCarga
       };
 
       // if (this.form.fechaaPresupuestar != null ||
@@ -1748,7 +1838,8 @@ export default {
           producto_nombre: elemento.producto_nombre,
           producto_rubro_id: elemento.rubro_id,
           producto_rubro_nombre: elemento.rubro_nombre,
-          producto_cantidad_a_comprar: elemento.cantidadRealAComprar,
+          producto_unidad_medida: elemento.producto_unidad,
+          producto_cantidad_a_comprar: elemento.cantidadAComprar,
           producto_cantidad_deposito: elemento.cantidadDeposito,
           producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
           producto_observaciones: elemento.observaciones,
@@ -1792,6 +1883,10 @@ export default {
       params.arrayRubrosAComprar = JSON.stringify(
         this.arrayRubrosAComprarEnviar
       );
+
+      if (this.arrayCantidadesDeposito.length > 0) {
+        params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+      }
 
       await this.axios
         .post("/api/borradorpresupuestacion/crearPresupuestacion", params)
@@ -1886,6 +1981,7 @@ export default {
         presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
         presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
         presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
+        presupuestacion_fecha_limite: this.fechaLimiteCarga,
       };
 
       // presupuestacion_productos
@@ -1898,7 +1994,7 @@ export default {
           producto_nombre: elemento.producto_nombre,
           producto_rubro_id: elemento.rubro_id,
           producto_rubro_nombre: elemento.rubro_nombre,
-          producto_cantidad_a_comprar: elemento.cantidadRealAComprar,
+          producto_cantidad_a_comprar: elemento.cantidadAComprar,
           producto_cantidad_deposito: elemento.cantidadDeposito,
           producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
           producto_observaciones: elemento.observaciones,
@@ -1948,6 +2044,10 @@ export default {
       params.arrayRubrosAComprar = JSON.stringify(
         this.arrayRubrosAComprarEnviar
       );
+
+      if (this.arrayCantidadesDeposito.length > 0) {
+        params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+      }
 
       await this.axios
         .post("/api/borradorpresupuestacion/actualizar", params)

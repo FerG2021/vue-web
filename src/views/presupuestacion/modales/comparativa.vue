@@ -44,7 +44,7 @@
             >
               <div 
                 id="tablaprueba" 
-                style="height: 100%; width: 4000px;"
+                style="height: 100%; width: 5000px;"
               > 
 
                 <el-table
@@ -163,7 +163,7 @@
                         label="PNG" 
                         align="center"
                         prop="png"
-                        width="100px"
+                        width="150px"
                       >
                         <template #default="scope" >
                           <el-input-number
@@ -178,7 +178,7 @@
 
                       <!-- IVA -->
                       <el-table-column 
-                        label="IVA" 
+                        label="%IVA" 
                         align="center"
                         prop="iva"
                         width="60px"
@@ -205,7 +205,7 @@
                         label="PU" 
                         align="center"
                         prop="pu"
-                        width="100px"
+                        width="140px"
                       >
                         <template #default="scope" >
                           {{parseFloat(item.productos[scope.$index].precio_pu)}}
@@ -254,16 +254,45 @@
                   <el-table-column width="100px"></el-table-column>
                   <el-table-column v-for="(item, index) in arrayInfoProveedores" :key="index" align="center">
                     <!-- <template #default="scope"> -->
-                    <el-table-column width="100px" label="F.P." align="center">
+                    <!-- <el-table-column width="100px" label="F.P." align="center">
                       {{item.proveedor_forma_de_pago_nombre}}
+                    </el-table-column> -->
+
+                    <el-table-column width="190px" label="F.P." align="center">
+                      <!-- {{item.proveedor_forma_de_pago_nombre}} -->
+                      <el-select v-model="item.proveedor_forma_de_pago_nombre" class="m-2" placeholder="Select" size="large">
+                        <el-option
+                          v-for="item in arrayFormaPago"
+                          :key="item.key"
+                          :label="item.label"
+                          :value="item.value"
+                        />
+                      </el-select>
                     </el-table-column>
 
                     <el-table-column width="100px" label="Notas" align="center">
-                      <el-input
-                        :controls="false"
-                        style="width: 100%"
-                        v-model="item.proveedor_notas"
-                      ></el-input>
+                      <!-- <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="item.proveedor_notas"
+                        placement="bottom-start"
+                      > -->
+                        <el-input
+                          :controls="false"
+                          style="width: 100%"
+                          v-model="item.proveedor_notas"
+                        >
+                          <template #prepend>
+                            <el-button
+                              width="10%"
+                              @click="$refs.modalNotas.abrir(item)"
+                            >
+                              <!-- <span class="material-icons">visibility</span> -->
+                              i
+                            </el-button>
+                          </template>
+                        </el-input>
+                      <!-- </el-tooltip> -->
                       <!-- {{item.proveedor_forma_de_pago_nombre}} -->
                     </el-table-column>
 
@@ -329,7 +358,7 @@
                   </el-table-column>
                   <el-table-column label="" width="100px"></el-table-column>
                   
-                  <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="100px">
+                  <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="99px">
                     <!-- <template #default="scope"> -->
                       {{item.totalPP}}
                     <!-- </template> -->
@@ -350,18 +379,27 @@
     ref="modalCargaPorProveedorMostrar"
   ></modal-carga-por-proveedor-mostrar>
 
+  <modal-notas
+    ref="modalNotas"
+    @update:cantidadSacarDeposito="guardarNotas($event, arrayCantidadesDeposito)"
+  ></modal-notas>
+    <!-- @update:guardarNotas="gurdarNotas($event, notas, item)" -->
+
 
 </template>
 
 <script>
 import { ElMessage, ElMessageBox } from "element-plus";
 import modalCargaPorProveedorMostrar from './cargaPorProveedorMostrar.vue'
+import modalNotas from './notas.vue'
+
 
 
 name: "nuevoProducto";
 export default {
   components: {
-    modalCargaPorProveedorMostrar
+    modalCargaPorProveedorMostrar,
+    modalNotas,
   },
   data() {
     return {
@@ -381,6 +419,19 @@ export default {
       infoProveedores: [],
       condicionesPago: [],
       valorScroll: 0,
+      arrayCondicionesPago: [],
+      arrayFormaPago: [],
+
+      arrayOpcionesEntregaFacturaA: [
+        {
+          label: 'Si',
+          value: 1,
+        },
+        {
+          label: 'No',
+          value: 0,
+        },
+      ]
     };
   },
 
@@ -423,11 +474,41 @@ export default {
       // });
 
       // limpio los campos
+      this.getCondicionesPago()
       this.getDatos();
+      
     },
 
     cerrar() {
       this.$refs.modal.cerrar();
+    },
+
+    async getCondicionesPago(){
+      await this.axios
+        .get("/api/condicionpago/obtenerTodos")
+        .then((response) => {
+          const respuestaApi = response;
+
+          this.arrayCondicionesPago = respuestaApi.data;
+          
+          console.log("this.arrayCondicionesPago");
+          console.log(this.arrayCondicionesPago);
+
+          this.arrayCondicionesPago.forEach((elemento) => {
+            let fila = {
+              key: elemento.condicionpago_id,
+              label: elemento.condicionpago_nombre,
+              value: elemento.condicionpago_id
+            }
+
+            this.arrayFormaPago.push(fila)
+          })
+
+          console.log("this.arrayFormaPago");
+          console.log(this.arrayFormaPago);
+
+
+        })
     },
 
     async getDatos() {
@@ -514,6 +595,8 @@ export default {
             this.arrayPrecioPPProveedores.push(fila1)
             this.arrayPrecioPPProveedores.push(fila1)
             this.arrayPrecioPPProveedores.push(fila1)
+            this.arrayPrecioPPProveedores.push(fila1)
+
 
 
 
@@ -680,13 +763,15 @@ export default {
 
             ele.cantidad_proveedor = props.row.cantidad_a_comprar * ele.factor
             let precio = ele.cantidad_proveedor * ele.precio_pu
-            ele.precio_pp = precio.toFixed(2)
+            let precioAux = parseFloat(precio)
+            ele.precio_pp = precioAux.toFixed(2)
           }
         })     
       })
 
       this.actualizarPrecioTotal()
       this.marcarMenor()
+      this.calcularPrecioPPProveedores()
     },
 
     actualizarPrecioTotal(){
@@ -929,6 +1014,10 @@ export default {
 
       this.arrayTotal.push(fila)
 
+      console.log("this.arrayTotal");
+      console.log(this.arrayTotal);
+
+
       this.calcularPrecioPPProveedores()
     },
 
@@ -937,13 +1026,25 @@ export default {
       this.datosAPI.forEach((elemento) => {
         elemento.productos.forEach((ele) => {
           if (ele.productoSeleccionado == true) {
-            precioPPParcial = precioPPParcial + ele.precio_pp
+            console.log("////////");
+            console.log("ele.precio_pp");
+            console.log(ele.precio_pp);
+            console.log("precioPPParcial");
+            console.log(precioPPParcial);
+            let precioPPParcialAux = parseFloat(precioPPParcial)
+
+            precioPPParcial = precioPPParcialAux + ele.precio_pp
           }
         })
 
         this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
           if (elementoArrayProv.proveedor_id == elemento.proveedor_id) {
-            elementoArrayProv.totalPP = precioPPParcial.toFixed(2)
+            console.log("*************");
+            console.log("precioPPParcial");
+            console.log(precioPPParcial);
+            console.log("**************");
+            let precioPPParcialAux = parseFloat(precioPPParcial)
+            elementoArrayProv.totalPP = precioPPParcialAux.toFixed(2)
           }
         })
 
@@ -1091,6 +1192,41 @@ export default {
       this.calcularTotalHomogeneo()
       // this.marcarMenor()
       
+    },
+
+    abrirModalNotas(notas){
+      console.log("abrir");
+      console.log("notas");
+      console.log(notas);
+
+    },
+
+    gurdarNotas(elemento, notas, item){
+      console.log("elemento");
+      console.log(elemento);
+
+
+      console.log("notas");
+      console.log(notas);
+
+      console.log("item");
+      console.log(item);
+
+
+    },
+
+    guardarNotas(elemento, arrayCantidadesDeposito){
+      console.log("elemento desde modal" );
+      console.log(elemento);
+
+      this.arrayInfoProveedores.forEach((elementoProv) => {
+        if (elementoProv.proveedor_id == elemento.item.proveedor_id) {
+          console.log("elementoProv");
+          console.log(elementoProv);
+
+          elementoProv.proveedor_notas = elemento.notas
+        }
+      })    
     },
 
     scroll(scrollLeft, scrollTop){
@@ -2567,11 +2703,11 @@ export default {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
 
-      // P2
       if (columnIndex == 9) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#96ceb4' , 'color': 'black'}
       }
 
+      // P2
       if (columnIndex == 10) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
@@ -2596,15 +2732,15 @@ export default {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
 
-      // P3
       if (columnIndex == 16) {
-        return {'background': '#ffeead' , 'color': 'black'}
+        return {'background': '#adcbe3' , 'color': 'black'}
       }
 
       if (columnIndex == 17) {
-        return {'background': '#ffeead' , 'color': 'black'}
+        return {'background': '#adcbe3' , 'color': 'black'}
       }
 
+      // P3
       if (columnIndex == 18) {
         return {'background': '#ffeead' , 'color': 'black'}
       }
@@ -2625,19 +2761,19 @@ export default {
         return {'background': '#ffeead' , 'color': 'black'}
       }
 
-      // P4
       if (columnIndex == 23) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ffeead' , 'color': 'black'}
       }
 
       if (columnIndex == 24) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ffeead' , 'color': 'black'}
       }
 
       if (columnIndex == 25) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ffeead' , 'color': 'black'}
       }
 
+      // P4
       if (columnIndex == 26) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
@@ -2654,24 +2790,24 @@ export default {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
 
-
-      //P5
       if (columnIndex == 30) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ff6f69' , 'color': 'black'}
       }
 
       if (columnIndex == 31) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ff6f69' , 'color': 'black'}
       }
 
       if (columnIndex == 32) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ff6f69' , 'color': 'black'}
       }
 
       if (columnIndex == 33) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ff6f69' , 'color': 'black'}
       }
 
+
+      //P5
       if (columnIndex == 34) {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
@@ -2683,36 +2819,79 @@ export default {
       if (columnIndex == 36) {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
-      
-      //P6
-      
 
       if (columnIndex == 37) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 38) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 39) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 40) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+
+      if (columnIndex == 41) {
+        return {'background': '#ffcc5c' , 'color': 'black'}
+      }
+      
+      //P6
+
+      if (columnIndex == 42) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 43) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 44) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 45) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 46) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 47) {
+        return {'background': '#adcbe3' , 'color': 'black'}
+      }
+
+      if (columnIndex == 48) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
 
       // P7
-      if (columnIndex == 38) {
+      if (columnIndex == 49) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      if (columnIndex == 39) {
+      if (columnIndex == 50) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      if (columnIndex == 40) {
+      if (columnIndex == 51) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }      
 
-      if (columnIndex == 41) {
+      if (columnIndex == 52) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      if (columnIndex == 42) {
+      if (columnIndex == 53) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      if (columnIndex == 43) {
+      if (columnIndex == 54) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 

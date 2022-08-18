@@ -24,13 +24,16 @@
             :column="4" 
             border 
             style="margin-top: 15px"
+            size="large"
           >
             <el-descriptions-item
               label="Proveedor"
               label-align="center"
               align="center"
             >
-              <b>{{datosProveedor.proveedor_nombre}}</b>
+              <el-tag size="large" type="primary">
+                <b>{{datosProveedor.proveedor_nombre}}</b>
+              </el-tag> 
             </el-descriptions-item>
             
             <el-descriptions-item 
@@ -38,7 +41,9 @@
               label-align="center" 
               align="center"
             >
-              {{datosProveedor.proveedor_mail}}
+              <el-tag size="large" type="primary">
+                <b>{{datosProveedor.proveedor_mail}}</b>
+              </el-tag>
             </el-descriptions-item>
 
             <el-descriptions-item 
@@ -46,7 +51,7 @@
               label-align="center" 
               align="center"
             >
-              <el-tag class="ml-2" type="success">{{datosGenerales.presupuestacion_rubro_nombre}}</el-tag>
+              <el-tag size="large" type="success">{{datosGenerales.presupuestacion_rubro_nombre}}</el-tag>
             </el-descriptions-item>
 
             <el-descriptions-item 
@@ -54,7 +59,7 @@
               label-align="center" 
               align="center"
             >
-              <el-tag class="ml-2" type="success">{{formatearFecha(fechaLimiteCarga)}}</el-tag>
+              <el-tag size="large" type="success">{{formatearFecha(fechaLimiteCarga)}}</el-tag>
             </el-descriptions-item>
 
           </el-descriptions>
@@ -62,6 +67,19 @@
       </div>
       <!-- {{arrayInformacionParaCarga}} -->
       <div v-loading="loadingArrayInformacionParaCarga">
+        <div v-if="deshabilitarPorFecha != true">
+          <el-alert
+            title="Información importante"
+            type="success"
+            description="En caso de que trabaje con una unidad de medida distinta a la que se muestra en cada uno de los productos, por favor realice la conversión correspondiente"
+            show-icon
+            :closable="false"
+            effect="light"
+            style="margin-top: 15px"
+          />
+        </div>
+       
+
         <div v-if="arrayInformacionParaCarga" style="margin-top: 20px">
           <el-table 
             :data="arrayInformacionParaCarga" 
@@ -80,6 +98,12 @@
             <el-table-column prop="nombre" label="Nombre" min-width="150">
               <template #default="props">
                 {{props.row.producto_nombre}}            
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="unidadMedida" label="Un. medida" min-width="150">
+              <template #default="props">
+                {{props.row.producto_unidad}}            
               </template>
             </el-table-column>
 
@@ -123,7 +147,7 @@
               </template>
             </el-table-column> -->
 
-            <el-table-column prop="png" label="PNG" align="center">
+            <el-table-column prop="png" label="PNG ($)" align="center">
               <template #default="props">
                 <el-input-number
                   v-model="props.row.precio_png"
@@ -135,7 +159,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="iva" label="IVA" align="center"> 
+            <el-table-column prop="iva" label="IVA (%)" align="center"> 
               <template #default="props">
                 <!-- <el-input-number
                   v-model="props.row.iva"
@@ -163,7 +187,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="montoIva" label="Total IVA" align="center"> 
+            <el-table-column prop="montoIva" label="Total IVA ($)" align="center"> 
               <template #default="props">
                 <el-input-number
                   v-model="props.row.total_iva"
@@ -174,7 +198,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pu" label="PU" align="center"> 
+            <el-table-column prop="pu" label="PU ($)" align="center"> 
               <template #default="props">
                 <el-input-number
                   v-model="props.row.precio_pu"
@@ -185,7 +209,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pp" label="PP" align="center"> 
+            <el-table-column prop="pp" label="PP ($)" align="center"> 
               <template #default="props">
                 <el-input-number
                   v-model="props.row.precio_pp"
@@ -283,6 +307,7 @@
                 style="width: 100%"
                 :disabled="disabledEmiteFactura"
                 @change="calcularTotalHomegeno()"
+                :max="0"
               ></el-input-number>
             </el-col>
           </el-row>
@@ -321,7 +346,7 @@
           </el-row>
 
           <el-row :gutter="10" style="margin-top: 10px">
-            <el-col :span="3"></el-col>
+            <el-col :span="3">Referencias</el-col>
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
             <el-col :span="3"></el-col>
@@ -334,7 +359,7 @@
                 content="Bonificaciones por conceptos comerciales, como por ejemplo: Bonificación por gran volumen de compra, descuentos por conceptos financieros, etc"
                 placement="left-end"
               >
-                <span style="text-align: center">Desc. y bonif.</span>
+                <span style="text-align: center">Desc. y bonif. (en nros. neg.)</span>
               </el-tooltip>
               <el-input-number
                 :controls="false"
@@ -342,14 +367,15 @@
                 style="width: 100%"
                 @change="calcularTotalHomegeno()"
                 :disabled="deshabilitarPorFecha"
+                :max="0"
               ></el-input-number>
             </el-col>
           </el-row>
 
           <el-row :gutter="10" style="margin-top: 10px">
-            <el-col :span="3"></el-col>
-            <el-col :span="3"></el-col>
-            <el-col :span="3"></el-col>
+            <el-col :span="3"><b>PNG:</b> Precio neto gravado</el-col>
+            <el-col :span="3"><b>PU:</b> Precio unitario</el-col>
+            <el-col :span="3"><b>PP:</b> Precio parcial</el-col>
             <el-col :span="3"></el-col>
             <el-col :span="6"></el-col>
             <el-col :span="3"></el-col>
@@ -654,6 +680,7 @@
             proveedor_mail: this.datosProveedor.proveedor_mail,
             producto_id: ele.productoPresupuestacion.producto_id,
             producto_nombre: ele.productoPresupuestacion.producto_nombre,
+            producto_unidad: ele.producto.producto_unidad,
             producto_cantidad_a_comprar: ele.productoPresupuestacion.producto_cantidad_a_comprar,
             precio_png: ele.productoPresupuestacion.precio_png,
             factor: 1,
