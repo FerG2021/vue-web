@@ -196,7 +196,8 @@
                         width="90px"
                       >
                         <template #default="scope" >
-                          {{parseFloat(item.productos[scope.$index].totaliva)}}
+                          $ {{ new Intl.NumberFormat('de-DE').format(parseFloat(item.productos[scope.$index].totaliva)) }}
+                          <!-- {{parseFloat(item.productos[scope.$index].totaliva)}} -->
                         </template>
                       </el-table-column>
 
@@ -208,7 +209,8 @@
                         width="140px"
                       >
                         <template #default="scope" >
-                          {{parseFloat(item.productos[scope.$index].precio_pu)}}
+                          $ {{new Intl.NumberFormat('de-DE').format(parseFloat(item.productos[scope.$index].precio_pu))}}
+                          <!-- {{parseFloat(item.productos[scope.$index].precio_pu)}} -->
                         </template>
                       </el-table-column>
                       
@@ -226,7 +228,7 @@
                         <template #default="scope" >
                           <el-checkbox 
                             v-model="item.productos[scope.$index].productoSeleccionado" 
-                            :label="parseFloat(item.productos[scope.$index].precio_pp)" 
+                            :label="'$' + new Intl.NumberFormat('de-DE').format(parseFloat(item.productos[scope.$index].precio_pp))" 
                             text-color="#ffff"
                             @change="cambiarSeleccionProductoSegmentado(scope, item.productos[scope.$index])"
                             style="color: black"
@@ -336,7 +338,8 @@
                     </el-table-column>
                     <el-table-column width="100px" label="Total" align="center">
                       <!-- {{item.proveedor_monto_totalPP}} -->
-                      {{item.proveedor_monto_total_homogeneo}}
+                      <!-- {{item.proveedor_monto_total_homogeneo}} -->
+                      $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
                     </el-table-column>
                     <!-- </template> -->
                   </el-table-column>
@@ -353,14 +356,17 @@
                   <!-- <el-table-column label=""></el-table-column> -->
                   <el-table-column label="Compra seg." align="center" width="200px">
                     <template #default="props">
-                      {{props.row.totalHomogeneo}}
+                      {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }}
+                      <!-- {{props.row.totalHomogeneo}} -->
                     </template>
                   </el-table-column>
                   <el-table-column label="" width="100px"></el-table-column>
                   
                   <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="99px">
                     <!-- <template #default="scope"> -->
-                      {{item.totalPP}}
+                      <span v-if="!isNaN(item.totalPP)">
+                        $ {{ new Intl.NumberFormat('de-DE').format(item.totalPP)}}
+                      </span>
                     <!-- </template> -->
                   </el-table-column>
 
