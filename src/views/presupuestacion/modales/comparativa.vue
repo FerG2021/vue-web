@@ -260,7 +260,7 @@
                       {{item.proveedor_forma_de_pago_nombre}}
                     </el-table-column> -->
 
-                    <el-table-column width="190px" label="F.P." align="center">
+                    <el-table-column width="180px" label="F.P." align="center">
                       <!-- {{item.proveedor_forma_de_pago_nombre}} -->
                       <el-select v-model="item.proveedor_forma_de_pago_nombre" class="m-2" placeholder="Select" size="large">
                         <el-option
@@ -299,7 +299,7 @@
                     </el-table-column>
 
 
-                    <el-table-column width="100px" label="Fact. A" align="center">
+                    <el-table-column width="70px" label="Fact. A" align="center">
                       <span v-if="item.proveedor_factura_A == 0">
                         No
                       </span>
@@ -309,7 +309,7 @@
                       </span>
                       <!-- {{item.proveedor_factura_A}} -->
                     </el-table-column>
-                    <el-table-column width="100px" label="$ Fact. A" align="center">
+                    <el-table-column width="110px" label="$ Fact. A" align="center">
                       <el-input-number
                         :controls="false"
                         style="width: 100%"
@@ -336,7 +336,7 @@
                       ></el-input-number>
                       <!-- {{item.proveedor_monto_descuentos_bonificaciones}} -->
                     </el-table-column>
-                    <el-table-column width="100px" label="Total" align="center">
+                    <el-table-column width="130px" label="Total" align="center">
                       <!-- {{item.proveedor_monto_totalPP}} -->
                       <!-- {{item.proveedor_monto_total_homogeneo}} -->
                       $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
@@ -428,6 +428,8 @@ export default {
       arrayCondicionesPago: [],
       arrayFormaPago: [],
 
+      arrayTotalHomegeneoProveedores: [],
+
       arrayOpcionesEntregaFacturaA: [
         {
           label: 'Si',
@@ -463,6 +465,7 @@ export default {
       this.infoProveedores = []
       this.condicionesPago = []
       this.valorScroll = 0
+      this.arrayTotalHomegeneoProveedores = []
       
 
 
