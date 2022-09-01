@@ -1,7 +1,7 @@
 <template>
   <aside :class="`${is_expanded && 'is-expanded' }`">
     <div class="logo">
-      <img src="../assets/modular_logo.jpg" alt="Vue">
+      <img src="../assets/modular_logo.jpg" alt="Vue" >
     </div>
 
     <!-- items del menu -->
