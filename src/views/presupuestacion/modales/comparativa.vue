@@ -232,6 +232,7 @@
                             text-color="#ffff"
                             @change="cambiarSeleccionProductoSegmentado(scope, item.productos[scope.$index])"
                             style="color: black"
+                            :disabled="item.productos[scope.$index].precio_pp == 0"
                           />
                         </template>
                         <!-- :label="parseFloat(item.productos[scope.$index].precio_pp)"  -->
@@ -339,7 +340,23 @@
                     <el-table-column width="130px" label="Total" align="center">
                       <!-- {{item.proveedor_monto_totalPP}} -->
                       <!-- {{item.proveedor_monto_total_homogeneo}} -->
-                      $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
+                      <!-- $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }} -->
+
+                      <span v-if="item.menor_monto_total == 0">
+                        $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
+                      </span>
+
+                      <span v-if="item.menor_monto_total == 1">
+                        <!-- $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }} -->
+                        <el-tag
+                          type="success"
+                          class="mx-1"
+                          effect="dark"
+                        >
+                          $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
+                        </el-tag>
+                      </span>
+
                     </el-table-column>
                     <!-- </template> -->
                   </el-table-column>
@@ -356,7 +373,15 @@
                   <!-- <el-table-column label=""></el-table-column> -->
                   <el-table-column label="Compra seg." align="center" width="200px">
                     <template #default="props">
-                      {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }}
+                      <!-- $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }} -->
+
+                      <el-tag
+                        type="success"
+                        class="mx-1"
+                        effect="dark"
+                      >
+                        $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }}
+                      </el-tag>
                       <!-- {{props.row.totalHomogeneo}} -->
                     </template>
                   </el-table-column>
@@ -364,8 +389,28 @@
                   
                   <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="99px">
                     <!-- <template #default="scope"> -->
-                      <span v-if="!isNaN(item.totalPP)">
+                      <span v-if="!isNaN(item.totalPP)" >
                         $ {{ new Intl.NumberFormat('de-DE').format(item.totalPP)}}
+                      </span>
+
+                      <!-- <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
+                        $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
+                      </span> -->
+
+                      <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
+                        <el-tag
+                          type="success"
+                          class="mx-1"
+                          effect="dark"
+                        >
+                          $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
+                        </el-tag>
+                      </span>
+
+                      
+
+                      <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 0" style="color: black">
+                        $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
                       </span>
                     <!-- </template> -->
                   </el-table-column>
@@ -377,6 +422,22 @@
         </el-scrollbar>
 
         <!-- {{arrayPrecioPPProveedores}} -->
+
+
+        <!-- boton para generar ordenes de compra -->
+        <div style="display: flex">
+          <div style="margin-left: auto">
+            <el-button
+              type="primary"
+              style="margin-top: 10px"
+              @click="generarOrdenesDeCompra()"
+            >
+              Generar órdenes de compra
+            </el-button>
+          </div>
+        </div>       
+
+
       </div>
     </modal>
   </div>
@@ -427,9 +488,8 @@ export default {
       valorScroll: 0,
       arrayCondicionesPago: [],
       arrayFormaPago: [],
-
       arrayTotalHomegeneoProveedores: [],
-
+      arrayOrdenCompra: [],
       arrayOpcionesEntregaFacturaA: [
         {
           label: 'Si',
@@ -466,6 +526,7 @@ export default {
       this.condicionesPago = []
       this.valorScroll = 0
       this.arrayTotalHomegeneoProveedores = []
+      this.arrayOrdenCompra = []
       
 
 
@@ -596,6 +657,22 @@ export default {
           console.log("this.longitudProveedores");
           console.log(this.longitudProveedores);
 
+          let productosConPP0 = []
+
+          // formo un array con cada uno de los productos que tienen precio pp igual a 0
+          this.datosAPI.forEach((elemento) => {
+            elemento.productos.forEach((ele) => {
+              if (ele.precio_pp == 0) {
+                productosConPP0.push(ele)
+              }
+            })
+          })
+
+          console.log("productosConPP0");
+          console.log(productosConPP0);
+
+
+
           this.datosAPI.forEach((elemento) => {
             let fila1 = {}
             this.arrayPrecioPPProveedores.push(fila1)
@@ -604,10 +681,19 @@ export default {
             this.arrayPrecioPPProveedores.push(fila1)
             this.arrayPrecioPPProveedores.push(fila1)
             this.arrayPrecioPPProveedores.push(fila1)
-            this.arrayPrecioPPProveedores.push(fila1)
+            // this.arrayPrecioPPProveedores.push(fila1)
 
-
-
+            let fila2 = {
+              presupuestacion_id: elemento.presupuestacion_id ,
+              presupuestacion_plan_id: elemento.presupuestacion_plan_id ,
+              proveedor_id: elemento.proveedor_id ,
+              proveedor_nombre: elemento.proveedor_nombre ,
+              proveedor_rubro_id: elemento.proveedor_rubro_id ,
+              titulo: "Total homogeneo",
+              booleanTotalHomogeneo: 1,
+              menorHomogeneo: 0,
+              totalHomogeneo: 0,
+            }
 
 
             let fila = {
@@ -617,10 +703,13 @@ export default {
               proveedor_nombre: elemento.proveedor_nombre ,
               proveedor_rubro_id: elemento.proveedor_rubro_id ,
               titulo: "Total x prov.",
+              booleanTotalHomogeneo: 0,
               totalPP: 0 ,
             }
 
+            this.arrayPrecioPPProveedores.push(fila2)
             this.arrayPrecioPPProveedores.push(fila)
+
           })
 
 
@@ -631,8 +720,9 @@ export default {
         });
 
       this.crearArraySoloProductos();
-      this.calcularTotalHomogeneo();
+      this.calcularCompraSegmentada();
       this.getDatosProveedores();
+      this.calcularTotalHomogeneo();
     },
 
     crearArraySoloProductos() {
@@ -694,6 +784,12 @@ export default {
     },
 
     marcarMenor(){
+      console.log("this.arrayProductos");
+      console.log(this.arrayProductos);
+
+      console.log("this.arraySoloProductos");
+      console.log(this.arraySoloProductos);
+
       let yaExisteElemento;
 
       this.arraySoloProductos.forEach((elemento) => {
@@ -702,8 +798,13 @@ export default {
         );
         // console.log("yaExisteElemento");
         // console.log(yaExisteElemento);
-
-        let min = yaExisteElemento[0].precio_pp
+        let min;
+        yaExisteElemento.forEach((elemento) => {
+          if (elemento.precio_pp > 0) {
+            min = elemento.precio_pp
+          }
+        })
+        // let min = yaExisteElemento[0].precio_pp
         let producto;
 
         // console.log("min");
@@ -714,7 +815,7 @@ export default {
           // console.log("ele");
           // console.log(ele);
 
-          if (ele.precio_pp <= min) {
+          if (ele.precio_pp <= min && ele.precio_pp > 0) {
             min = ele.precio_pp
             producto = ele
           }
@@ -730,11 +831,11 @@ export default {
           elemento.productos.forEach((ele1) => {
             // console.log("ele para datos API");
             // console.log(ele);
-            if (ele1.producto_id == producto.producto_id && ele1.proveedor_id == producto.proveedor_id) {
+            if (ele1.producto_id == producto.producto_id && ele1.proveedor_id == producto.proveedor_id ) {
               ele1.productoSeleccionado = true
             } 
 
-            if (ele1.producto_id == producto.producto_id && ele1.proveedor_id != producto.proveedor_id) {
+            if (ele1.producto_id == producto.producto_id && ele1.proveedor_id != producto.proveedor_id ) {
             ele1.productoSeleccionado = false
           }
           })
@@ -781,6 +882,8 @@ export default {
       this.actualizarPrecioTotal()
       this.marcarMenor()
       this.calcularPrecioPPProveedores()
+      this.calcularTotalHomogeneo()
+      this.calcularMenorMontoTotal()
     },
 
     actualizarPrecioTotal(){
@@ -848,6 +951,46 @@ export default {
       })
 
 
+
+      console.log("/././././././././././././");
+      console.log("this.arrayInfoProveedores");
+      console.log(this.arrayInfoProveedores);
+      console.log("/./././././././././././././");
+
+      this.calcularMenorMontoTotal()
+    },
+
+
+    calcularMenorMontoTotal(){
+      // primero limpio el campo y asigno un menor
+
+      let min = 0
+      let menorAux = 0
+
+
+      this.arrayInfoProveedores.forEach((elemento) => {
+        elemento.menor_monto_total = 0
+        menorAux = parseFloat(elemento.proveedor_monto_total_homogeneo)
+        if (menorAux > 0) {
+          min = menorAux
+        }
+      })
+
+      let menorTotal = 0
+      this.arrayInfoProveedores.forEach((elemento) => {
+        menorTotal = parseFloat(elemento.proveedor_monto_total_homogeneo)
+
+        if (menorTotal <= min && menorTotal > 0) {
+          elemento.menor_monto_total = 1 
+        } else {
+          elemento.menor_monto_total = 0 
+        }
+      })    
+      
+      console.log("/././././././././././././");
+      console.log("this.arrayInfoProveedores");
+      console.log(this.arrayInfoProveedores);
+      console.log("/./././././././././././././");
     },
 
     cambiarCantidadFactor(item, scope){
@@ -868,6 +1011,8 @@ export default {
 
       this.actualizarPrecioTotal()
       this.marcarMenor()
+      this.calcularTotalHomogeneo()
+      this.calcularMenorMontoTotal()
     },
 
     cambiarPNG(item, scope){
@@ -887,6 +1032,8 @@ export default {
 
       this.actualizarPrecioTotal()
       this.marcarMenor()
+      this.calcularTotalHomogeneo()
+      this.calcularMenorMontoTotal()
     },
 
     agregar(scope, item, precio, index) {
@@ -999,10 +1146,10 @@ export default {
         }
       })
 
-      this.calcularTotalHomogeneo()
+      this.calcularCompraSegmentada()
     },
 
-    calcularTotalHomogeneo(){
+    calcularCompraSegmentada(){
       this.totalHomogeneo = 0
 
       this.datosAPI.forEach((elemento) => {
@@ -1031,7 +1178,9 @@ export default {
     },
 
     calcularPrecioPPProveedores(){
+      let arrayProductosTotalPP0 = []
       let precioPPParcial = 0
+      let b = 0
       this.datosAPI.forEach((elemento) => {
         elemento.productos.forEach((ele) => {
           if (ele.productoSeleccionado == true) {
@@ -1044,10 +1193,26 @@ export default {
 
             precioPPParcial = precioPPParcialAux + ele.precio_pp
           }
+
+          // busco los productos que tiene pp 0 para no sumarlos
+          // b = 0
+          // if (ele.precio_pp == 0) {
+          //   arrayProductosTotalPP0.forEach((ele0) => {
+          //     if (ele.producto_id == ele0.producto_id) {
+          //       b = 1
+          //     }
+          //   })
+
+          //   if (b == 0) {
+          //     arrayProductosTotalPP0.push(ele)
+          //   }
+          // }
         })
 
+        
+
         this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
-          if (elementoArrayProv.proveedor_id == elemento.proveedor_id) {
+          if (elementoArrayProv.proveedor_id == elemento.proveedor_id && elementoArrayProv.booleanTotalHomogeneo == 0) {
             console.log("*************");
             console.log("precioPPParcial");
             console.log(precioPPParcial);
@@ -1059,6 +1224,125 @@ export default {
 
         precioPPParcial = 0
       })
+
+      // console.log("arrayProductosTotalPP0");
+      // console.log(arrayProductosTotalPP0);
+
+      // this.datosAPI.forEach((elemento) => {
+      //   this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
+      //     if (elementoArrayProv.proveedor_id == elemento.proveedor_id && elementoArrayProv.booleanTotalHomogeneo == 1) {
+      //       elemento.productos.forEach((eleProductos) => {
+      //         arrayProductosTotalPP0.forEach((eleProductos0) => {
+      //           if (eleProductos.producto_id != eleProductos0.producto_id) {
+      //             elementoArrayProv.totalHomogeneo = elementoArrayProv.totalHomogeneo + parseFloat(eleProductos.precio_pp) 
+      //           }
+      //         })
+      //       })
+      //     }
+      //   })
+      // })
+
+    },
+
+    calcularTotalHomogeneo(){
+      let arrayProductosTotalPP0 = []
+      let precioPPParcial = 0
+      let b = 0
+      this.datosAPI.forEach((elemento) => {
+        elemento.productos.forEach((ele) => {
+          // if (ele.productoSeleccionado == true) {
+          //   console.log("////////");
+          //   console.log("ele.precio_pp");
+          //   console.log(ele.precio_pp);
+          //   console.log("precioPPParcial");
+          //   console.log(precioPPParcial);
+          //   let precioPPParcialAux = parseFloat(precioPPParcial)
+
+          //   precioPPParcial = precioPPParcialAux + ele.precio_pp
+          // }
+
+          // busco los productos que tiene pp 0 para no sumarlos
+          b = 0
+          if (ele.precio_pp == 0) {
+            arrayProductosTotalPP0.forEach((ele0) => {
+              if (ele.producto_id == ele0.producto_id) {
+                b = 1
+              }
+            })
+
+            if (b == 0) {
+              arrayProductosTotalPP0.push(ele)
+            }
+          }
+        })
+        precioPPParcial = 0
+      })
+
+      console.log("arrayProductosTotalPP0");
+      console.log(arrayProductosTotalPP0);
+      // limpio el campo totalHomogeneo
+      this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
+        if (elementoArrayProv.totalHomogeneo) {
+          elementoArrayProv.totalHomogeneo = 0
+        }
+      })
+
+      this.datosAPI.forEach((elemento) => {
+        this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
+          if (elementoArrayProv.proveedor_id == elemento.proveedor_id && elementoArrayProv.booleanTotalHomogeneo == 1) {
+            elemento.productos.forEach((eleProductos) => {
+              arrayProductosTotalPP0.forEach((eleProductos0) => {
+                if (eleProductos.producto_id != eleProductos0.producto_id) {
+                  elementoArrayProv.totalHomogeneo = elementoArrayProv.totalHomogeneo + parseFloat(eleProductos.precio_pp) 
+                }
+              })
+            })
+          }
+        })
+      })
+
+      let min = 0;
+
+      this.arrayPrecioPPProveedores.forEach((elemento) => {
+          
+        if (elemento.totalHomogeneo) {
+          console.log("elemento");
+          console.log(elemento);
+          if (elemento.totalHomogeneo > 0) {
+            min = elemento.totalHomogeneo
+          }
+        }
+      })
+
+      let proveedor_id = null;
+
+      this.arrayPrecioPPProveedores.forEach((ele) => {
+        if (ele.totalHomogeneo) {
+          if (ele.totalHomogeneo <= min && ele.totalHomogeneo > 0) {
+            min = ele.totalHomogeneo
+            proveedor_id = ele.proveedor_id
+            ele.menorHomogeneo = 1
+          } else {
+            ele.menorHomogeneo = 0
+          }
+        }
+      })
+
+      this.arrayPrecioPPProveedores.forEach((ele) => {
+        if (ele.totalHomogeneo) {
+          if (ele.proveedor_id != proveedor_id) {
+            ele.menorHomogeneo = 0
+          }
+        }
+      })
+
+      console.log("min");
+      console.log(min);
+
+      console.log("this.arrayPrecioPPProveedores");
+      console.log(this.arrayPrecioPPProveedores);
+
+
     },
 
     // traigo los datos de cada uno de los proveedores para mostrar la informacion de la factura, la forma de pago, etc
@@ -1111,6 +1395,7 @@ export default {
           proveedor_monto_flete: elemento.proveedor_monto_flete,
           proveedor_monto_totalPP: elemento.proveedor_monto_totalPP,
           proveedor_monto_total_homogeneo: elemento.proveedor_monto_total_homogeneo,
+          menor_monto_total: 0,
           proveedor_nombre: elemento.proveedor_nombre,
           proveedor_rubro_id: elemento.proveedor_rubro_id,
           proveedor_notas: null,
@@ -1128,6 +1413,8 @@ export default {
 
       console.log("this.arrayInfoProveedores");
       console.log(this.arrayInfoProveedores);
+      
+      this.calcularMenorMontoTotal()
 
       this.loadingTabla = false;
     },
@@ -1183,6 +1470,11 @@ export default {
       console.log("productos");
       console.log(producto);
 
+      console.log("this.datosAPI");
+      console.log(this.datosAPI);
+
+      
+
       // producto.
 
       this.datosAPI.forEach((elemento, index) => {
@@ -1198,7 +1490,7 @@ export default {
         })
       })
 
-      this.calcularTotalHomogeneo()
+      this.calcularCompraSegmentada()
       // this.marcarMenor()
       
     },
@@ -1236,6 +1528,55 @@ export default {
           elementoProv.proveedor_notas = elemento.notas
         }
       })    
+    },
+
+
+    generarOrdenesDeCompra(){
+      this.arrayOrdenCompra = []
+      console.log("orden de compra generada");
+      console.log("this.datosAPI");
+      console.log(this.datosAPI);
+
+      this.datosAPI.forEach((elemento) => {
+        let arrayProductosProveedor = []
+        elemento.productos.forEach((ele) => {
+          if (ele.productoSeleccionado == true) {
+            arrayProductosProveedor.push(ele)
+          }
+        })
+
+        let montoTotalOrdenCompra = 0
+        arrayProductosProveedor.forEach((ele1) => {
+          montoTotalOrdenCompra = montoTotalOrdenCompra +  parseFloat(ele1.precio_pp)
+        })
+
+
+        if (arrayProductosProveedor.length > 0) {
+          let fila = {
+            presupuestacion_id: elemento.presupuestacion_id,
+            presupuestacion_plan_id: elemento.presupuestacion_plan_id,
+            presupuestacion_proveedor_id: elemento.presupuestacion_proveedor_id,
+            proveedorSeleccionado: elemento.proveedorSeleccionado,
+            proveedor_factura_A: elemento.proveedor_factura_A,
+            proveedor_forma_de_pago: elemento.proveedor_forma_de_pago,
+            proveedor_id: elemento.proveedor_id,
+            proveedor_mail: elemento.proveedor_mail,
+            proveedor_monto_descuentos_bonificaciones: elemento.proveedor_monto_descuentos_bonificaciones,
+            proveedor_monto_flete: elemento.proveedor_monto_flete,
+            proveedor_monto_totalPP: elemento.proveedor_monto_totalPP,
+            proveedor_monto_total_homogeneo: elemento.proveedor_monto_total_homogeneo,
+            proveedor_nombre: elemento.proveedor_nombre,
+            proveedor_rubro_id: elemento.proveedor_rubro_id,
+            productos: arrayProductosProveedor,
+            montoTotalOrdenCompra: montoTotalOrdenCompra,
+          }
+
+          this.arrayOrdenCompra.push(fila)
+        }
+      })
+
+      console.log("this.arrayOrdenCompra");
+      console.log(this.arrayOrdenCompra);
     },
 
     scroll(scrollLeft, scrollTop){
