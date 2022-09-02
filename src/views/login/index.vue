@@ -4,9 +4,9 @@
       <template #header>
         <div style="font-size: 40px; text-align: center">
           <!-- Proyecto prueba -->
-          <!-- Bienvenido a ModulAr -->
+          Bienvenido a ModulAr
           <!-- Proyecto prueba -->
-          Nutrimarg balanceados - Quimilí
+          <!-- Nutrimarg balanceados - Quimilí -->
         </div>
       </template>
       <div class="contenedor-login" v-loading="loadingLogin">

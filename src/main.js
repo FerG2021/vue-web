@@ -24,9 +24,12 @@ import VueAxios from 'vue-axios'
 // usado para login
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-axios.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest'
-};
+// axios.defaults.headers.common = {
+//   'X-Requested-With': 'XMLHttpRequest',
+//   'X-CSRF-TOKEN': window.csrf_token
+//   // 'X-CSRF-TOKEN': ('meta[name="csrf-token"]').attr('content')
+// };
+
 console.log(import.meta.env.VITE_API_URL);
 
 
