@@ -3,14 +3,10 @@
     <el-card class="card-login">
       <template #header>
         <div style="font-size: 40px; text-align: center">
-<<<<<<< HEAD
-          Bienvenido a ModulAr
           <!-- Proyecto prueba -->
-=======
           <!-- Bienvenido a ModulAr -->
           <!-- Proyecto prueba -->
           Nutrimarg balanceados - Quimilí
->>>>>>> 0702c3e3a596b188c0db8cf8baf4d25ab6334d0b
         </div>
       </template>
       <div class="contenedor-login" v-loading="loadingLogin">
