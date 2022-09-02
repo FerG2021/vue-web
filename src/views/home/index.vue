@@ -108,6 +108,8 @@
     transform: translateY(-2px);
     box-shadow: 0px 2px 5px #0000002a !important;
     cursor: pointer;
+    background-color: #cccccc
+;
   }
 
   .iconoTarjeta{

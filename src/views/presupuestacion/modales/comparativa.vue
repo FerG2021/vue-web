@@ -340,7 +340,23 @@
                     <el-table-column width="130px" label="Total" align="center">
                       <!-- {{item.proveedor_monto_totalPP}} -->
                       <!-- {{item.proveedor_monto_total_homogeneo}} -->
-                      $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
+                      <!-- $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }} -->
+
+                      <span v-if="item.menor_monto_total == 0">
+                        $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
+                      </span>
+
+                      <span v-if="item.menor_monto_total == 1">
+                        <!-- $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }} -->
+                        <el-tag
+                          type="success"
+                          class="mx-1"
+                          effect="dark"
+                        >
+                          $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
+                        </el-tag>
+                      </span>
+
                     </el-table-column>
                     <!-- </template> -->
                   </el-table-column>
@@ -357,7 +373,15 @@
                   <!-- <el-table-column label=""></el-table-column> -->
                   <el-table-column label="Compra seg." align="center" width="200px">
                     <template #default="props">
-                      $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }}
+                      <!-- $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }} -->
+
+                      <el-tag
+                        type="success"
+                        class="mx-1"
+                        effect="dark"
+                      >
+                        $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }}
+                      </el-tag>
                       <!-- {{props.row.totalHomogeneo}} -->
                     </template>
                   </el-table-column>
@@ -369,9 +393,21 @@
                         $ {{ new Intl.NumberFormat('de-DE').format(item.totalPP)}}
                       </span>
 
-                      <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
+                      <!-- <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
                         $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
+                      </span> -->
+
+                      <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
+                        <el-tag
+                          type="success"
+                          class="mx-1"
+                          effect="dark"
+                        >
+                          $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
+                        </el-tag>
                       </span>
+
+                      
 
                       <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 0" style="color: black">
                         $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
@@ -386,6 +422,22 @@
         </el-scrollbar>
 
         <!-- {{arrayPrecioPPProveedores}} -->
+
+
+        <!-- boton para generar ordenes de compra -->
+        <div style="display: flex">
+          <div style="margin-left: auto">
+            <el-button
+              type="primary"
+              style="margin-top: 10px"
+              @click="generarOrdenesDeCompra()"
+            >
+              Generar órdenes de compra
+            </el-button>
+          </div>
+        </div>       
+
+
       </div>
     </modal>
   </div>
@@ -436,9 +488,8 @@ export default {
       valorScroll: 0,
       arrayCondicionesPago: [],
       arrayFormaPago: [],
-
       arrayTotalHomegeneoProveedores: [],
-
+      arrayOrdenCompra: [],
       arrayOpcionesEntregaFacturaA: [
         {
           label: 'Si',
@@ -475,6 +526,7 @@ export default {
       this.condicionesPago = []
       this.valorScroll = 0
       this.arrayTotalHomegeneoProveedores = []
+      this.arrayOrdenCompra = []
       
 
 
@@ -831,6 +883,7 @@ export default {
       this.marcarMenor()
       this.calcularPrecioPPProveedores()
       this.calcularTotalHomogeneo()
+      this.calcularMenorMontoTotal()
     },
 
     actualizarPrecioTotal(){
@@ -898,6 +951,46 @@ export default {
       })
 
 
+
+      console.log("/././././././././././././");
+      console.log("this.arrayInfoProveedores");
+      console.log(this.arrayInfoProveedores);
+      console.log("/./././././././././././././");
+
+      this.calcularMenorMontoTotal()
+    },
+
+
+    calcularMenorMontoTotal(){
+      // primero limpio el campo y asigno un menor
+
+      let min = 0
+      let menorAux = 0
+
+
+      this.arrayInfoProveedores.forEach((elemento) => {
+        elemento.menor_monto_total = 0
+        menorAux = parseFloat(elemento.proveedor_monto_total_homogeneo)
+        if (menorAux > 0) {
+          min = menorAux
+        }
+      })
+
+      let menorTotal = 0
+      this.arrayInfoProveedores.forEach((elemento) => {
+        menorTotal = parseFloat(elemento.proveedor_monto_total_homogeneo)
+
+        if (menorTotal <= min && menorTotal > 0) {
+          elemento.menor_monto_total = 1 
+        } else {
+          elemento.menor_monto_total = 0 
+        }
+      })    
+      
+      console.log("/././././././././././././");
+      console.log("this.arrayInfoProveedores");
+      console.log(this.arrayInfoProveedores);
+      console.log("/./././././././././././././");
     },
 
     cambiarCantidadFactor(item, scope){
@@ -918,6 +1011,8 @@ export default {
 
       this.actualizarPrecioTotal()
       this.marcarMenor()
+      this.calcularTotalHomogeneo()
+      this.calcularMenorMontoTotal()
     },
 
     cambiarPNG(item, scope){
@@ -937,6 +1032,8 @@ export default {
 
       this.actualizarPrecioTotal()
       this.marcarMenor()
+      this.calcularTotalHomogeneo()
+      this.calcularMenorMontoTotal()
     },
 
     agregar(scope, item, precio, index) {
@@ -1298,6 +1395,7 @@ export default {
           proveedor_monto_flete: elemento.proveedor_monto_flete,
           proveedor_monto_totalPP: elemento.proveedor_monto_totalPP,
           proveedor_monto_total_homogeneo: elemento.proveedor_monto_total_homogeneo,
+          menor_monto_total: 0,
           proveedor_nombre: elemento.proveedor_nombre,
           proveedor_rubro_id: elemento.proveedor_rubro_id,
           proveedor_notas: null,
@@ -1315,6 +1413,8 @@ export default {
 
       console.log("this.arrayInfoProveedores");
       console.log(this.arrayInfoProveedores);
+      
+      this.calcularMenorMontoTotal()
 
       this.loadingTabla = false;
     },
@@ -1428,6 +1528,55 @@ export default {
           elementoProv.proveedor_notas = elemento.notas
         }
       })    
+    },
+
+
+    generarOrdenesDeCompra(){
+      this.arrayOrdenCompra = []
+      console.log("orden de compra generada");
+      console.log("this.datosAPI");
+      console.log(this.datosAPI);
+
+      this.datosAPI.forEach((elemento) => {
+        let arrayProductosProveedor = []
+        elemento.productos.forEach((ele) => {
+          if (ele.productoSeleccionado == true) {
+            arrayProductosProveedor.push(ele)
+          }
+        })
+
+        let montoTotalOrdenCompra = 0
+        arrayProductosProveedor.forEach((ele1) => {
+          montoTotalOrdenCompra = montoTotalOrdenCompra +  parseFloat(ele1.precio_pp)
+        })
+
+
+        if (arrayProductosProveedor.length > 0) {
+          let fila = {
+            presupuestacion_id: elemento.presupuestacion_id,
+            presupuestacion_plan_id: elemento.presupuestacion_plan_id,
+            presupuestacion_proveedor_id: elemento.presupuestacion_proveedor_id,
+            proveedorSeleccionado: elemento.proveedorSeleccionado,
+            proveedor_factura_A: elemento.proveedor_factura_A,
+            proveedor_forma_de_pago: elemento.proveedor_forma_de_pago,
+            proveedor_id: elemento.proveedor_id,
+            proveedor_mail: elemento.proveedor_mail,
+            proveedor_monto_descuentos_bonificaciones: elemento.proveedor_monto_descuentos_bonificaciones,
+            proveedor_monto_flete: elemento.proveedor_monto_flete,
+            proveedor_monto_totalPP: elemento.proveedor_monto_totalPP,
+            proveedor_monto_total_homogeneo: elemento.proveedor_monto_total_homogeneo,
+            proveedor_nombre: elemento.proveedor_nombre,
+            proveedor_rubro_id: elemento.proveedor_rubro_id,
+            productos: arrayProductosProveedor,
+            montoTotalOrdenCompra: montoTotalOrdenCompra,
+          }
+
+          this.arrayOrdenCompra.push(fila)
+        }
+      })
+
+      console.log("this.arrayOrdenCompra");
+      console.log(this.arrayOrdenCompra);
     },
 
     scroll(scrollLeft, scrollTop){
