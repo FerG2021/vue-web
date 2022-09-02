@@ -3,8 +3,8 @@
     <el-card class="card-login">
       <template #header>
         <div style="font-size: 40px; text-align: center">
-          <!-- Bienvenido a ModulAr -->
-          Proyecto prueba
+          Bienvenido a ModulAr
+          <!-- Proyecto prueba -->
         </div>
       </template>
       <div class="contenedor-login">
