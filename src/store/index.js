@@ -6,7 +6,7 @@ import { NULL } from 'sass'
 
 // usado para login
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = "http://localhost:8000"
+// axios.defaults.baseURL = "http://localhost:8000"
 export default createStore({
   state: {
     user: null,
@@ -24,6 +24,9 @@ export default createStore({
   
   actions: {
     async login({ dispatch },credentials){
+      console.log("credentials");
+      console.log(credentials);
+
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/login", credentials);
       return dispatch("getUser");

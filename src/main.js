@@ -36,7 +36,7 @@ console.log(import.meta.env.VITE_API_URL);
 const variableGlobal = {
   data() {
     return {
-      base_url: 'http://localhost:8000/api'
+      // base_url: 'http://localhost:8000/api'
     }
   },
 }

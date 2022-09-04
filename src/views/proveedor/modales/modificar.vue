@@ -70,7 +70,7 @@
   export default {
     data() {
       return {
-        url: 'http://localhost:8000/api/articulo/',
+        // url: 'http://localhost:8000/api/articulo/',
         form:{
           nombre: null,
           precio: null,
