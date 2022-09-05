@@ -1567,16 +1567,37 @@ export default {
             proveedor_monto_total_homogeneo: elemento.proveedor_monto_total_homogeneo,
             proveedor_nombre: elemento.proveedor_nombre,
             proveedor_rubro_id: elemento.proveedor_rubro_id,
-            productos: arrayProductosProveedor,
-            montoTotalOrdenCompra: montoTotalOrdenCompra,
+            productos: JSON.stringify(arrayProductosProveedor),            montoTotalOrdenCompra: montoTotalOrdenCompra,
           }
 
           this.arrayOrdenCompra.push(fila)
         }
       })
 
-      console.log("this.arrayOrdenCompra");
-      console.log(this.arrayOrdenCompra);
+      this.postOrdenesDeCompra(this.arrayOrdenCompra)
+      
+      
+    },
+
+
+    async postOrdenesDeCompra(arrayOrdenCompra){
+      console.log("arrayOrdenCompra");
+      console.log(arrayOrdenCompra);
+
+      let params = {
+        arrayOrdenesCompra: JSON.stringify(arrayOrdenCompra)
+      }
+
+      await this.axios.post("/api/ordencompra/crear", params)
+        .then(response =>{
+          console.log("response");
+          console.log(response);
+          ElMessage({
+            type: 'success',
+            message: '¡Órdenes de compra generadas con éxito!',
+          })
+          this.cerrar();
+        })
     },
 
     scroll(scrollLeft, scrollTop){

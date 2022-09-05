@@ -58,7 +58,7 @@
       </div>
 
       <!-- Borrador -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/borrador" v-if="is_expanded">
           <span class="material-icons">assignment_late</span>
           <span class="text">Borrador</span>
@@ -78,8 +78,29 @@
         </el-tooltip>
       </div>
 
+      <!-- Ordenes de compra -->
+      <div v-if="tipoUsuario == 1">
+        <router-link class="button" to="/ordencompra" v-if="is_expanded">
+          <span class="material-icons">receipt</span>
+          <span class="text">Órdenes de compra</span>
+        </router-link>
+
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="Órdenes de compra"
+          placement="right-start"
+          v-if="!is_expanded"
+        >
+          <router-link class="button" to="/ordencompra" v-if="!is_expanded || is_expanded">
+            <span class="material-icons">receipt</span>
+            <span class="text">Órdenes de compra</span>
+          </router-link>
+        </el-tooltip>
+      </div>
+
       <!-- Carga proveedores propio -->
-      <div>
+      <div v-if="tipoUsuario == 2">
         <router-link class="button" to="/cargaproveedores" v-if="is_expanded">
           <span class="material-icons">add_business</span>
           <span class="text">Carga proveedores</span>
@@ -100,7 +121,7 @@
       </div>
 
       <!-- Planes -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/plan" v-if="is_expanded">
           <span class="material-icons">note_alt</span>
           <span class="text">Planes</span>
@@ -121,7 +142,7 @@
       </div>
 
       <!-- Producto -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/producto" v-if="is_expanded">
           <span class="material-icons">inventory_2</span>
           <span class="text">Productos</span>
@@ -142,7 +163,7 @@
       </div>
 
       <!-- Proveedor -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/proveedor" v-if="is_expanded">
           <span class="material-icons">local_shipping</span>
           <span class="text">Proveedores</span>
@@ -163,7 +184,7 @@
       </div>
 
       <!-- Rubro -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/rubro" v-if="is_expanded">
           <span class="material-icons">sell</span>
           <span class="text">Rubros</span>
@@ -241,7 +262,7 @@
       
 
       <!-- Usuarios -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/usuarios" v-if="is_expanded">
           <span class="material-icons">group</span>
           <span class="text">Usuarios</span>
@@ -289,7 +310,7 @@
     <div class="flex"></div>
 
     <!-- Mi cuenta -->
-    <div class="menu">
+    <div class="menu" v-if="tipoUsuario == 1">
       <div>
         <router-link class="button" to="/mi-cuenta" v-if="is_expanded">
           <span class="material-icons">account_circle</span>

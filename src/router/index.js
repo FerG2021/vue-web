@@ -20,6 +20,10 @@ const router = createRouter({
             component: () => import('../views/borrador/index.vue')
         },
         {
+            path: '/ordencompra',
+            component: () => import('../views/ordencompra/index.vue')
+        },
+        {
             path: '/plan',
             component: () => import('../views/plan/index.vue')
         },
