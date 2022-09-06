@@ -6,53 +6,78 @@
       <el-row :gutter="10" style="margin-top: 20px">
         <el-col :span="6">
           <el-card @click="$router.replace('/presupuestacion')" class="botonHome">
-            <h3 style="text-align: center">Provisión</h3>            
+            <h3 style="text-align: center">Provisiones</h3>            
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">assignment</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">assignment</span>
               </div>
             </div>
           </el-card>
         </el-col>
         <el-col :span="6">
           <el-card @click="$router.replace('/borrador')"  class="botonHome">
-            <h3 style="text-align: center">Borrador</h3>
+            <h3 style="text-align: center">Borradores</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">assignment_late</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">assignment_late</span>
               </div>
             </div>
           </el-card>
         </el-col>
+
+        <el-col :span="6">
+          <el-card @click="$router.replace('/ordencompra')"  class="botonHome">
+            <h3 style="text-align: center">Órdenes de compra</h3>
+            <div style="display:flex">
+              <div style="margin: auto">
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">receipt</span>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+
+        <el-col :span="6">
+          <el-card @click="$router.replace('/transferencia')"  class="botonHome">
+            <h3 style="text-align: center">Transferencias</h3>
+            <div style="display:flex">
+              <div style="margin: auto">
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">move_up</span>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+      </el-row>
+
+      <el-row :gutter="10" style="margin-top: 20px">
         <el-col :span="6">
           <el-card @click="$router.replace('/plan')" class="botonHome">
             <h3 style="text-align: center">Planes</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">note_alt</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">note_alt</span>
               </div>
             </div>
           </el-card>
         </el-col>
+        
         <el-col :span="6">
           <el-card @click="$router.replace('/producto')" class="botonHome">
             <h3 style="text-align: center">Productos</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">inventory_2</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">inventory_2</span>
               </div>
             </div>
           </el-card>
         </el-col>
-      </el-row>
 
-      <el-row :gutter="10" style="margin-top: 20px">
         <el-col :span="6">
           <el-card @click="$router.replace('/proveedor')" class="botonHome">
             <h3 style="text-align: center">Proveedores</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">local_shipping</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">local_shipping</span>
               </div>
             </div>
           </el-card>
@@ -62,17 +87,21 @@
             <h3 style="text-align: center">Rubros</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">sell</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">sell</span>
               </div>
             </div>
           </el-card>
         </el-col>
+        
+      </el-row>
+
+      <el-row :gutter="10" style="margin-top: 20px">
         <el-col :span="6">
           <el-card @click="$router.replace('/usuarios')" class="botonHome">
             <h3 style="text-align: center">Usuarios</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">group</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">group</span>
               </div>
             </div>
           </el-card>
@@ -82,12 +111,13 @@
             <h3 style="text-align: center">Mi cuenta</h3>
             <div style="display:flex">
               <div style="margin: auto">
-                <span class="material-icons iconoTarjeta" style="font-size: 150px">account_circle</span>
+                <span class="material-icons iconoTarjeta" style="font-size: 16vh">account_circle</span>
               </div>
             </div>
           </el-card>
         </el-col>
       </el-row>
+
 		</el-card>     
 	</main>
 </template>
@@ -113,7 +143,7 @@
   }
 
   .iconoTarjeta{
-    font-size: 150px; 
+    font-size: 16vh; 
     margin-top: 20px; 
     color: var(--dark-alt);
   }

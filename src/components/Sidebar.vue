@@ -99,6 +99,27 @@
         </el-tooltip>
       </div>
 
+      <!-- Transferencias -->
+      <div v-if="tipoUsuario == 1">
+        <router-link class="button" to="/transferencia" v-if="is_expanded">
+          <span class="material-icons">move_up</span>
+          <span class="text">Transferencias</span>
+        </router-link>
+
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="Transferencias"
+          placement="right-start"
+          v-if="!is_expanded"
+        >
+          <router-link class="button" to="/transferencia" v-if="!is_expanded || is_expanded">
+            <span class="material-icons">move_up</span>
+            <span class="text">Transferencias</span>
+          </router-link>
+        </el-tooltip>
+      </div>
+
       <!-- Carga proveedores propio -->
       <div v-if="tipoUsuario == 2">
         <router-link class="button" to="/cargaproveedores" v-if="is_expanded">

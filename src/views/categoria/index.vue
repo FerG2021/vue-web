@@ -132,7 +132,7 @@
       },
 
       async obtenerTodosSelect(){
-        await this.axios.get(this.base_url + "/categoria/obtenerTodosSelect")
+        await this.axios.get(this.base_url + "/api/categoria/obtenerTodosSelectt")
           .then(response => {
             this.categoriasSelect = response.data
             console.log(this.categoriasSelect)

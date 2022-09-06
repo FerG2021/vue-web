@@ -184,7 +184,7 @@
 
       async obtenerTodosArticulo(){
         this.loading = true
-        await this.axios.get(this.base_url + "/articulo/obtenerTodos")
+        await this.axios.get(this.base_url + "/api/articulo/obtenerTodos")
           .then(response =>{
             this.articulos = response.data;   
         })    

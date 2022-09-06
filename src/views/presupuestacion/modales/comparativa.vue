@@ -10,9 +10,7 @@
         <el-scrollbar>
           <div class="contenedorTablas">
             <!-- {{datosAPI}} -->
-                
             <!-- :summary-method="getSummaries" -->
-
             <div style="display: flex; margin-bottom: 10px">
               <div style="margin: auto">
                 <!-- <el-button
@@ -37,7 +35,7 @@
                 </el-button-group>  
               </div>
             </div>
-
+            <!-- {{arraySoloProductos}} -->
             <div 
               style="overflow: auto;" 
               id="midiv"
@@ -80,6 +78,17 @@
                     >
                       <template #default="props">
                         {{ props.row.producto_nombre }}
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column 
+                      prop="date" 
+                      label="U. M." 
+                      align="center"
+                      width="100px"
+                    >
+                      <template #default="props">
+                        {{ props.row.producto_unidad }}
                       </template>
                     </el-table-column>
 
@@ -253,8 +262,8 @@
                   :header-cell-style="headerStyleIntermedio"
                   id="tabla2"
                 >
-                  <el-table-column width="200px"></el-table-column>
-                  <el-table-column width="100px"></el-table-column>
+                  <el-table-column width="254px"></el-table-column>
+                  <el-table-column width="146px"></el-table-column>
                   <el-table-column v-for="(item, index) in arrayInfoProveedores" :key="index" align="center">
                     <!-- <template #default="scope"> -->
                     <!-- <el-table-column width="100px" label="F.P." align="center">
@@ -371,7 +380,7 @@
                   stripe
                 >
                   <!-- <el-table-column label=""></el-table-column> -->
-                  <el-table-column label="Compra seg." align="center" width="200px">
+                  <el-table-column label="Compra seg." align="center" width="296px">
                     <template #default="props">
                       <!-- $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }} -->
 
@@ -642,6 +651,7 @@ export default {
             })
 
             fila.productos = auxProd
+            fila.productosDB = elemento.productosDB
             
             this.datosAPI.push(fila)
             
@@ -736,6 +746,12 @@ export default {
           producto_rubro: elemento.presupuestacion_rubro_nombre,
           cantidad_a_comprar: elemento.producto_cantidad_a_comprar,
         };
+
+        this.datosAPI[0].productosDB.forEach((ele) => {
+          if (ele.producto_id == fila.producto_id) {
+            fila.producto_unidad = ele.producto_unidad
+          }
+        })
 
         this.arraySoloProductos.push(fila);
       });
@@ -947,7 +963,7 @@ export default {
 
           }
         })
-
+        
       })
 
 
@@ -958,29 +974,39 @@ export default {
       console.log("/./././././././././././././");
 
       this.calcularMenorMontoTotal()
+      this.calcularTotalHomogeneo()      
     },
 
 
     calcularMenorMontoTotal(){
       // primero limpio el campo y asigno un menor
-
-      let min = 0
+      console.log("/././././././././././././");
+      console.log("this.arrayInfoProveedores PREVIO");
+      console.log(this.arrayInfoProveedores);
+      console.log("/./././././././././././././");
+      // let min = 0
       let menorAux = 0
+      let arrayValores = []
+    
 
-
-      this.arrayInfoProveedores.forEach((elemento) => {
-        elemento.menor_monto_total = 0
-        menorAux = parseFloat(elemento.proveedor_monto_total_homogeneo)
-        if (menorAux > 0) {
-          min = menorAux
-        }
+      this.arrayInfoProveedores.forEach((elemento1) => {        
+        menorAux = parseFloat(elemento1.proveedor_monto_total_homogeneo)
+        arrayValores.push(menorAux)        
       })
+
+      let min = Math.min(...arrayValores);
+      console.log("min");
+      console.log(min);
+
+
+      
 
       let menorTotal = 0
       this.arrayInfoProveedores.forEach((elemento) => {
         menorTotal = parseFloat(elemento.proveedor_monto_total_homogeneo)
-
+        // elemento.menor_monto_total = 0
         if (menorTotal <= min && menorTotal > 0) {
+          min = menorTotal
           elemento.menor_monto_total = 1 
         } else {
           elemento.menor_monto_total = 0 
@@ -1615,7 +1641,7 @@ export default {
 
     headerStylePrincipalTable(row, column, rowIndex, columnIndex){
       // P1
-      if (row.rowIndex == 1 && row.columnIndex == 2) {
+      if (row.rowIndex == 1 && row.columnIndex == 3) {
         return { background: "#96ceb4", color: "#000000" }
       }
 
@@ -1648,7 +1674,7 @@ export default {
       }
       
       // P2
-      if (row.rowIndex == 1 && row.columnIndex == 3) {
+      if (row.rowIndex == 1 && row.columnIndex == 4) {
         return { background: "#adcbe3", color: "#000000" }
       }
 
@@ -1681,7 +1707,7 @@ export default {
       }
 
       // P3
-      if (row.rowIndex == 1 && row.columnIndex == 4) {
+      if (row.rowIndex == 1 && row.columnIndex == 5) {
         return { background: "#ffeead", color: "#000000" }
       }
 
@@ -1715,7 +1741,7 @@ export default {
 
 
       // P4
-      if (row.rowIndex == 1 && row.columnIndex == 5) {
+      if (row.rowIndex == 1 && row.columnIndex == 6) {
         return { background: "#ff6f69", color: "#000000" }
       }
 
@@ -1749,7 +1775,7 @@ export default {
 
 
       // P5
-      if (row.rowIndex == 1 && row.columnIndex == 6) {
+      if (row.rowIndex == 1 && row.columnIndex == 7) {
         return { background: "#ffcc5c", color: "#000000" }
       }
       
@@ -2379,10 +2405,6 @@ export default {
       // console.log(column);
       
       // Proveedor1
-      if (columnIndex == 2) {
-        return {'background': '#96ceb4' , 'color': 'black'}
-      }
-      
       if (columnIndex == 3) {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
@@ -2390,11 +2412,11 @@ export default {
       if (columnIndex == 4) {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
-     
+      
       if (columnIndex == 5) {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
-      
+     
       if (columnIndex == 6) {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
@@ -2402,16 +2424,16 @@ export default {
       if (columnIndex == 7) {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
-
+      
       if (columnIndex == 8) {
         return {'background': '#96ceb4' , 'color': 'black'}
       }
 
-      // P2
       if (columnIndex == 9) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#96ceb4' , 'color': 'black'}
       }
 
+      // P2
       if (columnIndex == 10) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
@@ -2419,11 +2441,11 @@ export default {
       if (columnIndex == 11) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
-      
+
       if (columnIndex == 12) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
-
+      
       if (columnIndex == 13) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
@@ -2436,11 +2458,11 @@ export default {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
 
-      // P3
       if (columnIndex == 16) {
-        return {'background': '#ffeead' , 'color': 'black'}
+        return {'background': '#adcbe3' , 'color': 'black'}
       }
 
+      // P3
       if (columnIndex == 17) {
         return {'background': '#ffeead' , 'color': 'black'}
       }
@@ -2460,16 +2482,16 @@ export default {
       if (columnIndex == 21) {
         return {'background': '#ffeead' , 'color': 'black'}
       }
-      
+
       if (columnIndex == 22) {
+        return {'background': '#ffeead' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 23) {
         return {'background': '#ffeead' , 'color': 'black'}
       }
 
       // P4
-      if (columnIndex == 23) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
       if (columnIndex == 24) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
@@ -2494,12 +2516,12 @@ export default {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
 
-
-      //P5
       if (columnIndex == 30) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ff6f69' , 'color': 'black'}
       }
 
+
+      //P5
       if (columnIndex == 31) {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
@@ -2523,17 +2545,14 @@ export default {
       if (columnIndex == 36) {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
-      
-      //P6
-      
 
       if (columnIndex == 37) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#ffcc5c' , 'color': 'black'}
       }
-
-      // P6
+      
+      //P6
       if (columnIndex == 38) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#adcbe3' , 'color': 'black'}
       }
 
       if (columnIndex == 39) {
@@ -2542,11 +2561,11 @@ export default {
 
       if (columnIndex == 40) {
         return {'background': '#e7eff6' , 'color': 'black'}
-      }      
+      }
 
       if (columnIndex == 41) {
         return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      }      
 
       if (columnIndex == 42) {
         return {'background': '#e7eff6' , 'color': 'black'}
@@ -2556,11 +2575,11 @@ export default {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      // P7
       if (columnIndex == 44) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#e7eff6' , 'color': 'black'}
       }
 
+      // P7
       if (columnIndex == 45) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
@@ -2581,11 +2600,11 @@ export default {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
 
-      //P8
       if (columnIndex == 50) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ff6f69' , 'color': 'black'}
       }
 
+      //P8
       if (columnIndex == 51) {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
@@ -2606,11 +2625,11 @@ export default {
         return {'background': '#ffcc5c' , 'color': 'black'}
       }
 
-      // P9
       if (columnIndex == 56) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#ffcc5c' , 'color': 'black'}
       }
 
+      // P9
       if (columnIndex == 57) {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
@@ -2631,11 +2650,11 @@ export default {
         return {'background': '#adcbe3' , 'color': 'black'}
       }
 
-      // P10
       if (columnIndex == 62) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#adcbe3' , 'color': 'black'}
       }
 
+      // P10
       if (columnIndex == 63) {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
@@ -2656,11 +2675,11 @@ export default {
         return {'background': '#e7eff6' , 'color': 'black'}
       }
 
-      // P11
       if (columnIndex == 68) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#e7eff6' , 'color': 'black'}
       }
 
+      // P11
       if (columnIndex == 69) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
@@ -2678,6 +2697,10 @@ export default {
       }
 
       if (columnIndex == 73) {
+        return {'background': '#ff6f69' , 'color': 'black'}
+      }
+
+      if (columnIndex == 74) {
         return {'background': '#ff6f69' , 'color': 'black'}
       }
 

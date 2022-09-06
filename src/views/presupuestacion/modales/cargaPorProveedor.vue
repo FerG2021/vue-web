@@ -4,7 +4,7 @@
       ref="modal"
       titulo="Carga de los productos según proveedor"
       :impedir-close="impedirClose"
-      width="80%"
+      width="90%"
     >
     
       <div v-loading="loadingDatosProveedor">
@@ -39,11 +39,11 @@
             :summary-method="getSummaries"
             show-summary
           >
-            <el-table-column prop="ID" label="ID" width="80">
+            <!-- <el-table-column prop="ID" label="ID" width="80">
               <template #default="props">
                 {{props.row.producto_id}}            
               </template>
-            </el-table-column>
+            </el-table-column> -->
             
             <el-table-column prop="nombre" label="Nombre" min-width="150">
               <template #default="props">
@@ -57,9 +57,21 @@
               </template>
             </el-table-column>
 
+            <el-table-column prop="unidadMedida" label="U. M.">
+              <template #default="props">
+                {{props.row.unidad_medida}}            
+              </template>
+            </el-table-column>
+
             <el-table-column prop="cantidad" label="Cantidad">
               <template #default="props">
                 {{props.row.producto_cantidad_a_comprar}}            
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="observaciones" label="Observaciones">
+              <template #default="props">
+                {{props.row.observaciones}}            
               </template>
             </el-table-column>
 
@@ -210,7 +222,7 @@
             </el-col>
             <!-- {{facturaA}} -->
             <el-col :span="3">
-              <span style="text-align: center">Monto factura A</span>
+              <span style="text-align: center">Monto desc. x IVA</span>
               <el-input-number
                 :controls="false"
                 v-model="montoIVA"
@@ -254,12 +266,13 @@
             <el-col :span="6"></el-col>
             <el-col :span="3"></el-col>
             <el-col :span="3">
-              <span style="text-align: center">Desc. y bonif.</span>
+              <span style="text-align: center">Desc. y bonif. (num. neg.)</span>
               <el-input-number
                 :controls="false"
                 v-model="descuentosyBonificaciones"
                 style="width: 100%"
                 @change="calcularTotalHomegeno()"
+                :max="0"
               ></el-input-number>
             </el-col>
           </el-row>
@@ -499,6 +512,8 @@ export default {
           total_iva: null,
           precio_pu: ele.productoPresupuestacion.precio_pu,
           precio_pp: ele.productoPresupuestacion.precio_pp,
+          unidad_medida: ele.producto.producto_unidad,
+          observaciones: ele.productoPresupuestacion.producto_observaciones,
           ya_agregado: 0,
         }
 

@@ -24,6 +24,10 @@ const router = createRouter({
             component: () => import('../views/ordencompra/index.vue')
         },
         {
+            path: '/transferencia',
+            component: () => import('../views/transferencia/index.vue')
+        },
+        {
             path: '/plan',
             component: () => import('../views/plan/index.vue')
         },
