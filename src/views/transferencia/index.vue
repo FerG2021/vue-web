@@ -6,130 +6,153 @@
       </template>
       <!-- Tabla para mostrar los datos -->
       <div class="contenedor-tabla">
-        <el-table
-          :data="
-            transferencias.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-          "
-          fixed
-          v-loading="loading"
-        >
-          <!-- Nro -->
-          <el-table-column label="Nro." prop="nro" width="80px">
-            <template #default="props">
-              <span>{{ props.row.transferencia.transferencia_id }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Nro -->
-          <el-table-column label="Nro. pres." prop="nroPresupuestacion" width="100px">
-            <template #default="props">
-              <span>{{ props.row.presupuestacion.presupuestacion_id }}</span>
-            </template>
-          </el-table-column>
-           
-          <!-- Nombre -->
-          <el-table-column label="Presupuestación" prop="presupuestacion" min-width="200px">
-            <template #default="props">
-              <span>{{ props.row.presupuestacion.presupuestacion_plan_nombre }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Destino -->
-          <el-table-column label="Destino" prop="destino">
-            <template #default="props">
-              <span>{{ props.row.deposito.deposito_nombre }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Producto -->
-          <el-table-column label="Producto" prop="producto">
-            <template #default="props">
-              <span>{{ props.row.transferencia.transferencia_producto_nombre }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Unidad de medida -->
-          <el-table-column label="U.M." prop="unidadMedida">
-            <template #default="props">
-              <span>{{ props.row.transferencia.transferencia_producto_unidad }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Cantidad a stock -->
-          <el-table-column label="Cant. stock" prop="cantSacada">
-            <template #default="props">
-              <span>{{ props.row.transferencia.transferencia_producto_stock }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Cantidad a utilizar -->
-          <el-table-column label="Cant. sacada" prop="cantSacada">
-            <template #default="props">
-              <span>{{ props.row.transferencia.transferencia_cantidad_utilizar }}</span>
-            </template>
-          </el-table-column>
-
-          <!-- Fecha inicio -->
-          <el-table-column label="Fecha" prop="fincio">
-            <template #default="props">
-              <span>{{ formatearFecha(props.row.transferencia.updated_at)}}</span>
-            </template>
-          </el-table-column>
-
-
-
-          <!-- Codigo -->
-          <!-- <el-table-column label="Código" prop="codigo">
-            <template #default="props">
-              <span>{{ props.row.producto_codigo }}</span>
-            </template>
-          </el-table-column> -->
-
-          <!-- Rubro -->
-          <!-- <el-table-column label="Rubro" prop="rubro">
-            <template #default="props">
-              <span>{{ props.row.rubro.rubro_nombre }}</span>
-            </template>
-          </el-table-column> -->
-
-          <!-- Editar -->
-          <!-- <el-table-column
-            label="Ver"
-            prop="ver"
-            header-align="center"
-            align="center"
-            width="75px"
+        <div v-if="transferencias.length != 0">
+          <el-table
+            :data="
+              transferencias.slice(
+                (currentPage - 1) * pageSize,
+                currentPage * pageSize
+              )
+            "
+            fixed
+            v-loading="loading"
           >
-            <template #default="props">
-              <el-button
-                type="primary"
-                circle
-                @click="$refs.modalVer.abrir(props.row.producto_id)"
-              >
-                <span class="material-icons">visibility</span>
-              </el-button>
-            </template>
-          </el-table-column> -->
-
-          <!-- Eliminar -->
-          <!-- <el-table-column 
-            label="Eliminar" 
-            prop="eliminar" 
-            header-align="right" 
-            align="right"
-            width="90px"
-          >
+            <!-- Nro -->
+            <el-table-column label="Nro." prop="nro" width="80px">
               <template #default="props">
-                <el-button 
-                  type="danger" 
-                  circle 
-                  @click="$refs.modalEliminar.abrir(props.row.id)"
+                <span>{{ props.row.transferencia.transferencia_id }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Nro -->
+            <el-table-column
+              label="Nro. pres."
+              prop="nroPresupuestacion"
+              width="100px"
+            >
+              <template #default="props">
+                <span>{{ props.row.presupuestacion.presupuestacion_id }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Nombre -->
+            <el-table-column
+              label="Presupuestación"
+              prop="presupuestacion"
+              min-width="200px"
+            >
+              <template #default="props">
+                <span>{{
+                  props.row.presupuestacion.presupuestacion_plan_nombre
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Destino -->
+            <el-table-column label="Destino" prop="destino">
+              <template #default="props">
+                <span>{{ props.row.deposito.deposito_nombre }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Producto -->
+            <el-table-column label="Producto" prop="producto">
+              <template #default="props">
+                <span>{{
+                  props.row.transferencia.transferencia_producto_nombre
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Unidad de medida -->
+            <el-table-column label="U.M." prop="unidadMedida">
+              <template #default="props">
+                <span>{{
+                  props.row.transferencia.transferencia_producto_unidad
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Cantidad a stock -->
+            <el-table-column label="Cant. stock" prop="cantSacada">
+              <template #default="props">
+                <span>{{
+                  props.row.transferencia.transferencia_producto_stock
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Cantidad a utilizar -->
+            <el-table-column label="Cant. sacada" prop="cantSacada">
+              <template #default="props">
+                <span>{{
+                  props.row.transferencia.transferencia_cantidad_utilizar
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Fecha inicio -->
+            <el-table-column label="Fecha" prop="fincio">
+              <template #default="props">
+                <span>{{
+                  formatearFecha(props.row.transferencia.updated_at)
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <!-- Codigo -->
+            <!-- <el-table-column label="Código" prop="codigo">
+              <template #default="props">
+                <span>{{ props.row.producto_codigo }}</span>
+              </template>
+            </el-table-column> -->
+
+            <!-- Rubro -->
+            <!-- <el-table-column label="Rubro" prop="rubro">
+              <template #default="props">
+                <span>{{ props.row.rubro.rubro_nombre }}</span>
+              </template>
+            </el-table-column> -->
+
+            <!-- Editar -->
+            <!-- <el-table-column
+              label="Ver"
+              prop="ver"
+              header-align="center"
+              align="center"
+              width="75px"
+            >
+              <template #default="props">
+                <el-button
+                  type="primary"
+                  circle
+                  @click="$refs.modalVer.abrir(props.row.producto_id)"
                 >
-                  <span class="material-icons">delete</span>
+                  <span class="material-icons">visibility</span>
                 </el-button>
               </template>
-          </el-table-column> -->
-        </el-table>
+            </el-table-column> -->
+
+            <!-- Eliminar -->
+            <!-- <el-table-column 
+              label="Eliminar" 
+              prop="eliminar" 
+              header-align="right" 
+              align="right"
+              width="90px"
+            >
+                <template #default="props">
+                  <el-button 
+                    type="danger" 
+                    circle 
+                    @click="$refs.modalEliminar.abrir(props.row.id)"
+                  >
+                    <span class="material-icons">delete</span>
+                  </el-button>
+                </template>
+            </el-table-column> -->
+          </el-table>
+        </div>
 
         <div class="contenedor-paginator">
           <el-pagination
@@ -194,24 +217,26 @@ export default {
   methods: {
     async obtenerTodos() {
       this.loading = true;
-      await this.axios.get("/api/transferencia/obtenerTodos").then((response) => {
-        this.transferencias = response.data;
-        this.paginas = response.data.pagina;
-        this.fecha = response.data[0].plan_fdesde;
-        console.log("fecha" + this.fecha);
-        console.log("this.transferencias");
-        console.log(this.transferencias);
+      await this.axios
+        .get("/api/transferencia/obtenerTodos")
+        .then((response) => {
+          this.transferencias = response.data;
+          this.paginas = response.data.pagina;
+          this.fecha = response.data[0].plan_fdesde;
+          console.log("fecha" + this.fecha);
+          console.log("this.transferencias");
+          console.log(this.transferencias);
 
-        console.log(this.paginas);
-      });
+          console.log(this.paginas);
+        });
       this.loading = false;
     },
 
-    formatearFecha(fecha){
-      let fecha1 = new Date(fecha)
+    formatearFecha(fecha) {
+      let fecha1 = new Date(fecha);
       // let fecha2 = fecha1.toLocaleString();
-      let fecha2 = fecha1.toLocaleDateString();        
-      return fecha2
+      let fecha2 = fecha1.toLocaleDateString();
+      return fecha2;
     },
 
     handleCurrentChange: function (cpage) {
