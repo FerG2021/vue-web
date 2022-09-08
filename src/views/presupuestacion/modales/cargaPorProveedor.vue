@@ -65,7 +65,7 @@
 
             <el-table-column prop="cantidad" label="Cantidad">
               <template #default="props">
-                {{props.row.producto_cantidad_a_comprar}}            
+                {{props.row.producto_cantidad_real_a_comprar}}            
               </template>
             </el-table-column>
 
@@ -504,6 +504,7 @@ export default {
           producto_id: ele.productoPresupuestacion.producto_id,
           producto_nombre: ele.productoPresupuestacion.producto_nombre,
           producto_cantidad_a_comprar: ele.productoPresupuestacion.producto_cantidad_a_comprar,
+          producto_cantidad_real_a_comprar: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
           precio_png: ele.productoPresupuestacion.precio_png,
           factor: 1,
           cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,

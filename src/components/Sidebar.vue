@@ -460,6 +460,7 @@
 <style lang="scss" scoped>
   aside{
     display: flex;
+    top: 0;
     flex-direction: column;
     width: calc(2rem + 32px);
     min-height: 100vh;
@@ -470,6 +471,9 @@
     color: var(--light);
 
     transition: 0.2s ease-out;
+
+    
+
 
     .flex{
       flex: 1 1 0;

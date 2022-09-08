@@ -156,13 +156,21 @@
         }
         await this.axios.post("/api/usuario/obtenerDatosMail", params)
           .then(response => {
+            console.log("response");
+            console.log(response);
             if (response) {
               if (response.data.data != undefined) {
                 console.log("response");
-                console.log(response.data.data);
+                console.log(response);
+                // console.log(response.data.data);
                 if (response.data.data) {
                   localStorage.setItem("usuarioID", response.data.data.id)
                   localStorage.setItem("tipoUsuario", response.data.data.tipo_usuario)
+
+                  
+
+
+
                 }
               } else {
                 console.log("usuario o contraseña incorrecta");
@@ -177,9 +185,10 @@
           })
 
         // this.loadingLogin = false
-
+        console.log("antes del login");
         await this.$store.dispatch("login", this.form);
         console.log("hace algo");      
+        this.loadingLogin = false
         
 
         

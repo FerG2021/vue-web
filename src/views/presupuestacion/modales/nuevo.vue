@@ -541,6 +541,8 @@
                 type="date"
                 placeholder="Ingrese la fecha límite"
                 :size="size"
+                format="DD/MM/YYYY"
+                value-format="YYYY-MM-DD"
               />
             </div>
           </el-col>
@@ -605,6 +607,7 @@
           </el-col>
           
           <el-col :span="12">
+            <!-- {{arrayProveedoresMostrar}} -->
             <h3><b>Proveedores</b></h3>
 
             <div v-for="(item, index) in arrayRubrosAComprar" :key="index">
@@ -1594,126 +1597,75 @@
       },
 
       async onSubmit(){
-        if (this.fechaLimiteCarga != null) {
-          this.loadingOnSubmit = true
-          let params = {
-            // presuestacion
-            presupuestacion_id: 0,
-            presupuestacion_plan_id: this.form.nombreObra,
-            presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
-            presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
-            presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
-            presupuestacion_fecha_limite: this.fechaLimiteCarga
-          }
+        this.loadingOnSubmit = true
 
-          // presupuestacion_productos
-          this.arrayProductosAComprar.forEach((elemento) => {
-            let fila = {
-              presupuestacion_producto_id: 0,
-              presupuestacion_id: 0,
-              presupuestacion_plan_id: this.form.nombreObra,
-              producto_id: elemento.producto_id,
-              producto_nombre: elemento.producto_nombre,
-              producto_rubro_id: elemento.rubro_id,
-              producto_rubro_nombre: elemento.rubro_nombre,
-              producto_unidad_medida: elemento.producto_unidad,
-              producto_cantidad_a_comprar: elemento.cantidadAComprar,
-              producto_cantidad_deposito: elemento.cantidadDeposito,
-              producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
-              producto_observaciones: elemento.observaciones
-            }
-
-            this.arrayProductosAComprarEnviar.push(fila)
-          })
-
-          params.arrayProductosAComprarEnviar = JSON.stringify(this.arrayProductosAComprarEnviar);
-
-
-          // presupuestacion_proveedores
-          this.arrayProveedoresMostrar.forEach((elemento) => {
-            if (elemento.proveedor_elegido == true) {
-              let fila = {
-                presupuestacion_proveedor_id: 0,
-                presupuestacion_id: 0,
-                presupuestacion_plan_id: this.form.nombreObra,
-                proveedor_id: elemento.proveedor.proveedor_id,
-                proveedor_nombre: elemento.proveedor.proveedor_nombre,
-                proveedor_rubro_id: elemento.rubro.rubro_id,
-                proveedor_mail: elemento.proveedor.proveedor_email
-              }
-
-              this.arrayProveedoresMostrarEnviar.push(fila)
-            }
-          })
-
-          console.log("this.arrayProveedoresMostrarEnviar");
-          console.log(this.arrayProveedoresMostrarEnviar);
-
-
-          params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
-
-          params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
-
-          if (this.arrayCantidadesDeposito.length > 0) {
-            params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
-          }
-
-          await this.axios.post("/api/presupuestacion/crear", params)
-            .then(response => {
-              console.log(response);
-
-              if (response.data) {
-                ElMessage({
-                  type: 'success',
-                  message: '¡Prespuestación realizada con éxito!',
-                })
-                this.$emit('actualizarTabla')
-                this.cerrar()
-              }
-            })
-        } else {
+        let fechaIngresada = 0
+        if (this.fechaLimiteCarga == null) {
           ElMessage({
             type: 'error',
             message: '¡Se debe seleccionar una fecha límite!',
           })
-        }
-      },
+          this.loadingOnSubmit = false
+          return
+        } 
 
-      async onSubmitBorrador(){
-        if (this.fechaLimiteCarga != null) {
-          this.loadingOnSubmitBorrador = true
-          let params = {
-            // presuestacion
+        // recorro el array de proveedores para ver si al menos uno tiene proveedor_elegido == true
+        let cantidadElegido = 0
+        this.arrayProveedoresMostrar.forEach((elemento) => {
+          if (elemento.proveedor_elegido == true) {
+            cantidadElegido = cantidadElegido + 1
+          }
+        })
+
+
+        if (cantidadElegido == 0) {
+          ElMessage({
+            type: 'error',
+            message: '¡Se debe seleccionar al menos un proveedor!',
+          })
+          this.loadingOnSubmit = false
+          return
+        } 
+
+
+        this.loadingOnSubmit = true
+
+        let params = {
+          // presuestacion
+          presupuestacion_id: 0,
+          presupuestacion_plan_id: this.form.nombreObra,
+          presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
+          presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
+          presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
+          presupuestacion_fecha_limite: this.fechaLimiteCarga
+        }
+
+        // presupuestacion_productos
+        this.arrayProductosAComprar.forEach((elemento) => {
+          let fila = {
+            presupuestacion_producto_id: 0,
             presupuestacion_id: 0,
             presupuestacion_plan_id: this.form.nombreObra,
-            presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
-            presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
-            presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
-            presupuestacion_fecha_limite: this.fechaLimiteCarga
+            producto_id: elemento.producto_id,
+            producto_nombre: elemento.producto_nombre,
+            producto_rubro_id: elemento.rubro_id,
+            producto_rubro_nombre: elemento.rubro_nombre,
+            producto_unidad_medida: elemento.producto_unidad,
+            producto_cantidad_a_comprar: elemento.cantidadAComprar,
+            producto_cantidad_deposito: elemento.cantidadDeposito,
+            producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
+            producto_observaciones: elemento.observaciones
           }
 
-          // presupuestacion_productos
-          this.arrayProductosAComprar.forEach((elemento) => {
-            let fila = {
-              presupuestacion_producto_id: 0,
-              presupuestacion_id: 0,
-              presupuestacion_plan_id: this.form.nombreObra,
-              producto_id: elemento.producto_id,
-              producto_nombre: elemento.producto_nombre,
-              producto_rubro_id: elemento.rubro_id,
-              producto_rubro_nombre: elemento.rubro_nombre,
-              producto_cantidad_a_comprar: elemento.cantidadAComprar,
-              producto_cantidad_deposito: elemento.cantidadDeposito,
-              producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
-              producto_observaciones: elemento.observaciones
-            }
-            this.arrayProductosAComprarEnviar.push(fila)
-          })
+          this.arrayProductosAComprarEnviar.push(fila)
+        })
 
-          params.arrayProductosAComprarEnviar = JSON.stringify(this.arrayProductosAComprarEnviar);
+        params.arrayProductosAComprarEnviar = JSON.stringify(this.arrayProductosAComprarEnviar);
 
-          // presupuestacion_proveedores
-          this.arrayProveedoresMostrar.forEach((elemento) => {
+
+        // presupuestacion_proveedores
+        this.arrayProveedoresMostrar.forEach((elemento) => {
+          if (elemento.proveedor_elegido == true) {
             let fila = {
               presupuestacion_proveedor_id: 0,
               presupuestacion_id: 0,
@@ -1723,36 +1675,144 @@
               proveedor_rubro_id: elemento.rubro.rubro_id,
               proveedor_mail: elemento.proveedor.proveedor_email
             }
+
             this.arrayProveedoresMostrarEnviar.push(fila)
-          })
-
-          params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
-
-          params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
-
-          if (this.arrayCantidadesDeposito.length > 0) {
-            params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
           }
+        })
 
-          await this.axios.post("/api/borradorpresupuestacion/crear", params)
-            .then(response => {
-              console.log(response);
+        console.log("this.arrayProveedoresMostrarEnviar");
+        console.log(this.arrayProveedoresMostrarEnviar);
 
-              if (response.data) {
-                ElMessage({
-                  type: 'success',
-                  message: '¡Borrador generador con éxito!',
-                })
-                // this.$emit('actualizarTabla')
-                this.cerrar()
-              }
-            })
-        } else {
+
+        params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
+
+        params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
+
+        // if (this.arrayCantidadesDeposito.length > 0) {
+        //   params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+        // }
+        
+        params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+        console.log("params.arrTransferencias");
+        console.log(params.arrTransferencias);
+
+
+        await this.axios.post("/api/presupuestacion/crear", params)
+          .then(response => {
+            console.log(response);
+
+            if (response.data) {
+              ElMessage({
+                type: 'success',
+                message: '¡Prespuestación realizada con éxito!',
+              })
+              this.$emit('actualizarTabla')
+              this.cerrar()
+            }
+          })
+        
+        this.loadingOnSubmit = false
+      },
+
+      async onSubmitBorrador(){
+        this.loadingOnSubmitBorrador = true
+
+        let fechaIngresada = 0
+        if (this.fechaLimiteCarga == null) {
           ElMessage({
             type: 'error',
             message: '¡Se debe seleccionar una fecha límite!',
           })
+          this.loadingOnSubmitBorrador = false
+          return
+        } 
+
+        // recorro el array de proveedores para ver si al menos uno tiene proveedor_elegido == true
+        let cantidadElegido = 0
+        this.arrayProveedoresMostrar.forEach((elemento) => {
+          if (elemento.proveedor_elegido == true) {
+            cantidadElegido = cantidadElegido + 1
+          }
+        })
+
+
+        if (cantidadElegido == 0) {
+          ElMessage({
+            type: 'error',
+            message: '¡Se debe seleccionar al menos un proveedor!',
+          })
+          this.loadingOnSubmitBorrador = false
+          return
+        } 
+
+        this.loadingOnSubmitBorrador = true
+        let params = {
+          // presuestacion
+          presupuestacion_id: 0,
+          presupuestacion_plan_id: this.form.nombreObra,
+          presupuestacion_plan_nombre: this.datosPlanSeleccionado.plan_nombre,
+          presupuestacion_fecha_incio: this.form.fechaaPresupuestar[0],
+          presupuestacion_fecha_fin: this.form.fechaaPresupuestar[1],
+          presupuestacion_fecha_limite: this.fechaLimiteCarga
         }
+
+        // presupuestacion_productos
+        this.arrayProductosAComprar.forEach((elemento) => {
+          let fila = {
+            presupuestacion_producto_id: 0,
+            presupuestacion_id: 0,
+            presupuestacion_plan_id: this.form.nombreObra,
+            producto_id: elemento.producto_id,
+            producto_nombre: elemento.producto_nombre,
+            producto_rubro_id: elemento.rubro_id,
+            producto_rubro_nombre: elemento.rubro_nombre,
+            producto_cantidad_a_comprar: elemento.cantidadAComprar,
+            producto_cantidad_deposito: elemento.cantidadDeposito,
+            producto_cantidad_real_a_comprar: elemento.cantidadRealAComprar,
+            producto_observaciones: elemento.observaciones
+          }
+          this.arrayProductosAComprarEnviar.push(fila)
+        })
+
+        params.arrayProductosAComprarEnviar = JSON.stringify(this.arrayProductosAComprarEnviar);
+
+        // presupuestacion_proveedores
+        this.arrayProveedoresMostrar.forEach((elemento) => {
+          let fila = {
+            presupuestacion_proveedor_id: 0,
+            presupuestacion_id: 0,
+            presupuestacion_plan_id: this.form.nombreObra,
+            proveedor_id: elemento.proveedor.proveedor_id,
+            proveedor_nombre: elemento.proveedor.proveedor_nombre,
+            proveedor_rubro_id: elemento.rubro.rubro_id,
+            proveedor_mail: elemento.proveedor.proveedor_email
+          }
+          this.arrayProveedoresMostrarEnviar.push(fila)
+        })
+
+        params.arrayProveedoresMostrarEnviar = JSON.stringify(this.arrayProveedoresMostrarEnviar);
+
+        params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
+
+        if (this.arrayCantidadesDeposito.length > 0) {
+          params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+        }
+
+        await this.axios.post("/api/borradorpresupuestacion/crear", params)
+          .then(response => {
+            console.log(response);
+
+            if (response.data) {
+              ElMessage({
+                type: 'success',
+                message: '¡Borrador generador con éxito!',
+              })
+              // this.$emit('actualizarTabla')
+              this.cerrar()
+            }
+          })
+        
+        this.loadingOnSubmitBorrador = false
         
       },
 

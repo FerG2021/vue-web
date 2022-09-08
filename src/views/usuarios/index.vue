@@ -135,6 +135,7 @@
 
     methods: {
       async obtenerTodos(){
+        this.usuariosSinProveedores = []
         this.loading = true
         await this.axios.get("/api/usuario/obtenerTodos")
           .then(res => {
@@ -144,7 +145,7 @@
             console.log(this.usuarios);
 
             this.usuarios.forEach((elemento) => {
-              if (elemento.tipo_usuario == 1) {
+              if (elemento.tipo_usuario != 2) {
                 this.usuariosSinProveedores.push(elemento)
               }
             })

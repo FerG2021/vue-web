@@ -28,11 +28,16 @@ export default createStore({
       console.log(credentials);
 
       await axios.get("/sanctum/csrf-cookie");
-      await axios.post("/login", credentials);
+      console.log("respuesta cookie");
+      let respuesta = await axios.post("/login", credentials);
+      console.log("respuesta");
+      console.log(respuesta);
+
       return dispatch("getUser");
     },
 
     getUser({ commit }){
+      console.log("getUser");
       axios.get("/user")
         .then(res => {
           commit("SET_USER", res.data)
