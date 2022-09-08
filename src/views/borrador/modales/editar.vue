@@ -1944,9 +1944,12 @@ export default {
         this.arrayRubrosAComprarEnviar
       );
 
-      if (this.arrayCantidadesDeposito.length > 0) {
+      // if (this.arrayCantidadesDeposito.length > 0) {
+      //   params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+      // }
+
         params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
-      }
+
 
       await this.axios
         .post("/api/borradorpresupuestacion/crearPresupuestacion", params)
@@ -2069,9 +2072,12 @@ export default {
         this.arrayRubrosAComprarEnviar
       );
 
-      if (this.arrayCantidadesDeposito.length > 0) {
+      // if (this.arrayCantidadesDeposito.length > 0) {
+      //   params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+      // }
+
         params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
-      }
+
 
       await this.axios
         .post("/api/borradorpresupuestacion/actualizar", params)

@@ -1794,9 +1794,12 @@
 
         params.arrayRubrosAComprar = JSON.stringify(this.arrayRubrosAComprarEnviar)
 
-        if (this.arrayCantidadesDeposito.length > 0) {
-          params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
-        }
+        // if (this.arrayCantidadesDeposito.length > 0) {
+        //   params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+        // }
+
+        params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
+
 
         await this.axios.post("/api/borradorpresupuestacion/crear", params)
           .then(response => {
