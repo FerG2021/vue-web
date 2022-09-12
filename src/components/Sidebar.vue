@@ -5,7 +5,7 @@
     </div>
 
     <!-- items del menu -->
-    <div class="menu-toggle-wrap">
+    <div class="menu-toggle-wrap" v-if="tipoUsuario == 1">
       <button class="menu-toggle">
         <span class="material-icons" @click="toggleMenu()">
           keyboard_double_arrow_right
@@ -16,7 +16,7 @@
     <h3>MENU</h3>
     <div class="menu">
       <!-- Home -->
-      <div>
+      <div v-if="tipoUsuario == 1">
         <router-link class="button" to="/" v-if="is_expanded">
           <span class="material-icons">home</span>
           <span class="text">Home</span>

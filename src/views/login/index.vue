@@ -226,10 +226,15 @@
 
         console.log("this.form");
         console.log(this.form);
+        
 
         let params = {
           mail_usuario: this.form.email,
         }
+
+        await this.$store.dispatch("login", this.form);
+        console.log("hace algo");
+        
         await this.axios.post("/api/usuario/obtenerDatosMail", params)
           .then(response => {
             if (response) {
@@ -244,8 +249,7 @@
             }
           })
 
-        await this.$store.dispatch("login", this.form);
-        console.log("hace algo");
+        
 
 
 
