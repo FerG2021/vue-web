@@ -1,43 +1,67 @@
 <template>
   <div>
     <modal ref="modal" titulo="Generar orden de compra" :impedir-close="impedirClose">
-      <h3 style="text-align: center">Seleccione el tipo de orden de compra que desea generar</h3>
+      <div v-loading="loadingDatos">
+        <h3 style="text-align: center">
+          Seleccione el tipo de orden de compra que desea generar
+        </h3>
 
-      <div style="display: flex; margin-top: 20px">
-        <div style="margin: auto">
-          <el-button
-            type="primary"
-          >
-            Orden de compra normal
-          </el-button>
+        <div style="display: flex; margin-top: 20px">
+          <div style="margin: auto">
+            <el-button
+              type="primary"
+              @click="$refs.modalOrdenCompraNormal.abrir(datos)"
+            >
+              Orden de compra normal
+            </el-button>
 
-          <el-button
-            type="primary"
-          >
-            Orden de compra adelantada
-          </el-button>
+            <el-button
+              type="primary"
+              @click="$refs.modalOrdenCompraAdelantada.abrir(datos)"
+            >
+              Orden de compra adelantada
+            </el-button>
+          </div>
         </div>
       </div>
     </modal>
   </div>
+
+  <modal-orden-compra-normal
+    ref="modalOrdenCompraNormal"
+  ></modal-orden-compra-normal>
+
+  <modal-orden-compra-adelantada
+    ref="modalOrdenCompraAdelantada"
+  ></modal-orden-compra-adelantada>
+
+
 </template>
 
 <script>
 import { ElMessage, ElMessageBox } from "element-plus";
+import modalOrdenCompraNormal from './ordenCompraNormal.vue'
+import modalOrdenCompraAdelantada from './ordenCompraAdelantada.vue'
+
 
 name: "nuevoProducto";
 export default {
+  components: {
+    modalOrdenCompraNormal,
+    modalOrdenCompraAdelantada
+  },
+
   data() {
     return {
       id: null,
-      loading: false,
+      loadingDatos: false,
       datos: null,
     };
   },
 
   methods: {
     abrir(id) {
-      this.loading = true;
+      this.loadingDatos = true;
       this.id = null;
       this.id = id;
       this.datos = null;
@@ -45,7 +69,7 @@ export default {
       this.$refs.modal.abrir();
 
       // limpio los campos
-      // this.getDatos();
+      this.getDatos();
     },
 
     cerrar() {
@@ -65,7 +89,7 @@ export default {
             console.log(this.datos);
 
 
-            this.loading = false;
+            this.loadingDatos = false;
           } else {
             this.cerrar();
           }

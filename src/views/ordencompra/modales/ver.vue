@@ -58,7 +58,7 @@ export default {
       this.loading = true;
       this.id = null;
       this.id = id;
-      this.datos = null;
+      this.datos = [];
 
       this.$refs.modal.abrir();
 
@@ -78,7 +78,9 @@ export default {
           // console.log(respuestaApi);
 
           if (respuestaApi != null) {
-            this.datos = respuestaApi.data;
+            respuestaApi.data.productosOrdenCompra.forEach((elemento) => {
+              this.datos.push(elemento.productoOrdenCompra)
+            });
             console.log("this.datos");
             console.log(this.datos);
 

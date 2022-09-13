@@ -7,6 +7,14 @@
       width="70%"
     >
       <div v-loading="loadingInformacionParaCarga">
+        <el-alert
+          title="Información importante"
+          type="warning"
+          description="Para poder visualizar la comparativa se deben completar todos los datos de los proveedores, en el caso de que no presupueste el proveedor se deberá completar con 0 cada uno de los precios"
+          show-icon
+          :closable="false"
+        />
+
         <el-table :data="datosProveedores" stripe style="width: 100%">
           <el-table-column prop="ID" label="ID">
             <template #default="props">
