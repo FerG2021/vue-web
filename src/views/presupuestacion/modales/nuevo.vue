@@ -48,7 +48,7 @@
               <el-col :span="12" style="width:100%;">
                 <el-input 
                   style="width: 100%" 
-                  v-model="form.fDesde"
+                  v-model="form.fDesdeMostrar"
                   disabled
                   placeholder="Fecha de inicio"
                   v-loading="loadingDesdeSelectPlan"
@@ -57,7 +57,7 @@
               <el-col :span="12" style="width:100%;">
                 <el-input 
                   style="width: 100%" 
-                  v-model="form.fHasta"
+                  v-model="form.fHastaMostrar"
                   disabled
                   placeholder="Fecha de fin"
                   v-loading="loadingDesdeSelectPlan"
@@ -88,6 +88,7 @@
               style="width: 100%"
               @change="cantidadMeses()"
               :disabled="deshabilitarSelectFechaaPresupuestar()"
+              
             />
           </el-form-item>
           <!-- {{form.fechaaPresupuestar}} -->
@@ -248,7 +249,7 @@
         </div>
       </div>
 
-      <!-- Precio y stock -->
+      <!-- Materiales -->
       <div v-show="active == 1" style="padding: 30px">
         <!-- mostrar los datos de la seccion anterior -->
         <el-row :gutter="10">
@@ -288,6 +289,22 @@
         <el-row :gutter="10" style="margin-top: 15px">
           <el-col :span="10">
             <span>Producto</span>
+            <!-- <el-select 
+              v-model="productoSeleccionado" 
+              placeholder="Seleccionar producto"
+              filterable
+              clearable
+              style="width: 100%"
+              @change="seleccionarRubroProductoSeleccionado()"
+            >
+              <el-option
+                v-for="item in productosDesdePrevisionNuevo"
+                :key="item.producto.producto_id"
+                :label="item.producto.producto_nombre"
+                :value="item.producto.producto_id"
+              />
+            </el-select> -->
+
             <el-select 
               v-model="productoSeleccionado" 
               placeholder="Seleccionar producto"
@@ -296,19 +313,22 @@
               style="width: 100%"
               @change="seleccionarRubroProductoSeleccionado()"
             >
-              <!-- <el-option
-                v-for="item in productosNuevo"
-                :key="item.producto_id"
-                :label="item.producto_nombre"
-                :value="item.producto_id"
-              /> -->
-
               <el-option
-                v-for="item in productosDesdePrevisionNuevo"
+                v-for="item in productos"
                 :key="item.producto_id"
                 :label="item.producto_nombre"
                 :value="item.producto_id"
-              />
+              >
+                <span style="float: left">{{ item.producto_nombre }}</span>
+                <span
+                  style="
+                    float: right;
+                    color: var(--el-text-color-secondary);
+                    font-size: 13px;
+                  "
+                  >{{ item.rubro.rubro_nombre }}</span
+                >
+              </el-option>
             </el-select>
           </el-col>
 
@@ -723,7 +743,9 @@
           fechaObra: null,
           producto: null,
           fDesde: null,
+          fDesdeMostrar: null,
           fHasta: null,
+          fHastaMostrar: null,
           cantMeses: null,
           fechaaPresupuestar: [],
           mesesaPresupuestar: null,
@@ -800,6 +822,7 @@
       this.obtenerPlanesSelect()
       this.obtenerRubrosSelect()
       this.obtenerProductosSelect()
+      // this.obtenerTodosProductosSelect()
     },
 
     watch: {
@@ -877,7 +900,9 @@
         this.form.fechaObra = null
         this.form.producto = null
         this.form.fDesde = null
+        this.form.fDesdeMostrar = null
         this.form.fHasta = null
+        this.form.fHastaMostrar = null
         this.form.cantMeses = null
         this.form.fechaaPresupuestar = []
         this.form.mesesaPresupuestar = null
@@ -943,6 +968,7 @@
 
         this.$refs.modal.abrir()
         this.obtenerPlanesSelect()
+        this.obtenerProductosSelect()
       },
 
       cerrar(){
@@ -1000,6 +1026,9 @@
       async obtenerProductosSelect(){
         await this.axios.get("/api/producto/obtenerTodos").then((response) => {
           this.productos = this.productosNuevo = response.data.datos;          
+          console.log("this.productos");
+          console.log(this.productos);
+
         });
       },
 
@@ -1010,7 +1039,9 @@
           .then(response => {
             this.datosPlanSeleccionado = response.data
             this.form.fDesde = this.datosPlanSeleccionado.plan_fdesde
+            this.form.fDesdeMostrar = this.formatearFechaSinDia(this.datosPlanSeleccionado.plan_fdesde)
             this.form.fHasta = this.datosPlanSeleccionado.plan_fhasta
+            this.form.fHastaMostrar = this.formatearFechaSinDia(this.datosPlanSeleccionado.plan_fhasta)
             this.form.cantMeses = this.datosPlanSeleccionado.plan_plazo
 
             let fecha = new Date(2021, 8, 28)
@@ -1817,6 +1848,19 @@
         
         this.loadingOnSubmitBorrador = false
         
+      },
+
+      formatearFecha(fecha) {
+        let fecha1 = new Date(fecha);
+        // let fecha2 = fecha1.toLocaleString();
+        let fecha2 = fecha1.toLocaleDateString();
+        return fecha2;
+      },
+
+      formatearFechaSinDia(fecha) {
+        let fecha1 = new Date(fecha);
+        let fechaMostrar = fecha1.getMonth() + 1 + "/" + fecha1.getFullYear();
+        return fechaMostrar;
       },
 
     }
