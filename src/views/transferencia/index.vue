@@ -6,14 +6,16 @@
       </template>
       <!-- Tabla para mostrar los datos -->
       <div class="contenedor-tabla">
-        <div v-loading="loadingDatos">
+        <div v-loading="loadingDatos" v-if="transferencias.length != 0">
           <!-- <div v-if="transferencias.length != 0"> -->
             <el-table
-              :data="transferencias.slice((currentPage - 1) * pageSize,currentPage * pageSize)"
+              :data="transferencias"
               fixed
               v-loading="loading"
               :cell-style="classChecker"
             >
+              <!-- :data="transferencias.slice((currentPage - 1) * pageSize,currentPage * pageSize)" -->
+
               <!-- Nro -->
               <el-table-column label="Nro." prop="nro" width="80px">
                 <template #default="props">
@@ -131,6 +133,15 @@
               </el-pagination>
             </div>
           <!-- </div> -->
+        </div>
+        <div v-else>
+          <el-table
+            :data="transferencias"
+            fixed
+            v-loading="loading"
+            :cell-style="classChecker"
+          >
+          </el-table>
         </div>
       </div>
     </el-card>

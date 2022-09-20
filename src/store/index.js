@@ -25,13 +25,13 @@ export default createStore({
   actions: {
     async login({ dispatch },credentials){
       console.log("credentials");
-      console.log(credentials);
+      // console.log(credentials);
 
       await axios.get("/sanctum/csrf-cookie");
       console.log("respuesta cookie");
-      let respuesta = await axios.post("/login", credentials);
+      const respuesta = await axios.post("/login", credentials);
       console.log("respuesta");
-      console.log(respuesta);
+      // console.log(respuesta.errors.message);
 
       return dispatch("getUser");
     },

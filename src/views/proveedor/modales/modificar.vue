@@ -1,6 +1,6 @@
 <template>
   <div>
-    <modal ref="modal" titulo="Modificar producto" :impedir-close="impedirClose">
+    <modal ref="modal" titulo="Modificar mail del proveedor" :impedir-close="impedirClose">
       <el-form
         label-width="120px"
         v-loading="loading"
@@ -57,6 +57,7 @@
         <el-button 
           type="primary" 
           @click="onSubmit()"
+          :loading="loadingBtnGuardar"
         >Guardar</el-button>
       </template>
     </modal>
@@ -84,6 +85,8 @@
         id: null,
         articulos: [],
         loading: false,
+        loadingBtnGuardar: false,
+        mailApi: null,
 
 
         // formRules: {
@@ -132,6 +135,7 @@
         this.form.categoria = null
         this.form.idCategoria = null
         this.form.mail = null
+        this.mailApi = null
 
         this.getDatos()
         this.categoriaObtenerTodosSelect()
@@ -160,6 +164,7 @@
               // this.form.idCategoria = respuestaApi.categoria.id
 
               this.form.mail = respuestaApi.proveedor_email
+              this.mailApi = respuestaApi.proveedor_email
               this.loading = false
             } else{
               this.cerrar()
@@ -192,28 +197,70 @@
       },
 
       onSubmit(){
-        let params = {
-            id: this.id,
-            // descripcion: this.form.nombre,
-            // precio: this.form.precio,
-            // stock: this.form.stock,
-            // idCategoria: this.form.idCategoria,
-            // idUnidadMedida: this.form.idUnidadMedida,
-            mail: this.form.mail
-        }
+        if (this.mailApi == this.form.mail) {
+          ElMessage({
+            type: 'error',
+            message: 'El mail ingresado y el que se encuentra guardado son iguales',
+          })
+        } else {
+          this.loadingBtnGuardar = true
+          let params = {
+              id: this.id,
+              // descripcion: this.form.nombre,
+              // precio: this.form.precio,
+              // stock: this.form.stock,
+              // idCategoria: this.form.idCategoria,
+              // idUnidadMedida: this.form.idUnidadMedida,
+              email: this.form.mail
+          }
 
-        this.axios.post("/api/proveedor/actualizar", params)
+          // this.axios.post("/api/proveedor/actualizar", params)
+          //     .then(response => {
+          //         ElMessage({
+          //             type: 'success',
+          //             message: '¡Mail modificado con éxito!',
+          //         })
+          //         this.$emit('actualizarTabla')
+          //         this.cerrar()
+          //       this.loadingBtnGuardar = false
+          //     })
+          //     .catch(error => {
+          //         console.log(error)
+          //     })        
+
+
+          this.axios.post("/api/proveedor/actualizar", params)
             .then(response => {
+              if (response.data.code == 400) {
+                let erroresMostrar = "// ";
+                let erorres = Object.values(response.data.data)
+
+                erorres.forEach((elemento) => {                
+                  erroresMostrar = erroresMostrar + " " + elemento + " //";
+                })
+
+                ElMessage({
+                  type: 'error',
+                  grouping: true,
+                  message: erroresMostrar,
+                  duration: 5000,
+                })
+              } else {
                 ElMessage({
                     type: 'success',
                     message: '¡Mail modificado con éxito!',
                 })
                 this.$emit('actualizarTabla')
                 this.cerrar()
+              }
+              this.loadingBtnGuardar = false
             })
             .catch(error => {
                 console.log(error)
-            })
+            })        
+        }
+
+        
       },
 
       deshabilitarBtnGuardar(){

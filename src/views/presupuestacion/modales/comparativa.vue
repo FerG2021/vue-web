@@ -440,6 +440,7 @@
               type="primary"
               style="margin-top: 10px"
               @click="generarOrdenesDeCompra()"
+              :loading="loadingBtnGenerarOrdenesCompra"
             >
               Generar órdenes de compra
             </el-button>
@@ -508,7 +509,8 @@ export default {
           label: 'No',
           value: 0,
         },
-      ]
+      ],
+      loadingBtnGenerarOrdenesCompra: false,
     };
   },
 
@@ -536,6 +538,7 @@ export default {
       this.valorScroll = 0
       this.arrayTotalHomegeneoProveedores = []
       this.arrayOrdenCompra = []
+      this.loadingBtnGenerarOrdenesCompra = false
       
 
 
@@ -1558,6 +1561,7 @@ export default {
 
 
     generarOrdenesDeCompra(){
+      this.loadingBtnGenerarOrdenesCompra = true
       this.arrayOrdenCompra = []
       console.log("orden de compra generada");
       console.log("this.datosAPI");
@@ -1624,6 +1628,8 @@ export default {
           })
           this.cerrar();
         })
+
+      this.loadingBtnGenerarOrdenesCompra = false
     },
 
     scroll(scrollLeft, scrollTop){

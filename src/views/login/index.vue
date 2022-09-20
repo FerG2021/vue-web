@@ -12,7 +12,7 @@
       <div class="contenedor-login" v-loading="loadingLogin">
         <div class="formulario">
           <div class="material-icons">account_circle</div>
-          <span v-if="$store.state.auth">{{ $store.state.user.name }}</span>
+          <!-- <span v-if="$store.state.auth">{{ $store.state.user.name }}</span> -->
           <div v-if="deshabilitarInputEmail == false">
             <el-card class="card-form">
               <el-form
@@ -32,6 +32,7 @@
                     :disabled="deshabilitarInputEmail"
                     v-model="form.email"
                     placeholder="Ingrese su email..."
+                    @keyup.enter="login()"
                   />
                 </el-form-item>
 
@@ -46,6 +47,7 @@
                     v-model="form.password"
                     placeholder="Ingrese su contraseña..."
                     type="password"
+                    @keyup.enter="login()"
                   />
                 </el-form-item>
 
@@ -156,48 +158,59 @@ export default {
 
   methods: {
     async login() {
-      this.loadingLogin = true;
-      console.log("this.form");
-      console.log(this.form);
-      // this.me()
-      let params = {
-        mail_usuario: this.form.email,
-      };
-      await this.axios
-        .post("/api/usuario/obtenerDatosMail", params)
-        .then((response) => {
-          console.log("response");
-          console.log(response);
-          if (response) {
-            if (response.data.data != undefined) {
-              console.log("response");
-              console.log(response);
-              // console.log(response.data.data);
-              if (response.data.data) {
-                localStorage.setItem("usuarioID", response.data.data.id);
-                localStorage.setItem(
-                  "tipoUsuario",
-                  response.data.data.tipo_usuario
-                );
-              }
-            } else {
-              console.log("usuario o contraseña incorrecta");
-              ElMessage({
-                type: "error",
-                message: "¡Usuario o contraseña incorrecta!",
-              });
-              this.loadingLogin = false;
-            }
-          }
+      if (this.form.email == null ||
+          this.form.email == "" ||
+          this.form.password == null ||
+          this.form.password == ""
+      ) {
+        ElMessage({
+          type: "error",
+          message: "¡Se deben completar todos los campos!",
         });
+      } else {
+        this.loadingLogin = true;
+        console.log("this.form");
+        console.log(this.form);
+        // this.me()
+        let params = {
+          mail_usuario: this.form.email,
+        };
+        await this.axios
+          .post("/api/usuario/obtenerDatosMail", params)
+          .then((response) => {
+            console.log("response");
+            console.log(response);
+            if (response) {
+              if (response.data.data != undefined) {
+                console.log("response");
+                console.log(response);
+                // console.log(response.data.data);
+                if (response.data.data) {
+                  localStorage.setItem("usuarioID", response.data.data.id);
+                  localStorage.setItem(
+                    "tipoUsuario",
+                    response.data.data.tipo_usuario
+                  );
+                }
+              } else {
+                console.log("usuario o contraseña incorrecta");
+                ElMessage({
+                  type: "error",
+                  message: "¡Usuario o contraseña incorrecta!",
+                });
+                this.loadingLogin = false;
+              }
+            }
+          });
 
-      // this.loadingLogin = false
-      console.log("antes del login");
-      await this.$store.dispatch("login", this.form);
-      console.log("hace algo");
-      this.loadingLogin = false;
+        // this.loadingLogin = false
+        console.log("antes del login");
+        await this.$store.dispatch("login", this.form);
+        console.log("hace algo");
+        this.loadingLogin = false;
 
-      return this.$router.replace("/");
+        return this.$router.replace("/");
+      }
     },
 
     async loginDirecto(
@@ -237,6 +250,7 @@ export default {
 
       let params = {
         mail_usuario: this.form.email,
+        proveedor_id: proveedorID,
       };
 
       await this.$store.dispatch("login", this.form);
@@ -246,7 +260,7 @@ export default {
         .post("/api/usuario/obtenerDatosMail", params)
         .then((response) => {
           if (response) {
-            console.log("response");
+            console.log("response DATOSMAIL");
             console.log(response.data.data);
             if (response.data.data) {
               localStorage.setItem("usuarioID", response.data.data.id);

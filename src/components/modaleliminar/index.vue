@@ -77,7 +77,7 @@
         if (this.impedirClose)
           return
 
-        this.$confirm('¿Está seguro de que desea cerrar el formulario?')
+        this.$confirm('¿Está seguro de que desea cerrar la ventana?')
           .then((_) => {
             done()
           })
