@@ -507,7 +507,7 @@ export default {
           producto_cantidad_real_a_comprar: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
           precio_png: ele.productoPresupuestacion.precio_png,
           factor: 1,
-          cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
+          cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
           // iva: ele.productoPresupuestacion.iva,
           iva: 21,
           total_iva: null,
@@ -680,7 +680,7 @@ export default {
       console.log("props");
       console.log(props);
 
-      this.arrayInformacionParaCarga[props.$index].cantidad_proveedor = this.arrayInformacionParaCarga[props.$index].producto_cantidad_a_comprar * this.arrayInformacionParaCarga[props.$index].factor 
+      this.arrayInformacionParaCarga[props.$index].cantidad_proveedor = this.arrayInformacionParaCarga[props.$index].producto_cantidad_real_a_comprar * this.arrayInformacionParaCarga[props.$index].factor 
 
       this.calcularPrecioPP(props)
     },

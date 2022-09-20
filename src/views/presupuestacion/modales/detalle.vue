@@ -65,7 +65,7 @@
 
             <el-table-column prop="cantidad" label="Cantidad a comprar" >
               <template #default="props">
-                <span>{{ props.row.productoPresupuestacion.producto_cantidad_a_comprar }}</span>
+                <span>{{ props.row.productoPresupuestacion.producto_cantidad_real_a_comprar }}</span>
               </template>
             </el-table-column>
 

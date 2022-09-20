@@ -134,15 +134,14 @@
                   @change="cambiarCantidadProveedor(props)"
                 ></el-input-number>            
               </template>
-            </el-table-column>
+            </el-table-column> -->
 
-            <el-table-column prop="cantidadProveedor" label="Cant. prov." align="center">
+            <!-- <el-table-column prop="cantidadProveedor" label="Cant. prov." align="center">
               <template #default="props">
                 <el-input-number
-                  v-model="props.row.cantidad_proveedor"
+                  v-model="props.row.producto_cantidad_real_a_comprar"
                   :controls="false"
                   style="width: 100%"
-                  disabled
                 ></el-input-number>            
               </template>
             </el-table-column> -->
@@ -681,10 +680,12 @@
             producto_id: ele.productoPresupuestacion.producto_id,
             producto_nombre: ele.productoPresupuestacion.producto_nombre,
             producto_unidad: ele.producto.producto_unidad,
-            producto_cantidad_a_comprar: ele.productoPresupuestacion.producto_cantidad_a_comprar,
+            producto_cantidad_a_comprar: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
+            producto_cantidad_real_a_comprar: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
             precio_png: ele.productoPresupuestacion.precio_png,
             factor: 1,
-            cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
+            // cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
+            cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
             iva: ele.productoPresupuestacion.iva,
             total_iva: null,
             precio_pu: ele.productoPresupuestacion.precio_pu,
@@ -905,7 +906,10 @@
           // calculo pp
           // this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].producto_cantidad_a_comprar
 
-          this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].cantidad_proveedor
+          // this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].cantidad_proveedor
+
+          this.arrayInformacionParaCarga[props.$index].precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pu * this.arrayInformacionParaCarga[props.$index].producto_cantidad_a_comprar
+
 
           let precio_pp = this.arrayInformacionParaCarga[props.$index].precio_pp
           
@@ -1286,8 +1290,8 @@
           })
         } else {
           this.loadingBtnGuardar = true
-          //console.log("this.arrayInformacionParaCarga");
-          //console.log(this.arrayInformacionParaCarga);
+          console.log("this.arrayInformacionParaCarga");
+          console.log(this.arrayInformacionParaCarga);
 
           let params = {
             idProveedor: this.idProveedor,
@@ -1301,6 +1305,7 @@
             totalHomogeneo: this.totalHomogeneo,
             arrProductosProveedores: JSON.stringify(this.arrayInformacionParaCarga)
           } 
+
 
           // if (this.diaPago != null) {
           //   params.diaPago = this.diaPagoSinFormatear
@@ -1326,7 +1331,8 @@
             }
           })
 
-
+          console.log("params");
+          console.log(params);
 
           await this.axios.post("/api/presupuestacionproductosproveedor/crear", params)
             .then(response => {
@@ -1341,10 +1347,9 @@
                 // this.cerrar()
                 this.loadingBtnGuardar = false
               }
-            })
+            }
+          )
         }
-
-        
       },
 
       classChecker({ row, column }) {
@@ -1352,9 +1357,6 @@
           // //console.log("column");
           // //console.log(column);
         }
-
-        
-
         // //console.log("row");
         // //console.log(row);
 

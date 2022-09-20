@@ -21,7 +21,7 @@
       <!-- Paso 1 -->
       <div v-show="active == 0" style="padding: 30px">
         <el-form
-          label-width="120px"
+          label-width="200px"
         >
           <!-- Nombre -->
           <el-form-item label="Nombre obra" prop="nombreObra">
@@ -43,7 +43,7 @@
           </el-form-item> -->
 
           <!-- Fecha de inicio y de fin -->
-          <el-form-item label="Fecha de obra" style="width:100%;" >
+          <el-form-item label="Período de abastecimiento" style="width:100%;" >
             <el-row :gutter="10" style="width:100%;">
               <el-col :span="12" style="width:100%;">
                 <el-input 
@@ -67,7 +67,7 @@
           </el-form-item>
 
           <!-- Cantidad de meses -->
-          <el-form-item label="Meses totales">
+          <el-form-item label="Plazo de ejecución">
             <el-input 
               style="width: 100%"
               v-model="form.cantMeses"
@@ -78,13 +78,13 @@
           </el-form-item>
 
           <!-- Fecha a presupuestar -->
-          <el-form-item label="Fecha a presup.">
+          <el-form-item label="Fecha de presupuestación">
             <el-date-picker
               v-model="form.fechaaPresupuestar"
               type="monthrange"
               range-separator="a"
-              start-placeholder="Mes de inicio"
-              end-placeholder="Mes de fin"
+              start-placeholder="Fecha de incio de presupuestación"
+              end-placeholder="Fecha de fin de presupuestación"
               style="width: 100%"
               @change="cantidadMeses()"
               :disabled="deshabilitarSelectFechaaPresupuestar()"
@@ -95,7 +95,7 @@
 
 
           <!-- Meses a presupuestar -->
-          <el-form-item label="Meses a presup.">
+          <el-form-item label="Período de presupuestación">
             <el-input 
               style="width: 100%"
               v-model="form.mesesaPresupuestar"
@@ -428,12 +428,12 @@
             <template #default="scope">
               <el-input-number 
                 v-model="scope.row.cantidadRealAComprar" 
-                :max="scope.row.cantidadAComprar"
                 :controls="false" 
                 align="center" 
                 text-align="center"
                 style="width: 100%"
               />
+              <!-- :max="scope.row.cantidadAComprar" -->
             </template>
           </el-table-column>
 
@@ -1242,9 +1242,15 @@
 
         
         // declaro los valores para mostrar en el paso 2
-        let mostrarFechaIncio = this.form.fechaaPresupuestar[0].getDate() + "/" + (this.form.fechaaPresupuestar[0].getMonth() + 1) + "/" + this.form.fechaaPresupuestar[0].getFullYear();
+        // let mostrarFechaIncio = this.form.fechaaPresupuestar[0].getDate() + "/" + (this.form.fechaaPresupuestar[0].getMonth() + 1) + "/" + this.form.fechaaPresupuestar[0].getFullYear();
 
-        let mostrarFechaFin = this.form.fechaaPresupuestar[1].getDate() + "/" + (this.form.fechaaPresupuestar[1].getMonth() + 1) + "/" + this.form.fechaaPresupuestar[1].getFullYear();
+        let mostrarFechaIncio = (this.form.fechaaPresupuestar[0].getMonth() + 1) + "/" + this.form.fechaaPresupuestar[0].getFullYear();
+
+
+        // let mostrarFechaFin = this.form.fechaaPresupuestar[1].getDate() + "/" + (this.form.fechaaPresupuestar[1].getMonth() + 1) + "/" + this.form.fechaaPresupuestar[1].getFullYear();
+
+        let mostrarFechaFin = (this.form.fechaaPresupuestar[1].getMonth() + 1) + "/" + this.form.fechaaPresupuestar[1].getFullYear();
+
 
         this.mostrarFechaIncioPresupuestacion = mostrarFechaIncio
         this.mostrarFechaFinPresupuestacion = mostrarFechaFin
