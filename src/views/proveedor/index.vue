@@ -21,7 +21,7 @@
             <template #title>
               <!-- <h4 style="color: #95989e"> -->
                 <span class="material-icons" style="margin-top: -1px; margin-left: 25px; color: #95989e">filter_list</span>
-                <span style="font-size: 20px; margin-top: 0px !important; color: #95989e">Filtros</span>
+                <span style="font-size: 21px; margin-top: 0px !important; color: #95989e">Filtros</span>
 
               <!-- </h4> -->
             </template>
