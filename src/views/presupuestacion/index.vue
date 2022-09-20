@@ -2,7 +2,7 @@
   <main>
     <el-card>
       <template #header>
-        <h1>Provisión</h1>
+        <h1>Provisión1</h1>
       </template>
       <div v-if="tipoUsuario == 1">
         <el-button
