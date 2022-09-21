@@ -42,7 +42,7 @@
             >
               <div 
                 id="tablaprueba" 
-                style="height: 100%; width: 5000px;"
+                style="height: 100%; width: 10000px;"
               > 
 
                 <el-table
