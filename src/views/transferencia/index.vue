@@ -219,20 +219,26 @@ export default {
       await this.axios
         .get("/api/transferencia/obtenerTodos")
         .then((response) => {
-          response.data.forEach((elemento) => {
-            if (elemento.presupuestacion != null) {
-              this.transferencias.push(elemento);
-            }
-          });
+          console.log("response");
+          console.log(response);
 
-          // this.transferencias = response.data;
-          this.paginas = response.data.pagina;
-          this.fecha = response.data[0].plan_fdesde;
-          console.log("fecha" + this.fecha);
-          console.log("this.transferencias");
-          console.log(this.transferencias);
+          if (response.data.length != 0) {
+            console.log("entro");
+            response.data.forEach((elemento) => {
+              if (elemento.presupuestacion != null) {
+                this.transferencias.push(elemento);
+              }
+            });
 
-          console.log(this.paginas);
+            // this.transferencias = response.data;
+            this.paginas = response.data.pagina;
+            this.fecha = response.data[0].plan_fdesde;
+            console.log("fecha" + this.fecha);
+            console.log("this.transferencias");
+            console.log(this.transferencias);
+
+            console.log(this.paginas);
+          }
         });
       this.loadingDatos = false;
     },
