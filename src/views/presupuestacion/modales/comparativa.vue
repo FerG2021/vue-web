@@ -1646,7 +1646,9 @@ export default {
     },
 
     headerStylePrincipalTable(row, column, rowIndex, columnIndex){
+      // 
       // P1
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 3) {
         return { background: "#96ceb4", color: "#000000" }
       }
@@ -1678,8 +1680,11 @@ export default {
       if (row.rowIndex == 2 && row.columnIndex == 6) {
         return { background: "#96ceb4", color: "#000000" }
       }
-      
+
+
+      // 
       // P2
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 4) {
         return { background: "#adcbe3", color: "#000000" }
       }
@@ -1712,7 +1717,9 @@ export default {
         return { background: "#adcbe3", color: "#000000" }
       }
 
+      // 
       // P3
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 5) {
         return { background: "#ffeead", color: "#000000" }
       }
@@ -1745,8 +1752,9 @@ export default {
         return { background: "#ffeead", color: "#000000" }
       }
 
-
+      // 
       // P4
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 6) {
         return { background: "#ff6f69", color: "#000000" }
       }
@@ -1779,8 +1787,9 @@ export default {
         return { background: "#ff6f69", color: "#000000" }
       }
 
-
+      // 
       // P5
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 7) {
         return { background: "#ffcc5c", color: "#000000" }
       }
@@ -1812,10 +1821,192 @@ export default {
       if (row.rowIndex == 2 && row.columnIndex == 34) {
         return { background: "#ffcc5c", color: "#000000" }
       }
+
+
+      // 
+      // P6
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 8) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 35) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 36) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 37) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 38) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 39) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 40) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 41) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+
+      // 
+      // P7
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 9) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 42) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 43) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 44) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 45) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 46) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 47) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 48) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+
+      // 
+      // P8
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 10) {
+        return { background: "#667b68", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 49) {
+        return { background: "#667b68", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 50) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 51) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 52) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 53) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 54) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 55) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+
+      // 
+      // P9
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 11) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 56) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 57) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 58) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 59) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 60) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 61) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 62) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+
+      // 
+      // P10
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 12) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 63) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 64) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 65) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 66) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 67) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 68) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 69) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
     },
 
     headerStyleTotal(row, column, rowIndex, columnIndex){
+      // 
       // P1
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 2) {
         return { background: "#96ceb4", color: "#000000" }
       }
@@ -1848,8 +2039,10 @@ export default {
         return { background: "#96ceb4", color: "#000000" }
       }
 
-      
+
+      // 
       // P2
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 3) {
         return { background: "#adcbe3", color: "#000000" }
       }
@@ -1883,7 +2076,9 @@ export default {
       }
 
 
+      // 
       // P3
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 4) {
         return { background: "#ffeead", color: "#000000" }
       }
@@ -1904,8 +2099,9 @@ export default {
         return { background: "#ffeead", color: "#000000" }
       }
 
-
+      // 
       // P4
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 5) {
         return { background: "#ff6f69", color: "#000000" }
       }
@@ -1935,7 +2131,9 @@ export default {
       }
 
 
+      // 
       // P5
+      // 
       if (row.rowIndex == 1 && row.columnIndex == 6) {
         return { background: "#ffcc5c", color: "#000000" }
       }
@@ -1963,22 +2161,174 @@ export default {
       if (row.rowIndex == 2 && row.columnIndex == 29) {
         return { background: "#ffcc5c", color: "#000000" }
       }
+
+
+      // 
+      // P6
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 7) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 30) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 31) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 32) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 33) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 34) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 35) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+
+      // 
+      // P7
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 8) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 36) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 37) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 38) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 39) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 40) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 41) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+
+      // 
+      // P8
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 9) {
+        return { background: "#667b68", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 42) {
+        return { background: "#667b68", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 43) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 44) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 45) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 46) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 47) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+
+      // 
+      // P9
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 10) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 48) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 49) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 50) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 51) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 52) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 53) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+
+      // 
+      // P10
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 11) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 54) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 55) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 56) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 57) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 58) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 59) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
     },
 
     headerStyle(row, column, rowIndex, columnIndex) {
-      // console.log("row de headerStyle");
-      // console.log(row);
       
-      // console.log("column de headerStyle");
-      // console.log(column);
-
-      // console.log("rowIndex de headerStyle");
-      // console.log(rowIndex);
-
-      // console.log("columnIndex de headerStyle");
-      // console.log(columnIndex);
-
+      // 
       // P1
+      // 
       if (row.rowIndex == 0 && row.columnIndex == 2) {
         return { background: "#96ceb4", color: "#000000" }
       }
@@ -2007,8 +2357,9 @@ export default {
         return { background: "#96ceb4", color: "#000000" }
       }
 
-
+      // 
       // P2
+      // 
       if (row.rowIndex == 0 && row.columnIndex == 3) {
         return { background: "#adcbe3", color: "#000000" }
       }
@@ -2037,8 +2388,9 @@ export default {
         return { background: "#adcbe3", color: "#000000" }
       }
 
-
+      // 
       // P3
+      // 
       if (row.rowIndex == 0 && row.columnIndex == 4) {
         return { background: "#ffeead", color: "#000000" }
       }
@@ -2067,8 +2419,9 @@ export default {
         return { background: "#ffeead", color: "#000000" }
       }
 
-
+      // 
       // P4
+      // 
       if (row.rowIndex == 0 && row.columnIndex == 5) {
         return { background: "#ff6f69", color: "#000000" }
       }
@@ -2097,8 +2450,9 @@ export default {
         return { background: "#ff6f69", color: "#000000" }
       }
 
-
-      // P4
+      // 
+      // P5
+      // 
       if (row.rowIndex == 0 && row.columnIndex == 6) {
         return { background: "#ffcc5c", color: "#000000" }
       }
@@ -2128,25 +2482,171 @@ export default {
       }
 
       
+      // 
+      // P6
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 7) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 30) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 31) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
 
+      if (row.rowIndex == 2 && row.columnIndex == 32) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 33) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 34) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 35) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+
+      // 
+      // P7
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 8) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 36) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 37) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 38) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 39) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 40) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 41) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+
+      // 
+      // P8
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 9) {
+        return { background: "#667b68", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 42) {
+        return { background: "#667b68", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 43) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 44) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 45) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 46) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 47) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+
+      // 
+      // P9
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 10) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 48) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 49) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 50) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 51) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 52) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 53) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+
+      // 
+      // P10
+      // 
+      if (row.rowIndex == 1 && row.columnIndex == 11) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 54) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+      
+      if (row.rowIndex == 2 && row.columnIndex == 55) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 56) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 57) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 58) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 2 && row.columnIndex == 59) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
       
 
       
     },
 
     headerStyleIntermedio(row, column, rowIndex, columnIndex) {
-      // console.log("row de headerStyle");
-      // console.log(row);
       
-      // console.log("column de headerStyle");
-      // console.log(column);
-
-      // console.log("rowIndex de headerStyle");
-      // console.log(rowIndex);
-
-      // console.log("columnIndex de headerStyle");
-      // console.log(columnIndex);
-
       // P1
       if (row.rowIndex == 0 && row.columnIndex == 2) {
         return { background: "#96ceb4", color: "#000000" }

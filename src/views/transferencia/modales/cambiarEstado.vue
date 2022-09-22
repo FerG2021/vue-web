@@ -1,12 +1,13 @@
 <template>
   <div>
-    <modal
+    <modal-sin-cerrar
       ref="modal"
       titulo="Confirmación de cambio de estado"
       :impedir-close="impedirClose"
+      :show-close="false"
     >
-      <h3 style="text-align: center">¿Está seguro que desea cambiar el estado a <b>Ejecutado</b>?</h3>
-      <h3 style="text-align: center">Al cambiar a estado "Ejecutado" no podrá volver a cambiar el estado</h3>
+      <h3 style="text-align: center">¿Está seguro que desea cambiar el estado ?</h3>
+      <h3 style="text-align: center">Al cambiar a "Ejecutado" no podrá volver a cambiar el estado</h3>
 
       <div style="display: flex; margin-top: 20px">
         <div style="margin: auto">
@@ -22,12 +23,13 @@
             type="primary"
             style="margin-left: 20px"
             @click="actualizarEstado()"
+            :loading="loadingBtnCambiarEstado"
           >
             Aceptar
           </el-button>
         </div>
       </div>
-    </modal>
+    </modal-sin-cerrar>
   </div>
 </template>
 
@@ -40,6 +42,7 @@ export default {
     return {
       row: null,
       estado: null,
+      loadingBtnCambiarEstado: false,
     };
   },
 
@@ -51,6 +54,8 @@ export default {
       this.estado = null
       this.row = row
       this.estado = estado
+      this.loadingBtnCambiarEstado = false
+
 
       // limpio los campos
       // this.getDatos();
@@ -61,12 +66,25 @@ export default {
       this.$refs.modal.cerrar();
     },
 
+    impedirClose(done) {
+      console.log("entro aqui");
+        if (this.impedirClose)
+          return
+
+        this.$confirm('¿Está seguro de que desea cerrar la ventana?')
+          .then((_) => {
+            done()
+          })
+          .catch(() => { })
+      },
+
     cancelar(){
       this.$emit('obtener-datos')
       this.cerrar()
     },
 
     async actualizarEstado(){
+      this.loadingBtnCambiarEstado = true
 
       console.log("this.row");
       console.log(this.row);
@@ -94,6 +112,9 @@ export default {
           this.cerrar();
 
         })
+      
+      this.loadingBtnCambiarEstado = false
+
 
     },
 

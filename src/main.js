@@ -15,6 +15,7 @@ import { createStore } from 'vuex'
 
 // importo los componentes de forma global
 import Modal from './components/modal/index.vue'
+import ModalSinCerrar from './components/modal_sin_cerrar/index.vue'
 import Boton from './components/boton/index.vue'
 import MacaSelectBox from './components/select_box/index.vue'
 
@@ -88,6 +89,7 @@ createApp(App)
   .mixin(variableGlobal)
   .use(store)
   .component('Modal', Modal)
+  .component('ModalSinCerrar', ModalSinCerrar)
   .component('Boton', Boton)
   .component('MacaSelectBox', MacaSelectBox)
   .mount('#app')
