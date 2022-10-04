@@ -114,7 +114,7 @@
               start-placeholder="Mes de inicio"
               end-placeholder="Mes de fin"
               style="width: 100%"
-              @change="cantidadMeses()"
+              @change="cantidadMesesManual()"
               :disabled="deshabilitarSelectFechaaPresupuestar()"
             />
           </el-form-item>
@@ -1368,6 +1368,21 @@ export default {
         return false;
       }
     },
+    
+
+    // esta funcion se agrega para permitir que al cargar los datos del borrador la cantidad de meses y el array de los productos no se alterar de como se los declara en la presupestacion (cuando se los guarda como borrador). Si se cambian los meses manualmente desde el date picker del modal de editar borrador recien se llama a la funcion para que se limpien todos los campos y se carguen de nuevo. 
+    // SI SE DECIDE QUE NO SEA ASI SE DEBE ELIMINAR ESTA FUNCION Y EN EL CHANGE DEL DATE PICKER LLAMAR A cantidadMeses()
+
+    cantidadMesesManual(){
+      // al cambiar la fecha de presupuestacion limpiar los campos de rubro a presupuestar y la lista con todos los productos para que se vuelvan a elegir acorde a los nuevos meses seleccionados
+      // this.form.mesesaPresupuestar = null
+      this.filtroRubro = null
+      this.arrayProductosAComprar = []
+      this.arrayRubrosAComprar = []
+      this.arrayCantidadesDeposito = []
+
+      this.cantidadMeses()
+    },
 
     async cantidadMeses() {
       // console.log(this.form.mesesaPresupuestar[0].getMonth()+1);
@@ -1381,6 +1396,8 @@ export default {
       // console.log(this.form.mesesaPresupuestar[1].getDate());
       // console.log(this.form.mesesaPresupuestar[1].getMonth()+1);
       // console.log(this.form.mesesaPresupuestar[1].getFullYear());
+
+      
 
       // console.log(this.form.mesesaPresupuestar[1].getMonth() - this.form.mesesaPresupuestar[0].getMonth());
       let fechaaPresupuestar0 = new Date(this.form.fechaaPresupuestar[0])

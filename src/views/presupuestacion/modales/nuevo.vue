@@ -1236,6 +1236,14 @@
 
         // console.log(this.form.mesesaPresupuestar[1].getMonth() - this.form.mesesaPresupuestar[0].getMonth());
 
+
+        // al cambiar la fecha de presupuestacion limpiar los campos de rubro a presupuestar y la lista con todos los productos para que se vuelvan a elegir acorde a los nuevos meses seleccionados
+        // this.form.mesesaPresupuestar = null
+        this.filtroRubro = null
+        this.arrayProductosAComprar = []
+        this.arrayRubrosAComprar = []
+        this.arrayCantidadesDeposito = []
+
         let meses = this.form.fechaaPresupuestar[1].getMonth() - this.form.fechaaPresupuestar[0].getMonth() + (12 * (this.form.fechaaPresupuestar[1].getFullYear() - this.form.fechaaPresupuestar[0].getFullYear())) + 1
 
         this.form.mesesaPresupuestar = meses
@@ -1343,10 +1351,6 @@
 
           }
         })
-
-        
-
-        // 
       },
 
       async buscarCantidadPrevision(producto_id){
@@ -1732,6 +1736,13 @@
         params.arrTransferencias = JSON.stringify(this.arrayCantidadesDeposito)
         console.log("params.arrTransferencias");
         console.log(params.arrTransferencias);
+
+        console.log("params QUE SE MANDA");
+        console.log(params);
+
+        console.log("this.arrayCantidadesDeposito");
+        console.log(this.arrayCantidadesDeposito);
+
 
 
         await this.axios.post("/api/presupuestacion/crear", params)

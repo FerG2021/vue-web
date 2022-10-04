@@ -686,7 +686,8 @@
             factor: 1,
             // cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_a_comprar,
             cantidad_proveedor: ele.productoPresupuestacion.producto_cantidad_real_a_comprar,
-            iva: ele.productoPresupuestacion.iva,
+            // iva: ele.productoPresupuestacion.iva,
+            iva: 21, // se agrega de esta forma para dejar de forma predeterminad el 21% de iva, de lo contrario se debe comentar esta linea y descomentar de arriba
             total_iva: null,
             precio_pu: ele.productoPresupuestacion.precio_pu,
             precio_pp: ele.productoPresupuestacion.precio_pp,
@@ -1283,73 +1284,95 @@
       },
 
       async onSubmit(){
-        if (this.condicionpago == null) {
+        // verifico que en todos los productos se hayan cargado los precios, en el caso de que no hayan sido cargados todos muestro el mensaje de error
+        var res = this.arrayInformacionParaCarga.filter(element => element.precio_png == null)
+
+        console.log("res");
+        console.log(res.length);
+
+
+        if (res.length > 0) {
           ElMessage({
             type: 'error',
-            message: '¡Se debe seleccionar forma de pago!',
+            message: '¡Se deben colocar todos los precios, en el caso de que no tenga disponibilidad de un producto colocar 0 en PNG ($)!',
           })
         } else {
-          this.loadingBtnGuardar = true
-          console.log("this.arrayInformacionParaCarga");
-          console.log(this.arrayInformacionParaCarga);
+          if (this.condicionpago == null || this.facturaA == null) {
+            ElMessage({
+              type: 'error',
+              message: '¡Se debe seleccionar forma de pago e indicar si entrega o no factura A!',
+            })
+          } else {
+            this.loadingBtnGuardar = true
+            console.log("this.arrayInformacionParaCarga");
+            console.log(this.arrayInformacionParaCarga);
 
-          let params = {
-            idProveedor: this.idProveedor,
-            idPresupuestacion: this.idPresupuestacion,
-            totalPP: this.totalPP,
-            precioFlete: this.precioFlete,
-            // facturaA: this.facturaA,
-            // condicionpago: this.condicionpago,
-            proveedor_monto_factura_A: this.montoIVA,
-            descuentosyBonificaciones: this.descuentosyBonificaciones,
-            totalHomogeneo: this.totalHomogeneo,
-            arrProductosProveedores: JSON.stringify(this.arrayInformacionParaCarga)
-          } 
+            let params = {
+              idProveedor: this.idProveedor,
+              idPresupuestacion: this.idPresupuestacion,
+              totalPP: this.totalPP,
+              precioFlete: this.precioFlete,
+              // facturaA: this.facturaA,
+              // condicionpago: this.condicionpago,
+              proveedor_monto_factura_A: this.montoIVA,
+              descuentosyBonificaciones: this.descuentosyBonificaciones,
+              totalHomogeneo: this.totalHomogeneo,
+              arrProductosProveedores: JSON.stringify(this.arrayInformacionParaCarga)
+            } 
 
 
-          // if (this.diaPago != null) {
-          //   params.diaPago = this.diaPagoSinFormatear
-          // }
+            // if (this.diaPago != null) {
+            //   params.diaPago = this.diaPagoSinFormatear
+            // }
 
-          // if (this.facturaA == "Si") {
-          //   params.facturaA = 1
-          // } else {
-          //   params.facturaA = 0
-          // }
+            // if (this.facturaA == "Si") {
+            //   params.facturaA = 1
+            // } else {
+            //   params.facturaA = 0
+            // }
 
-          this.opcionesFacturaA.forEach((ele) => {
-            if (this.facturaA == ele.value || this.facturaA == ele.label) {
-              params.facturaA = ele.value
-            }
-          })
-
-          this.arrayCondicionesPago.forEach((elemento) => {
-            if (this.condicionpago === elemento.condicionpago_nombre ||
-                this.condicionpago === elemento.condicionpago_id
-            ) {
-              params.condicionpago = elemento.condicionpago_id
-            }
-          })
-
-          console.log("params");
-          console.log(params);
-
-          await this.axios.post("/api/presupuestacionproductosproveedor/crear", params)
-            .then(response => {
-              //console.log(response);
-
-              if (response) {
-                ElMessage({
-                  type: 'success',
-                  message: '¡Carga realizada con éxito!',
-                })
-                // this.$emit('actualizarTabla')
-                // this.cerrar()
-                this.loadingBtnGuardar = false
+            this.opcionesFacturaA.forEach((ele) => {
+              if (this.facturaA == ele.value || this.facturaA == ele.label) {
+                params.facturaA = ele.value
               }
-            }
-          )
+            })
+
+            this.arrayCondicionesPago.forEach((elemento) => {
+              if (this.condicionpago === elemento.condicionpago_nombre ||
+                  this.condicionpago === elemento.condicionpago_id
+              ) {
+                params.condicionpago = elemento.condicionpago_id
+              }
+            })
+
+            console.log("params");
+            console.log(params);
+
+            console.log("this.arrayInformacionParaCarga");
+            console.log(this.arrayInformacionParaCarga);
+
+
+            await this.axios.post("/api/presupuestacionproductosproveedor/crear", params)
+              .then(response => {
+                //console.log(response);
+
+                if (response) {
+                  ElMessage({
+                    type: 'success',
+                    message: '¡Carga realizada con éxito!',
+                  })
+                  // this.$emit('actualizarTabla')
+                  // this.cerrar()
+                  this.loadingBtnGuardar = false
+                }
+              }
+            )
+          }
         }
+
+
+
+        
       },
 
       classChecker({ row, column }) {

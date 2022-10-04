@@ -44,11 +44,15 @@
         console.log(this.datos);
 
         // conceptos
+        let arrayConceptos = []
+
         let conceptos = {
           ConceptoImporteGravado: this.datos.ordenCompra.ordenes_compras_monto_total,
           ConceptoImporte: this.datos.ordenCompra.ordenes_compras_monto_total,
           ConceptoCodigo: 'COMPRA_IVA_21',
         }
+
+        arrayConceptos.push(conceptos)
 
         let fecha = new Date(this.datos.ordenCompra.updated_at)
 
@@ -73,7 +77,8 @@
 
         let ordenCompra = {
           Nombre: "",
-          Conceptos: conceptos,
+          // Conceptos: conceptos,
+          Conceptos: arrayConceptos,          
           TransaccionTipoCodigo: 'OPER',
           Proveedor: this.datos.proveedorOrdenCompra.proveedor_codigo,
           NumeroComprobante: "",

@@ -1645,6 +1645,8 @@ export default {
 
     },
 
+    
+    // header de las filas del arriba
     headerStylePrincipalTable(row, column, rowIndex, columnIndex){
       // 
       // P1
@@ -2645,177 +2647,7 @@ export default {
       
     },
 
-    headerStyleIntermedio(row, column, rowIndex, columnIndex) {
-      
-      // P1
-      if (row.rowIndex == 0 && row.columnIndex == 2) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 0) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 1) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 2) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 3) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 4) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 5) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 6) {
-        return { background: "#96ceb4", color: "#000000" }
-      }
-
-
-      // P2
-      if (row.rowIndex == 0 && row.columnIndex == 3) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 7) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 8) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 9) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 10) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 11) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 12) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 13) {
-        return { background: "#adcbe3", color: "#000000" }
-      }
-
-
-      // P3
-      if (row.rowIndex == 0 && row.columnIndex == 4) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 14) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 15) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 16) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 17) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 18) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 19) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 20) {
-        return { background: "#ffeead", color: "#000000" }
-      }
-
-
-      // P4
-      if (row.rowIndex == 0 && row.columnIndex == 5) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 21) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 22) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 23) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 24) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 25) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 26) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 27) {
-        return { background: "#ff6f69", color: "#000000" }
-      }
-
-
-      // P4
-      if (row.rowIndex == 0 && row.columnIndex == 6) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 28) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 29) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 30) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 31) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 32) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 33) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-
-      if (row.rowIndex == 1 && row.columnIndex == 34) {
-        return { background: "#ffcc5c", color: "#000000" }
-      }
-    },
+    
 
     headerCellStyle({ row, column, rowIndex, columnIndex }){
       if (column.label == "PP") {
@@ -2899,6 +2731,8 @@ export default {
 
     },
 
+
+    // filas de datos de arriba
     classChecker({ row, column, rowIndex, columnIndex }) {
       // console.log("*******************************");
       // console.log("rowIndex de classchecker");
@@ -3058,160 +2892,505 @@ export default {
       
       //P6
       if (columnIndex == 38) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 39) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 40) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 41) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }      
 
       if (columnIndex == 42) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 43) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 44) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       // P7
       if (columnIndex == 45) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 46) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 47) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 48) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 49) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 50) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
+      }
+      
+      if (columnIndex == 51) {
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       //P8
-      if (columnIndex == 51) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
-      }
-
       if (columnIndex == 52) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 53) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 54) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 55) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 56) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
-      // P9
-      if (columnIndex == 57) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+       if (columnIndex == 57) {
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 58) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
+      // P9
       if (columnIndex == 59) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 60) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 61) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 62) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
-      // P10
       if (columnIndex == 63) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 64) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 65) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
+      // P10
       if (columnIndex == 66) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 67) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 68) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
-      // P11
       if (columnIndex == 69) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 70) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 71) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 72) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
-      if (columnIndex == 73) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // P11
+      // if (columnIndex == 73) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 74) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 74) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
     },
 
+    // Header de las filas del medio
+    headerStyleIntermedio(row, column, rowIndex, columnIndex) {
+      // P1
+      if (row.rowIndex == 0 && row.columnIndex == 2) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 0) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 1) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 2) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 3) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 4) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 5) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 6) {
+        return { background: "#96ceb4", color: "#000000" }
+      }
+
+
+      // P2
+      if (row.rowIndex == 0 && row.columnIndex == 3) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 7) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 8) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 9) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 10) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 11) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 12) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 13) {
+        return { background: "#adcbe3", color: "#000000" }
+      }
+
+
+      // P3
+      if (row.rowIndex == 0 && row.columnIndex == 4) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 14) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 15) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 16) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 17) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 18) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 19) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 20) {
+        return { background: "#ffeead", color: "#000000" }
+      }
+
+
+      // P4
+      if (row.rowIndex == 0 && row.columnIndex == 5) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 21) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 22) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 23) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 24) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 25) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 26) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 27) {
+        return { background: "#ff6f69", color: "#000000" }
+      }
+
+
+      // P5
+      if (row.rowIndex == 0 && row.columnIndex == 6) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 28) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 29) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 30) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 31) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 32) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 33) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 34) {
+        return { background: "#ffcc5c", color: "#000000" }
+      }
+
+
+
+      // P6
+      if (row.rowIndex == 0 && row.columnIndex == 7) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 35) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 36) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 37) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 38) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 39) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 40) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 41) {
+        return { background: "#c8ae8d", color: "#000000" }
+      }
+
+
+      // P7
+      if (row.rowIndex == 0 && row.columnIndex == 8) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 42) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 43) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 44) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 45) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 46) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 47) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 48) {
+        return { background: "#a3b899", color: "#000000" }
+      }
+
+
+      // P8
+      if (row.rowIndex == 0 && row.columnIndex == 9) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 49) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 50) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 51) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 52) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 53) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 54) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 55) {
+        return { background: "#667b68", color: "#000000" }
+      }
+
+
+      // P9
+      if (row.rowIndex == 0 && row.columnIndex == 10) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 56) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 57) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 58) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 59) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 60) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 61) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 62) {
+        return { background: "#ecd8be", color: "#000000" }
+      }
+
+
+      // P10
+      if (row.rowIndex == 0 && row.columnIndex == 11) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 63) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 64) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 65) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 66) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 67) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 68) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+
+      if (row.rowIndex == 1 && row.columnIndex == 69) {
+        return { background: "#f0f5ee", color: "#000000" }
+      }
+    },
+
+
+    // filas de datos del medio
     classCheckerIntermedio({ row, column, rowIndex, columnIndex }){
       // Proveedor1
       if (columnIndex == 2) {
@@ -3361,208 +3540,210 @@ export default {
 
       //P6
       if (columnIndex == 37) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 38) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 39) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 40) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }      
 
       if (columnIndex == 41) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 42) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 43) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       // P7
       if (columnIndex == 44) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 45) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 46) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 47) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 48) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 49) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
       
       if (columnIndex == 50) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
       
       // P8
       if (columnIndex == 51) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 52) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 53) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 54) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 55) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 56) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 57) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       //P9
       if (columnIndex == 58) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 59) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 60) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 61) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 62) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 63) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 64) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       // P10
       if (columnIndex == 65) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 66) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 67) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
       
       if (columnIndex == 68) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 69) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 70) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       if (columnIndex == 71) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#f0f5ee' , 'color': 'black'}
       }
 
       // P11
-      if (columnIndex == 72) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 72) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 73) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 73) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 74) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 74) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 75) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 75) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 76) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 76) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 77) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 77) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 78) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
+      // if (columnIndex == 78) {
+      //   return {'background': '#e7eff6' , 'color': 'black'}
+      // }
 
       // P12 ff6f69
-      if (columnIndex == 79) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 79) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 80) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 80) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 81) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 81) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 82) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 82) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 83) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 83) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 84) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 84) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
 
-      if (columnIndex == 85) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
+      // if (columnIndex == 85) {
+      //   return {'background': '#ff6f69' , 'color': 'black'}
+      // }
     },
 
+
+    // fila de datos de la fila de abajo, no tiene header
     classCheckerTotal({ row, column, rowIndex, columnIndex }) {
       // console.log("*******************************");
       // console.log("rowIndex de classchecker");
@@ -3743,183 +3924,170 @@ export default {
       //P6
 
       if (columnIndex == 42) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 43) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 44) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 45) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 46) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 47) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       if (columnIndex == 48) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#c8ae8d' , 'color': 'black'}
+      }
+
+      if (columnIndex == 49) {
+        return {'background': '#c8ae8d' , 'color': 'black'}
       }
 
       // P7
-      if (columnIndex == 49) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
-
       if (columnIndex == 50) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 51) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }      
 
       if (columnIndex == 52) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 53) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 54) {
-        return {'background': '#e7eff6' , 'color': 'black'}
-      }
-
-      // P8
-      if (columnIndex == 44) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
-      if (columnIndex == 45) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
-      if (columnIndex == 46) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
-      if (columnIndex == 47) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
-      if (columnIndex == 48) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
-      if (columnIndex == 49) {
-        return {'background': '#ff6f69' , 'color': 'black'}
-      }
-
-      //P9
-      if (columnIndex == 50) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
-      }
-
-      if (columnIndex == 51) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
-      }
-
-      if (columnIndex == 52) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
-      }
-
-      if (columnIndex == 53) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
-      }
-
-      if (columnIndex == 54) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 55) {
-        return {'background': '#ffcc5c' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
-      // P10
       if (columnIndex == 56) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
       if (columnIndex == 57) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#a3b899' , 'color': 'black'}
       }
 
+      // P8
       if (columnIndex == 58) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 59) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 60) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 61) {
-        return {'background': '#adcbe3' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
-      // P11
       if (columnIndex == 62) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 63) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 64) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
       if (columnIndex == 65) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#667b68' , 'color': 'black'}
       }
 
+      //P9
       if (columnIndex == 66) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 67) {
-        return {'background': '#e7eff6' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
-      // P12
       if (columnIndex == 68) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 69) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 70) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 71) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 72) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
       if (columnIndex == 73) {
-        return {'background': '#ff6f69' , 'color': 'black'}
+        return {'background': '#ecd8be' , 'color': 'black'}
       }
 
+      // P10
+
+      if (columnIndex == 74) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 75) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 76) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 77) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 78) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 79) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 80) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+
+      if (columnIndex == 81) {
+        return {'background': '#f0f5ee' , 'color': 'black'}
+      }
+      
     },
     
   },
