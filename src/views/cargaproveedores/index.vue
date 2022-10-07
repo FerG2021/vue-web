@@ -76,6 +76,7 @@
             :closable="false"
             effect="light"
             style="margin-top: 15px"
+            class="info-alert"
           />
         </div>
        
@@ -1425,5 +1426,17 @@
   .btnSiguiente {
     margin: auto;
     margin-right: 10px;
+  }
+
+  .info-alert .el-alert__icon{
+    font-size: 34px !important;
+  }
+
+  .info-alert .el-alert__title{
+    font-size: 16px !important;
+  }
+
+  .info-alert .el-alert__description{
+    font-size: 14px !important;
   }
 </style>

@@ -38,13 +38,21 @@ export default createStore({
 
     getUser({ commit }){
       console.log("getUser");
-      axios.get("/user")
+      const res = axios.get("/user")
         .then(res => {
+          console.log("res");
+          console.log(res);
+
           commit("SET_USER", res.data)
         })
         .catch(() => {
+          console.log("res");
+          console.log(res);
+
           commit("SET_USER", null)
         })
+      
+
     },
   },
   
