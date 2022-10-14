@@ -6,7 +6,35 @@
       :impedir-close="impedirClose"
       width="99%"
     >
-      <div v-loading="loadingTabla" >
+      <div v-if="decisionComparativa == false">
+        <div style="display: flex">
+          <div style="margin: auto">
+            <h3 style="text-align: center">Existe un borrador generado para esta comparativa</h3>
+            <h3 style="text-align: center">Indique si desea seguir con los datos guardados en el borrador o con los datos originales</h3>
+          </div> 
+        </div>
+
+        <div style="display: flex; margin-top: 10px">
+          <div style="margin: auto">
+            <el-button
+              type="primary"
+              @click="getDatos(0)"
+            >
+              Continuar con datos originales
+            </el-button>
+
+            <el-button
+              type="success"
+              @click="getDatos(1)"
+            >
+              Continuar con datos guardados en el borrador
+            </el-button>
+          </div>
+        </div> 
+
+      </div>
+      
+      <div v-loading="loadingTabla" v-else>
         <el-scrollbar>
           <div class="contenedorTablas">
             <!-- {{datosAPI}} -->
@@ -105,6 +133,7 @@
                           style="width: 100%"
                           :controls="false"
                           @change="cambiarCantidad(props)"
+                          :disabled="deshabilitarPorOrdenCompra"
                         ></el-input-number>
                       </template>
                     </el-table-column>
@@ -151,6 +180,7 @@
                             :controls="false"
                             style="width: 100%"
                             @change="cambiarCantidadFactor(item.productos[scope.$index], scope)"
+                            :disabled="deshabilitarPorOrdenCompra"
                           ></el-input-number>
                         </template>
                       </el-table-column>
@@ -180,6 +210,7 @@
                             :controls="false"
                             style="width: 100%"
                             @change="cambiarPNG(item.productos[scope.$index], scope)"
+                            :disabled="deshabilitarPorOrdenCompra"
                           ></el-input-number>
                           <!-- {{parseFloat(item.productos[scope.$index].precio_png)}} -->
                         </template>
@@ -272,7 +303,11 @@
 
                     <el-table-column width="180px" label="F.P." align="center">
                       <!-- {{item.proveedor_forma_de_pago_nombre}} -->
-                      <el-select v-model="item.proveedor_forma_de_pago_nombre" class="m-2" placeholder="Select" size="large">
+                      <el-select 
+                        v-model="item.proveedor_forma_de_pago_nombre"  placeholder="Select" 
+                        size="large"
+                        :disabled="deshabilitarPorOrdenCompra"
+                      >
                         <el-option
                           v-for="item in arrayFormaPago"
                           :key="item.key"
@@ -298,6 +333,7 @@
                             <el-button
                               width="10%"
                               @click="$refs.modalNotas.abrir(item)"
+                              :disabled="deshabilitarPorOrdenCompra"
                             >
                               <!-- <span class="material-icons">visibility</span> -->
                               i
@@ -325,6 +361,7 @@
                         style="width: 100%"
                         v-model="item.proveedor_monto_factura_A"
                         @change="actualizarPrecioTotal()"
+                        :disabled="deshabilitarPorOrdenCompra"
                       ></el-input-number>
                       <!-- {{item.proveedor_monto_factura_A}} -->
                     </el-table-column>
@@ -334,6 +371,7 @@
                         style="width: 100%"
                         v-model="item.proveedor_monto_flete"
                         @change="actualizarPrecioTotal()"
+                        :disabled="deshabilitarPorOrdenCompra"
                       ></el-input-number>
                       <!-- {{item.proveedor_monto_flete}} -->
                     </el-table-column>
@@ -343,6 +381,7 @@
                         style="width: 100%"
                         v-model="item.proveedor_monto_descuentos_bonificaciones"
                         @change="actualizarPrecioTotal()"
+                        :disabled="deshabilitarPorOrdenCompra"
                       ></el-input-number>
                       <!-- {{item.proveedor_monto_descuentos_bonificaciones}} -->
                     </el-table-column>
@@ -436,14 +475,36 @@
         <!-- boton para generar ordenes de compra -->
         <div style="display: flex">
           <div style="margin-left: auto">
+            <!-- <el-button
+              type="primary"
+              style="margin-top: 10px"
+              @click="mostrarInfo()"
+              :loading="loadingBtnGenerarOrdenesCompra"
+            >
+              Mostrar informacion
+            </el-button> -->
+
             <el-button
               type="primary"
               style="margin-top: 10px"
+              @click="guardarBorrador()"
+              :loading="loadingBtnGuardarBorrador"
+              v-if="deshabilitarPorOrdenCompra == false"
+            >
+              Guardar borrador
+            </el-button>
+
+            <el-button
+              type="success"
+              style="margin-top: 10px"
               @click="generarOrdenesDeCompra()"
               :loading="loadingBtnGenerarOrdenesCompra"
+              v-if="deshabilitarPorOrdenCompra == false"
             >
               Generar órdenes de compra
             </el-button>
+
+            
           </div>
         </div>       
 
@@ -511,6 +572,12 @@ export default {
         },
       ],
       loadingBtnGenerarOrdenesCompra: false,
+
+      // dato que va a guardar el estado de la comparativa, si se puede editar o no; o si existe borrador
+      estadoComparativa: null,
+      decisionComparativa: null,
+      loadingBtnGuardarBorrador: false,
+      deshabilitarPorOrdenCompra: false,
     };
   },
 
@@ -539,7 +606,13 @@ export default {
       this.arrayTotalHomegeneoProveedores = []
       this.arrayOrdenCompra = []
       this.loadingBtnGenerarOrdenesCompra = false
-      
+
+      this.estadoComparativa = null
+      this.decisionComparativa = null
+      this.loadingBtnGuardarBorrador = false
+      this.deshabilitarPorOrdenCompra = false
+
+
 
 
       this.$refs.modal.abrir();
@@ -557,7 +630,7 @@ export default {
 
       // limpio los campos
       this.getCondicionesPago()
-      this.getDatos();
+      this.getEstadoComparativa();
       
     },
 
@@ -593,9 +666,78 @@ export default {
         })
     },
 
-    async getDatos() {
+      
+    async getEstadoComparativa(){
+      // primero pregunto la condicion de la comparativa
       await this.axios
-        .get("/api/presupuestacionproductosproveedor/obtenerTodos/" + this.id)
+        .get("/api/presupuestacionproductosproveedor/condicionComparativa/" + this.id)
+        .then((response) => {
+          console.log("response cond comparativa");
+          console.log(response);
+
+          console.log("ESTADO response cond comparativa");
+          console.log(response.data.code);
+          
+          
+
+          this.estadoComparativa = response.data.code
+
+          // if (this.estadoComparativa == 201) {
+          //   this.decisionComparativa = true
+          //   // this.getDatos(0)
+          // } else {
+          //   this.decisionComparativa = false
+          // }
+
+
+          if (this.estadoComparativa == 200) {
+            // 200 = EXISTE UNA COMPARATIVA GENERADA (NO SE PUEDE EDITAR)
+            this.decisionComparativa = true
+            this.deshabilitarPorOrdenCompra = true
+
+            this.getDatos(1)
+          } else {
+            if (this.estadoComparativa == 201) {
+              console.log("entra");
+              // 201 = EXISTE UN BORRADOR (SE PUEDE EDITAR O TOMAR LOS DATOS ORIGINALES)
+              this.decisionComparativa = false
+              return
+            } else {
+              if (this.estadoComparativa == 202) {
+                // 202 = NO EXISTE BORRADOR (SE MUESTRAN LOS DATOS ORIGINALES)
+                this.decisionComparativa = true
+                this.getDatos(0)
+              } 
+            }
+          }
+
+          console.log("this.estadoComparativa");
+          console.log(this.estadoComparativa);
+          console.log("this.decisionComparativa");
+          console.log(this.decisionComparativa);
+
+
+        })
+
+    },
+
+    // armo el array para mostrar unificando los proveedores y sus productos
+    async getDatos(datosBorrador) {
+      this.decisionComparativa = true      
+
+      let params = {
+        id: this.id,
+        datosBorrador: datosBorrador
+      }
+
+      console.log("params");
+      console.log(params);
+
+
+      await this.axios
+        // .get("/api/presupuestacionproductosproveedor/obtenerTodos/" + this.id, params)
+        .post("/api/presupuestacionproductosproveedor/obtenerTodos" ,params)
+
         .then((response) => {
 
           this.arrAux = response.data;
@@ -610,6 +752,7 @@ export default {
               presupuestacion_proveedor_id: elemento.presupuestacion_proveedor_id ,
               // productos: elemento.productos , 
               proveedor_factura_A: elemento.proveedor_factura_A ,
+              proveedor_monto_factura_A: elemento.proveedor_monto_factura_A ,
               proveedor_forma_de_pago: elemento.proveedor_forma_de_pago ,
               proveedor_id: elemento.proveedor_id ,
               proveedor_mail: elemento.proveedor_mail , 
@@ -734,7 +877,7 @@ export default {
 
       this.crearArraySoloProductos();
       this.calcularCompraSegmentada();
-      this.getDatosProveedores();
+      this.getDatosProveedores(datosBorrador);
       this.calcularTotalHomogeneo();
     },
 
@@ -894,6 +1037,9 @@ export default {
             let precio = ele.cantidad_proveedor * ele.precio_pu
             let precioAux = parseFloat(precio)
             ele.precio_pp = precioAux.toFixed(2)
+
+            // se agrega para que se modifique la cantidad a comprar del producto
+            ele.producto_cantidad_a_comprar = props.row.cantidad_a_comprar
           }
         })     
       })
@@ -1063,6 +1209,9 @@ export default {
       this.marcarMenor()
       this.calcularTotalHomogeneo()
       this.calcularMenorMontoTotal()
+
+      // se agrega, sacar si hay algun cambio que no funcione
+      this.calcularPrecioPPProveedores()
     },
 
     agregar(scope, item, precio, index) {
@@ -1248,6 +1397,12 @@ export default {
             console.log("**************");
             let precioPPParcialAux = parseFloat(precioPPParcial)
             elementoArrayProv.totalPP = precioPPParcialAux.toFixed(2)
+            // elementoArrayProv.totalPP = parseFloat(elementoArrayProv.totalPP) +  precioPPParcialAux.toFixed(2)
+
+            console.log("elementoArrayProv.totalPP");
+            console.log(elementoArrayProv.totalPP);
+
+
           }
         })
 
@@ -1375,9 +1530,14 @@ export default {
     },
 
     // traigo los datos de cada uno de los proveedores para mostrar la informacion de la factura, la forma de pago, etc
-    async getDatosProveedores(){
+    async getDatosProveedores(datosBorrador){
+      let params = {
+        id: this.id,
+        datosBorrador: datosBorrador,
+      }
+
       await this.axios
-        .get("/api/presupuestacionproductosproveedor/obtenerTodosProveedores/" + this.id)
+        .post("/api/presupuestacionproductosproveedor/obtenerTodosProveedores", params )
         .then((response) => {
           const respuestaApi = response;
           // console.log("respuestaApi de arrayInfoProveedores");
@@ -1559,6 +1719,57 @@ export default {
       })    
     },
 
+    async guardarBorrador(){
+      this.loadingBtnGuardarBorrador = true
+      console.log("borrador guardado");
+      console.log("this.datosAPI");
+      console.log(this.datosAPI);
+
+      console.log("this.arrayInfoProveedores");
+      console.log(this.arrayInfoProveedores);
+
+      // recorro los array para cambiar los datos que faltan a datosAPI
+      this.datosAPI.forEach((elemento) => {
+        this.arrayInfoProveedores.forEach((ele) => {
+          console.log("ENTRAAAA");
+          if (elemento.proveedor_id == ele.proveedor_id) {
+            elemento.proveedor_forma_de_pago = ele.proveedor_forma_de_pago
+            elemento.proveedor_monto_factura_A = parseFloat(ele.proveedor_monto_factura_A)
+            elemento.proveedor_monto_flete = parseFloat(ele.proveedor_monto_flete)
+            elemento.proveedor_monto_descuentos_bonificaciones = parseFloat(ele.proveedor_monto_descuentos_bonificaciones)
+            elemento.proveedor_monto_total_homogeneo = parseFloat(ele.proveedor_monto_total_homogeneo)
+          }
+        })
+      })
+
+      let params = {
+        presupuestacion_id: this.id, 
+        arrayDatosBorrador: JSON.stringify(this.datosAPI)
+      }
+
+      console.log("this.datosAPI actualizado");
+      console.log(this.datosAPI);
+
+      console.log("params");
+      console.log(params);
+
+      
+
+      await this.axios.post("/api/presupuestacionproductosproveedor/crearBorrador", params)
+        .then(response =>{
+          console.log("response");
+          console.log(response);
+
+          ElMessage({
+            type: 'success',
+            message: response.data.message,
+          })
+          this.cerrar();
+          this.loadingBtnGuardarBorrador = false
+
+        })
+    },
+
 
     generarOrdenesDeCompra(){
       this.loadingBtnGenerarOrdenesCompra = true
@@ -1579,6 +1790,9 @@ export default {
         arrayProductosProveedor.forEach((ele1) => {
           montoTotalOrdenCompra = montoTotalOrdenCompra +  parseFloat(ele1.precio_pp)
         })
+
+        console.log("arrayProductosProveedor");
+        console.log(arrayProductosProveedor);
 
 
         if (arrayProductosProveedor.length > 0) {
@@ -1604,7 +1818,13 @@ export default {
         }
       })
 
+      console.log("this.arrayOrdenCompra");
+      console.log(this.arrayOrdenCompra);
+
+
       this.postOrdenesDeCompra(this.arrayOrdenCompra)
+
+
       
       
     },
@@ -1615,7 +1835,9 @@ export default {
       console.log(arrayOrdenCompra);
 
       let params = {
-        arrayOrdenesCompra: JSON.stringify(arrayOrdenCompra)
+        arrayOrdenesCompra: JSON.stringify(arrayOrdenCompra),
+        arrayDatosBorrador: JSON.stringify(this.datosAPI),
+        presupuestacion_id: this.id, 
       }
 
       await this.axios.post("/api/ordencompra/crear", params)
@@ -1624,12 +1846,18 @@ export default {
           console.log(response);
           ElMessage({
             type: 'success',
-            message: '¡Órdenes de compra generadas con éxito!',
+            message: response.data.message,
           })
           this.cerrar();
         })
 
       this.loadingBtnGenerarOrdenesCompra = false
+    },
+
+    // funcion que se va a usar para guardar los borradores de las comparativas, usando solamente el array datosAPI, ya que en ese array se guarda toda la informacion
+    mostrarInfo(){
+      console.log("this.datosAPI");
+      console.log(this.datosAPI);
     },
 
     scroll(scrollLeft, scrollTop){
