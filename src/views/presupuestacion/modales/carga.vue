@@ -223,7 +223,7 @@ export default {
 
     // luego busco los productos que ya tengo creados y los reemplazo en el array
     async completarArrayConProductosAgregados(){
-        await this.axios.get("/api/presupuestacionproductosproveedor/obtenerTodos/" + this.id)
+        await this.axios.get("/api/presupuestacionproductosproveedor/obtenerTodosProveedor/" + this.id)
           .then(response =>{
             // console.log("completarArrayConProductosAgregados");
             // console.log(response.data);
