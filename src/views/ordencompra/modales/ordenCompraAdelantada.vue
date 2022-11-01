@@ -5,8 +5,6 @@
         <h2>Orden de compra adelantada</h2>
         {{ ordenCompra }} 
       </div>
-      
-      
     </modal>
   </div>
 </template>

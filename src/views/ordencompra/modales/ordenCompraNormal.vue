@@ -1,10 +1,34 @@
 <template>
   <div>
     <modal ref="modal" titulo="Orden de compra normal" :impedir-close="impedirClose">
-      <div v-loading="loadingDatos">
-        <h2>Orden de compra normal</h2>
-        {{ ordenCompra }} 
-      </div>
+      <!-- <div v-loading="loadingDatos"> -->
+        <!-- <h2>Orden de compra normal</h2> -->
+        <!-- {{ ordenCompra }}  -->
+
+        <h3 style="text-align: center">
+          ¿Desea generar la orden de compra normal? No se podrá deshacer esta acción
+        </h3>
+
+        <div style="display: flex; margin-top: 20px">
+          <div style="margin: auto">
+            <el-button
+              type="danger"
+              @click="cerrar()"
+            >
+              Cancelar
+            </el-button>
+
+            <el-button
+              type="primary"
+              @click="generarOrdenDeCompraNormal()"
+            >
+              Aceptar
+            </el-button>
+          </div>
+        </div>
+      <!-- </div> -->
+
+
       
       
     </modal>
@@ -32,14 +56,14 @@
         this.loadingDatos = true
         this.datos = datos
         this.$refs.modal.abrir();
-        this.generarOrdenCompra()
+        // this.generarOrdenDeCompraNormal()
       },
 
       cerrar() {
         this.$refs.modal.cerrar();
       },
 
-      generarOrdenCompra(){
+      async generarOrdenDeCompraNormal(){
         console.log("this.datos");
         console.log(this.datos);
 
@@ -94,6 +118,16 @@
         }
 
         this.ordenCompra = JSON.stringify(ordenCompra) 
+
+
+        await this.axios.post("https://2.teamplace.finneg.com/BSA/api/oauth/token?grant_type=client_credentials&client_id=546aed61e07e0a1bf15187826411ec59&client_secret=b7444b18891462bd6e856d58c09af151")
+        .then(response => {
+          console.log("response");
+          console.log(response);
+
+        })
+
+
 
         this.loadingDatos = false
       },

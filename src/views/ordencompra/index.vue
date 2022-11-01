@@ -46,36 +46,44 @@
             <el-table-column 
               label="Detalle" 
               prop="detalle" 
-              header-align="right" 
-              align="right"
+              header-align="center" 
+              align="center"
               width="90px"
             >
-                <template #default="props">
-                  <el-button 
-                    type="primary" 
-                    circle
-                    @click="$refs.modalDetalle.abrir(props.row.ordenes_compras_id)"
-                  >
-                    <span class="material-icons">visibility</span>
-                  </el-button>
-                </template>
+              <template #default="props">
+                <div style="display: flex">
+                  <div style="margin: auto">
+                    <el-button 
+                      type="primary" 
+                      circle
+                      @click="$refs.modalDetalle.abrir(props.row.ordenes_compras_id)"
+                    >
+                      <span class="material-icons">visibility</span>
+                    </el-button>
+                  </div>
+                </div>
+              </template>
             </el-table-column>
 
             <el-table-column 
               label="Generar O.C." 
               prop="detalle" 
-              header-align="right" 
-              align="right"
+              header-align="center" 
+              align="center"
               width="120px"
             >
                 <template #default="props">
-                  <el-button 
-                    type="primary" 
-                    circle
-                    @click="$refs.modalGenerarOrdenCompra.abrir(props.row.ordenes_compras_id)"
-                  >
-                    <span class="material-icons">verified</span>
-                  </el-button>
+                  <div style="display: flex">
+                    <div style="margin: auto">
+                      <el-button 
+                        type="primary" 
+                        circle
+                        @click="$refs.modalGenerarOrdenCompra.abrir(props.row.ordenes_compras_id)"
+                      >
+                        <span class="material-icons">verified</span>
+                      </el-button>
+                    </div>
+                  </div>
                 </template>
             </el-table-column>
           </el-table>

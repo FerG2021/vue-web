@@ -4,13 +4,85 @@
       <template #header>
         <h1>Pedidos de mi envío</h1>
       </template>
+
+      <!-- Collapse para filtros -->
+      <div class="demo-collapse">
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item title="Filtros" name="1">
+            <template #title>
+              <!-- <h4 style="color: #95989e">
+                <span class="material-icons">manage_search</span>
+              </h4> -->
+
+              <span
+                class="material-icons"
+                style="margin-top: -1px; margin-left: 25px; color: #95989e"
+                >filter_list</span
+              >
+              <span
+                style="
+                  font-size: 20px;
+                  margin-top: 0px !important;
+                  color: #95989e;
+                "
+                >Filtros</span
+              >
+            </template>
+            <div>
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <!-- Filtro por nombre -->
+                  <!-- <el-input
+                    v-model="filtroNombre"
+                    placeholder="Buscar por nombre"
+                    clearable
+                  ></el-input> -->
+                </el-col>
+
+                <el-col :span="8">
+                  <!-- Filtro por codigo -->
+                  <!-- <el-input
+                    v-model="filtroCodigo"
+                    placeholder="Buscar por código"
+                    clearable
+                    :controls="false"
+                    style="width: 100%"
+                  ></el-input> -->
+                </el-col>
+
+                <el-col :span="8">
+                  <el-select
+                    v-model="filtroEstado"
+                    placeholder="Seleccionar por estado"
+                    filterable
+                    clearable
+                    style="width: 100%"
+                  >
+                    <el-option
+                      v-for="item in estadosSelect"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </el-select>
+                </el-col>
+              </el-row>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+
       <!-- Tabla para mostrar los datos -->
       <div class="contenedor-tabla">
         <div v-loading="loadingDatos">
           <!-- <div v-if="transferencias.length != 0"> -->
           <el-table
-            :data="transferencias"
-            fixed
+            :data="
+              transferenciasNuevo.slice(
+                (currentPage - 1) * pageSize,
+                currentPage * pageSize
+              )
+            "
             v-loading="loading"
             :cell-style="classChecker"
           >
@@ -185,13 +257,30 @@ export default {
   data() {
     return {
       transferencias: [],
+      transferenciasNuevo: [],
       paginas: {},
       fecha: Date,
       pageSize: 20,
       currentPage: 1,
       loadingDatos: false,
+      filtroEstado: '',
 
       estadosTransferencias: [
+        {
+          value: "Pendiente",
+          label: "Pendiente",
+        },
+        {
+          value: "Ejecutado",
+          label: "Ejecutado",
+        },
+        {
+          value: "No realizado",
+          label: "No realizado",
+        },
+      ],
+
+      estadosSelect: [
         {
           value: "Pendiente",
           label: "Pendiente",
@@ -212,6 +301,23 @@ export default {
     this.obtenerTodos();
   },
 
+  watch: {
+    filtroEstado(val) {
+      console.log("entra");
+      console.log("val");
+      console.log(val);
+
+      if(val == ''){
+        this.transferenciasNuevo = this.transferencias
+      }else{
+        this.transferenciasNuevo = this.buscarEstado(val)
+        console.log("this.transferenciasNuevo recibido");
+        console.log(this.transferenciasNuevo);
+
+      }
+    }
+  },
+
   methods: {
     async obtenerTodos() {
       this.loadingDatos = true;
@@ -229,6 +335,8 @@ export default {
                 this.transferencias.push(elemento);
               }
             });
+
+            this.transferenciasNuevo = this.transferencias
 
             // this.transferencias = response.data;
             this.paginas = response.data.pagina;
@@ -281,6 +389,19 @@ export default {
             this.obtenerTodos();
           });
       }
+    },
+
+    buscarEstado(keywords) {
+      return this.transferencias.filter(item =>{
+        // console.log("item.transferencia");
+        // console.log(item.transferencia.transferencia_estado);
+
+        if(item.transferencia.transferencia_estado == keywords){
+          console.log("item");
+          console.log(item);
+          return item
+        }
+      })
     },
 
     classChecker({ row, column, rowIndex, columnIndex }) {
