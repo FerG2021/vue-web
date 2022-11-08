@@ -79,6 +79,7 @@
                         type="primary" 
                         circle
                         @click="$refs.modalGenerarOrdenCompra.abrir(props.row.ordenes_compras_id)"
+                        :disabled="props.row.ordenes_compras_estado == 1"
                       >
                         <span class="material-icons">verified</span>
                       </el-button>
@@ -113,6 +114,7 @@
   
   <modal-generar-orden-compra 
     ref="modalGenerarOrdenCompra"
+    @actualizarTabla="obtenerTodos"
   ></modal-generar-orden-compra>
 </template>
 

@@ -29,10 +29,12 @@
 
   <modal-orden-compra-normal
     ref="modalOrdenCompraNormal"
+    @ordenCreada="cerrarDesdeCreada"
   ></modal-orden-compra-normal>
 
   <modal-orden-compra-adelantada
     ref="modalOrdenCompraAdelantada"
+    @ordenCreada="cerrarDesdeCreada"
   ></modal-orden-compra-adelantada>
 
 
@@ -70,6 +72,12 @@ export default {
 
       // limpio los campos
       this.getDatos();
+    },
+
+    cerrarDesdeCreada(){
+      this.$emit("actualizar-tabla");
+      this.$refs.modal.cerrar();
+
     },
 
     cerrar() {

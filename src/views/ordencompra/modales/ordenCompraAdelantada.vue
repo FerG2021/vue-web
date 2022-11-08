@@ -1,9 +1,28 @@
 <template>
   <div>
     <modal ref="modal" titulo="Orden de compra adelantada" :impedir-close="impedirClose">
-      <div v-loading="loadingDatos">
+      <!-- <div v-loading="loadingDatos">
         <h2>Orden de compra adelantada</h2>
         {{ ordenCompra }} 
+      </div> -->
+
+      <h3 style="text-align: center">
+        ¿Desea generar la orden de compra adelantada? No se podrá deshacer esta
+        acción
+      </h3>
+
+      <div style="display: flex; margin-top: 20px">
+        <div style="margin: auto">
+          <el-button type="danger" @click="cerrar()"> Cancelar </el-button>
+
+          <el-button 
+            type="primary" 
+            @click="generarOrdenDeCompraAdelantada()"
+            :loading="loadingBtnGenerarOrdenesCompraAdelantada"
+          >
+            Aceptar
+          </el-button>
+        </div>
       </div>
     </modal>
   </div>
@@ -22,6 +41,7 @@
         datos: null,
         ordenCompra: null,
         loadingDatos: false,
+        loadingBtnGenerarOrdenesCompraAdelantada: false,
       };
     },
 
@@ -29,15 +49,18 @@
       abrir(datos) {
         this.loadingDatos = true
         this.datos = datos
+        this.loadingBtnGenerarOrdenesCompraAdelantada = false
+
         this.$refs.modal.abrir();
-        this.generarOrdenCompra()
+        // this.generarOrdenCompra()
       },
 
       cerrar() {
         this.$refs.modal.cerrar();
       },
 
-      generarOrdenCompra(){
+      async generarOrdenDeCompraAdelantada(){
+        this.loadingBtnGenerarOrdenesCompraAdelantada = true;
         console.log("this.datos");
         console.log(this.datos);
 
@@ -94,8 +117,54 @@
 
         this.ordenCompra = JSON.stringify(ordenCompra) 
 
+        await this.axios
+          .get("/api/ordencompra/obtenerToken")
+          .then((response) => {
+            console.log("response");
+            console.log(response.data);
+            if (response) {
+              let token = response.data;
+
+              this.enviarOrdenCompra(token, ordenCompra)
+            }
+        });
+
+
         this.loadingDatos = false
       },
+
+      async enviarOrdenCompra(token, ordenCompra) {
+        let params = {
+          ordenCompraID: this.datos.ordenCompra.ordenes_compras_id,
+          token: token,
+          // ordenCompra: this.ordenCompra
+          ordenCompra: ordenCompra
+        }
+
+        console.log("token en orden compra");
+        console.log(token);
+
+        await this.axios
+          .post("/api/ordencompra/enviarOrdenCompraAdelantada", params)
+          .then((response) => {
+            console.log("response");
+            console.log(response.data);
+
+            if (response.status == 200) {
+              console.log("creado");
+              this.loadingBtnGenerarOrdenesCompraAdelantada = false;
+
+                ElMessage({
+                  message: '¡Orden de compra adelantada generada con éxito!',
+                  type: 'success',
+                })   
+
+              this.cerrar()
+              this.$emit('orden-creada');
+            }
+          
+          });
+      }
     },
   };
 </script>

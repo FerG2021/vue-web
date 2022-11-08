@@ -1770,8 +1770,62 @@ export default {
         })
     },
 
+    async guardarBorradorOrdeCompraDirecto(){
+      this.loadingBtnGenerarOrdenesCompra = true
+      console.log("borrador guardado");
+      console.log("this.datosAPI");
+      console.log(this.datosAPI);
+
+      console.log("this.arrayInfoProveedores");
+      console.log(this.arrayInfoProveedores);
+
+      // recorro los array para cambiar los datos que faltan a datosAPI
+      this.datosAPI.forEach((elemento) => {
+        this.arrayInfoProveedores.forEach((ele) => {
+          console.log("ENTRAAAA");
+          if (elemento.proveedor_id == ele.proveedor_id) {
+            elemento.proveedor_forma_de_pago = ele.proveedor_forma_de_pago
+            elemento.proveedor_monto_factura_A = parseFloat(ele.proveedor_monto_factura_A)
+            elemento.proveedor_monto_flete = parseFloat(ele.proveedor_monto_flete)
+            elemento.proveedor_monto_descuentos_bonificaciones = parseFloat(ele.proveedor_monto_descuentos_bonificaciones)
+            elemento.proveedor_monto_total_homogeneo = parseFloat(ele.proveedor_monto_total_homogeneo)
+          }
+        })
+      })
+
+      let params = {
+        presupuestacion_id: this.id, 
+        arrayDatosBorrador: JSON.stringify(this.datosAPI)
+      }
+
+      console.log("this.datosAPI actualizado");
+      console.log(this.datosAPI);
+
+      console.log("params");
+      console.log(params);
+
+      
+
+      await this.axios.post("/api/presupuestacionproductosproveedor/crearBorrador", params)
+        .then(response =>{
+          console.log("response");
+          console.log(response);
+
+          // ElMessage({
+          //   type: 'success',
+          //   message: response.data.message,
+          // })
+          // this.cerrar();
+          this.loadingBtnGenerarOrdenesCompra = false
+
+        })
+    },
+
 
     generarOrdenesDeCompra(){
+      this.guardarBorradorOrdeCompraDirecto();
+
+
       this.loadingBtnGenerarOrdenesCompra = true
       this.arrayOrdenCompra = []
       console.log("orden de compra generada");
