@@ -5,7 +5,7 @@
         <h1>Mi cuenta</h1>
       </template>
 
-      <div>
+      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
         <div style="margin-bottom: 20px">
           <span style="margin-right: 10px">Habilitar edición de datos</span>
           <el-switch v-model="habilitarEdicion" />

@@ -138,7 +138,7 @@
         <!--  -->
         <!-- Mi cuenta -->
         <!--  -->
-        <el-col :span="6">
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/mi-cuenta')" class="botonHome">
             <h3 style="text-align: center">Mi cuenta</h3>
             <div style="display:flex">
