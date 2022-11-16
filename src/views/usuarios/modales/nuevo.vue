@@ -55,7 +55,7 @@
               :value="item.id"
             />
           </el-select>
-          {{ form.rol }}
+          <!-- {{ form.rol }} -->
         </el-form-item>
       </el-form>
 
