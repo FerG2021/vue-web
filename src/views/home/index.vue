@@ -2,9 +2,12 @@
 	<main class="home-page">
 		<el-card>
 			<h1>Home</h1>
-
+      <!-- {{ $store.state.user.tipo_usuario }} -->
       <el-row :gutter="10" style="margin-top: 20px">
-        <el-col :span="6">
+        <!--  -->
+        <!-- Provisiones -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/presupuestacion')" class="botonHome">
             <h3 style="text-align: center">Provisiones</h3>            
             <div style="display:flex">
@@ -14,7 +17,11 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+
+        <!--  -->
+        <!-- Borradores -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/borrador')"  class="botonHome">
             <h3 style="text-align: center">Borradores</h3>
             <div style="display:flex">
@@ -25,7 +32,10 @@
           </el-card>
         </el-col>
 
-        <el-col :span="6">
+        <!--  -->
+        <!-- Órdenes de compra -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/ordencompra')"  class="botonHome">
             <h3 style="text-align: center">Órdenes de compra</h3>
             <div style="display:flex">
@@ -36,7 +46,10 @@
           </el-card>
         </el-col>
 
-        <el-col :span="6">
+        <!--  -->
+        <!-- Transferencias -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/transferencia')"  class="botonHome">
             <h3 style="text-align: center">Transferencias</h3>
             <div style="display:flex">
@@ -50,7 +63,10 @@
       </el-row>
 
       <el-row :gutter="10" style="margin-top: 20px">
-        <el-col :span="6">
+        <!--  -->
+        <!-- Planes -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/plan')" class="botonHome">
             <h3 style="text-align: center">Planes</h3>
             <div style="display:flex">
@@ -61,7 +77,10 @@
           </el-card>
         </el-col>
         
-        <el-col :span="6">
+        <!--  -->
+        <!-- Productos -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/producto')" class="botonHome">
             <h3 style="text-align: center">Productos</h3>
             <div style="display:flex">
@@ -72,7 +91,10 @@
           </el-card>
         </el-col>
 
-        <el-col :span="6">
+        <!--  -->
+        <!-- Proveedores -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
           <el-card @click="$router.replace('/proveedor')" class="botonHome">
             <h3 style="text-align: center">Proveedores</h3>
             <div style="display:flex">
@@ -82,7 +104,11 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+
+        <!--  -->
+        <!-- Rubros -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5">
           <el-card @click="$router.replace('/rubro')" class="botonHome">
             <h3 style="text-align: center">Rubros</h3>
             <div style="display:flex">
@@ -92,11 +118,13 @@
             </div>
           </el-card>
         </el-col>
-        
       </el-row>
 
       <el-row :gutter="10" style="margin-top: 20px">
-        <el-col :span="6">
+        <!--  -->
+        <!-- Usuarios -->
+        <!--  -->
+        <el-col :span="6" v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3">
           <el-card @click="$router.replace('/usuarios')" class="botonHome">
             <h3 style="text-align: center">Usuarios</h3>
             <div style="display:flex">
@@ -106,6 +134,10 @@
             </div>
           </el-card>
         </el-col>
+
+        <!--  -->
+        <!-- Mi cuenta -->
+        <!--  -->
         <el-col :span="6">
           <el-card @click="$router.replace('/mi-cuenta')" class="botonHome">
             <h3 style="text-align: center">Mi cuenta</h3>

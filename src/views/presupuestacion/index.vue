@@ -4,12 +4,24 @@
       <template #header>
         <h1>Provisión</h1>
       </template>
-      <div v-if="tipoUsuario == 1">
+      <div
+        v-if="
+          $store.state.user.tipo_usuario == 1 ||
+          $store.state.user.tipo_usuario == 3 ||
+          $store.state.user.tipo_usuario == 4 ||
+          $store.state.user.tipo_usuario == 5 ||
+          $store.state.user.tipo_usuario == 6
+        "
+      >
         <el-button
           type="primary"
           @click="$refs.modalNuevo.abrir()"
           class="btnElement"
           style="margin-left: 10px"
+          v-if="
+            $store.state.user.tipo_usuario == 1 ||
+            $store.state.user.tipo_usuario == 4
+          "
         >
           Nuevo
         </el-button>
@@ -22,7 +34,11 @@
             style="width: 100%"
             v-loading="loading"
           >
-            <el-table-column prop="presupuestacion_id" label="Nro." width="100px"/>
+            <el-table-column
+              prop="presupuestacion_id"
+              label="Nro."
+              width="100px"
+            />
 
             <el-table-column
               prop="presupuestacion_plan_nombre"
@@ -59,12 +75,13 @@
               </template>
             </el-table-column> -->
 
-            <el-table-column
-              prop="rangoProvisión"
-              label="Rango"
-            >
+            <el-table-column prop="rangoProvisión" label="Rango">
               <template #default="props">
-                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }} - {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
+                {{
+                  formatearFechaSinDia(props.row.presupuestacion_fecha_incio)
+                }}
+                -
+                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
               </template>
             </el-table-column>
 
@@ -97,6 +114,12 @@
             >
               <template #default="props">
                 <el-button
+                  v-if="
+                    $store.state.user.tipo_usuario == 1 ||
+                    $store.state.user.tipo_usuario == 3 ||
+                    $store.state.user.tipo_usuario == 4 ||
+                    $store.state.user.tipo_usuario == 5 ||
+                    $store.state.user.tipo_usuario == 6"
                   type="primary"
                   circle
                   @click="
@@ -118,9 +141,18 @@
             >
               <template #default="props">
                 <el-button
+                  v-if="
+                    $store.state.user.tipo_usuario == 1 ||
+                    $store.state.user.tipo_usuario == 3 ||
+                    $store.state.user.tipo_usuario == 4 ||
+                    $store.state.user.tipo_usuario == 5 ||
+                    $store.state.user.tipo_usuario == 6
+                  "
                   type="primary"
                   circle
-                  @click="$refs.modalDetalle.abrir(props.row.presupuestacion_id)"
+                  @click="
+                    $refs.modalDetalle.abrir(props.row.presupuestacion_id)
+                  "
                 >
                   <span class="material-icons">visibility</span>
                 </el-button>
@@ -132,7 +164,6 @@
         </div>
       </div>
       <div v-else><h1>No tiene permisos para realizar esta acción</h1></div>
-
     </el-card>
   </main>
 
@@ -189,8 +220,8 @@ export default {
   },
 
   methods: {
-    obtenerTipoUsuario(){
-      this.tipoUsuario = localStorage.getItem("tipoUsuario")
+    obtenerTipoUsuario() {
+      this.tipoUsuario = localStorage.getItem("tipoUsuario");
     },
     async obtenerTodos() {
       this.loading = true;
@@ -222,11 +253,9 @@ export default {
 
     formatearFechaSinDia(fecha) {
       let fecha1 = new Date(fecha);
-      let fechaMostrar = (fecha1.getMonth() + 1) + '/' + fecha1.getFullYear()
-      return fechaMostrar
+      let fechaMostrar = fecha1.getMonth() + 1 + "/" + fecha1.getFullYear();
+      return fechaMostrar;
     },
-
-
   },
 };
 </script>

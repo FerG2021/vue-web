@@ -5,7 +5,7 @@
     </div>
 
     <!-- items del menu -->
-    <div class="menu-toggle-wrap" v-if="tipoUsuario == 1">
+    <div class="menu-toggle-wrap" v-if="tipoUsuario != 2">
       <button class="menu-toggle">
         <span class="material-icons" @click="toggleMenu()">
           keyboard_double_arrow_right
@@ -16,7 +16,7 @@
     <h3>MENU</h3>
     <div class="menu">
       <!-- Home -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2">
         <router-link class="button" to="/" v-if="is_expanded">
           <span class="material-icons">home</span>
           <span class="text">Home</span>
@@ -37,7 +37,7 @@
       </div>
 
       <!-- Provisión -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
         <router-link class="button" to="/presupuestacion" v-if="is_expanded">
           <span class="material-icons">assignment</span>
           <span class="text">Provisión</span>
@@ -58,7 +58,7 @@
       </div>
 
       <!-- Borrador -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
         <router-link class="button" to="/borrador" v-if="is_expanded">
           <span class="material-icons">assignment_late</span>
           <span class="text">Borrador</span>
@@ -79,7 +79,7 @@
       </div>
 
       <!-- Ordenes de compra -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2">
         <router-link class="button" to="/ordencompra" v-if="is_expanded">
           <span class="material-icons">receipt</span>
           <span class="text">Órdenes de compra</span>
@@ -100,7 +100,7 @@
       </div>
 
       <!-- Transferencias -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2">
         <router-link class="button" to="/transferencia" v-if="is_expanded">
           <span class="material-icons">move_up</span>
           <span class="text">Transferencias</span>
@@ -142,7 +142,7 @@
       </div>
 
       <!-- Planes -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2">
         <router-link class="button" to="/plan" v-if="is_expanded">
           <span class="material-icons">note_alt</span>
           <span class="text">Planes</span>
@@ -163,7 +163,7 @@
       </div>
 
       <!-- Producto -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2">
         <router-link class="button" to="/producto" v-if="is_expanded">
           <span class="material-icons">inventory_2</span>
           <span class="text">Productos</span>
@@ -184,7 +184,7 @@
       </div>
 
       <!-- Proveedor -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario == 1 || tipoUsuario == 3 || tipoUsuario == 4 || tipoUsuario == 5 || tipoUsuario == 6">
         <router-link class="button" to="/proveedor" v-if="is_expanded">
           <span class="material-icons">local_shipping</span>
           <span class="text">Proveedores</span>
@@ -205,7 +205,7 @@
       </div>
 
       <!-- Rubro -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2">
         <router-link class="button" to="/rubro" v-if="is_expanded">
           <span class="material-icons">sell</span>
           <span class="text">Rubros</span>
@@ -283,7 +283,7 @@
       
 
       <!-- Usuarios -->
-      <div v-if="tipoUsuario == 1">
+      <div v-if="tipoUsuario != 2 && tipoUsuario != 4 && tipoUsuario != 5 && tipoUsuario != 6">
         <router-link class="button" to="/usuarios" v-if="is_expanded">
           <span class="material-icons">group</span>
           <span class="text">Usuarios</span>
@@ -331,7 +331,7 @@
     <div class="flex"></div>
 
     <!-- Mi cuenta -->
-    <div class="menu" v-if="tipoUsuario == 1">
+    <div class="menu" v-if="tipoUsuario != 2">
       <div>
         <router-link class="button" to="/mi-cuenta" v-if="is_expanded">
           <span class="material-icons">account_circle</span>

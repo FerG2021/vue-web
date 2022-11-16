@@ -13,73 +13,72 @@
         Nuevo
       </el-button> -->
 
-      <!-- Tabla para mostrar los datos -->
-      <div class="contenedor-tabla">
-        <el-table
-          :data="
-            planes.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-          "
-          fixed
-          v-loading="loading"
-        >
-          <!-- Nombre -->
-          <el-table-column label="Nombre" prop="descripcion">
-            <template #default="props">
-              <span>{{ props.row.plan_nombre }}</span>
-            </template>
-          </el-table-column>
+      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
+        <!-- Tabla para mostrar los datos -->
+        <div class="contenedor-tabla">
+          <el-table
+            :data="
+              planes.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+            "
+            fixed
+            v-loading="loading"
+          >
+            <!-- Nombre -->
+            <el-table-column label="Nombre" prop="descripcion">
+              <template #default="props">
+                <span>{{ props.row.plan_nombre }}</span>
+              </template>
+            </el-table-column>
 
-          <!-- Fecha inicio -->
-          <el-table-column label="Fecha inicio" prop="fincio">
-            <template #default="props">
-              <span>{{ props.row.plan_fdesde }}</span>
-            </template>
-          </el-table-column>
+            <!-- Fecha inicio -->
+            <el-table-column label="Fecha inicio" prop="fincio">
+              <template #default="props">
+                <span>{{ props.row.plan_fdesde }}</span>
+              </template>
+            </el-table-column>
 
-          <!-- Fecha fin -->
-          <el-table-column label="Fecha fin" prop="fincio">
-            <template #default="props">
-              <span>{{ props.row.plan_fhasta }}</span>
-            </template>
-          </el-table-column>
+            <!-- Fecha fin -->
+            <el-table-column label="Fecha fin" prop="fincio">
+              <template #default="props">
+                <span>{{ props.row.plan_fhasta }}</span>
+              </template>
+            </el-table-column>
 
-          <!-- Cantidad de meses -->
-          <el-table-column label="Cant. meses" prop="fincio">
-            <template #default="props">
-              <span>{{ props.row.plan_plazo}}</span>
-            </template>
-          </el-table-column>
+            <!-- Cantidad de meses -->
+            <el-table-column label="Cant. meses" prop="fincio">
+              <template #default="props">
+                <span>{{ props.row.plan_plazo }}</span>
+              </template>
+            </el-table-column>
 
-          <!-- Cantidad de meses -->
-          <el-table-column label="Estado" prop="fincio">
-            <template #default="props">
-              <span v-if="props.row.plan_activo == 1">
-                <el-tag size="small" type="success">Activo</el-tag>
-              </span>
-              <span v-else>
-                <el-tag size="small" type="danger">Inactivo</el-tag>
-              </span>
-            </template>
-          </el-table-column>
+            <!-- Cantidad de meses -->
+            <el-table-column label="Estado" prop="fincio">
+              <template #default="props">
+                <span v-if="props.row.plan_activo == 1">
+                  <el-tag size="small" type="success">Activo</el-tag>
+                </span>
+                <span v-else>
+                  <el-tag size="small" type="danger">Inactivo</el-tag>
+                </span>
+              </template>
+            </el-table-column>
 
-
-
-          <!-- Codigo -->
-          <!-- <el-table-column label="Código" prop="codigo">
+            <!-- Codigo -->
+            <!-- <el-table-column label="Código" prop="codigo">
             <template #default="props">
               <span>{{ props.row.producto_codigo }}</span>
             </template>
           </el-table-column> -->
 
-          <!-- Rubro -->
-          <!-- <el-table-column label="Rubro" prop="rubro">
+            <!-- Rubro -->
+            <!-- <el-table-column label="Rubro" prop="rubro">
             <template #default="props">
               <span>{{ props.row.rubro.rubro_nombre }}</span>
             </template>
           </el-table-column> -->
 
-          <!-- Editar -->
-          <!-- <el-table-column
+            <!-- Editar -->
+            <!-- <el-table-column
             label="Ver"
             prop="ver"
             header-align="center"
@@ -97,8 +96,8 @@
             </template>
           </el-table-column> -->
 
-          <!-- Eliminar -->
-          <!-- <el-table-column 
+            <!-- Eliminar -->
+            <!-- <el-table-column 
             label="Eliminar" 
             prop="eliminar" 
             header-align="right" 
@@ -115,19 +114,20 @@
                 </el-button>
               </template>
           </el-table-column> -->
-        </el-table>
+          </el-table>
 
-        <div class="contenedor-paginator">
-          <el-pagination
-            layout="prev, pager, next, sizes, total, jumper"
-            :page-sizes="[10, 20, 30]"
-            :page-size="pageSize"
-            :total="planes.length"
-            @current-change="handleCurrentChange"
-            @size-change="handleSizeChange"
-            style="text-align: center; margin-top: 1%"
-          >
-          </el-pagination>
+          <div class="contenedor-paginator">
+            <el-pagination
+              layout="prev, pager, next, sizes, total, jumper"
+              :page-sizes="[10, 20, 30]"
+              :page-size="pageSize"
+              :total="planes.length"
+              @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
+              style="text-align: center; margin-top: 1%"
+            >
+            </el-pagination>
+          </div>
         </div>
       </div>
     </el-card>

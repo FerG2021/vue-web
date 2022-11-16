@@ -14,7 +14,15 @@
         </el-button>        -->
 
       <!-- Tabla para mostrar los datos -->
-      <div v-if="tipoUsuario == 1">
+      <div
+        v-if="
+          $store.state.user.tipo_usuario == 1 ||
+          $store.state.user.tipo_usuario == 3 ||
+          $store.state.user.tipo_usuario == 4 ||
+          $store.state.user.tipo_usuario == 5 ||
+          $store.state.user.tipo_usuario == 6
+        "
+      >
         <div class="contenedor-tabla" style="margin-top: 15px">
           <el-table
             :data="borradorpresupuestaciones"
@@ -105,6 +113,10 @@
             >
               <template #default="props">
                 <el-button
+                  v-if="
+                    $store.state.user.tipo_usuario == 1 ||
+                    $store.state.user.tipo_usuario == 4
+                  "
                   type="primary"
                   circle
                   @click="
@@ -129,6 +141,13 @@
             >
               <template #default="props">
                 <el-button
+                  v-if="
+                    $store.state.user.tipo_usuario == 1 ||
+                    $store.state.user.tipo_usuario == 3 ||
+                    $store.state.user.tipo_usuario == 4 ||
+                    $store.state.user.tipo_usuario == 5 ||
+                    $store.state.user.tipo_usuario == 6
+                  "
                   type="primary"
                   circle
                   @click="
@@ -145,9 +164,9 @@
           </el-table>
         </div>
       </div>
-      <div v-else>
+      <!-- <div v-else>
         <h1>No tiene permisos para realizar esta acción</h1>
-      </div>
+      </div> -->
     </el-card>
   </main>
 

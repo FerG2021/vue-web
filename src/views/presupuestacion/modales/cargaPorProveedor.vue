@@ -313,7 +313,9 @@
             class="btnSiguiente"
             @click="onSubmit()"
             :loading="loadingBtnGuardar"
-
+            v-if="
+              $store.state.user.tipo_usuario == 1 ||
+              $store.state.user.tipo_usuario == 5 "
           >
             Guardar
           </el-button>

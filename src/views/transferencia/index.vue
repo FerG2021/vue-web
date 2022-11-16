@@ -5,213 +5,222 @@
         <h1>Pedidos de mi envío</h1>
       </template>
 
-      <!-- Collapse para filtros -->
-      <div class="demo-collapse">
-        <el-collapse v-model="activeNames" @change="handleChange">
-          <el-collapse-item title="Filtros" name="1">
-            <template #title>
-              <!-- <h4 style="color: #95989e">
+      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
+        <!-- Collapse para filtros -->
+        <div class="demo-collapse">
+          <el-collapse v-model="activeNames" @change="handleChange">
+            <el-collapse-item title="Filtros" name="1">
+              <template #title>
+                <!-- <h4 style="color: #95989e">
                 <span class="material-icons">manage_search</span>
               </h4> -->
 
-              <span
-                class="material-icons"
-                style="margin-top: -1px; margin-left: 25px; color: #95989e"
-                >filter_list</span
-              >
-              <span
-                style="
-                  font-size: 20px;
-                  margin-top: 0px !important;
-                  color: #95989e;
-                "
-                >Filtros</span
-              >
-            </template>
-            <div>
-              <el-row :gutter="10">
-                <el-col :span="8">
-                  <!-- Filtro por nombre -->
-                  <!-- <el-input
+                <span
+                  class="material-icons"
+                  style="margin-top: -1px; margin-left: 25px; color: #95989e"
+                  >filter_list</span
+                >
+                <span
+                  style="
+                    font-size: 20px;
+                    margin-top: 0px !important;
+                    color: #95989e;
+                  "
+                  >Filtros</span
+                >
+              </template>
+              <div>
+                <el-row :gutter="10">
+                  <el-col :span="8">
+                    <!-- Filtro por nombre -->
+                    <!-- <el-input
                     v-model="filtroNombre"
                     placeholder="Buscar por nombre"
                     clearable
                   ></el-input> -->
-                </el-col>
+                  </el-col>
 
-                <el-col :span="8">
-                  <!-- Filtro por codigo -->
-                  <!-- <el-input
+                  <el-col :span="8">
+                    <!-- Filtro por codigo -->
+                    <!-- <el-input
                     v-model="filtroCodigo"
                     placeholder="Buscar por código"
                     clearable
                     :controls="false"
                     style="width: 100%"
                   ></el-input> -->
-                </el-col>
+                  </el-col>
 
-                <el-col :span="8">
+                  <el-col :span="8">
+                    <el-select
+                      v-model="filtroEstado"
+                      placeholder="Seleccionar por estado"
+                      filterable
+                      clearable
+                      style="width: 100%"
+                    >
+                      <el-option
+                        v-for="item in estadosSelect"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+
+        <!-- Tabla para mostrar los datos -->
+        <div class="contenedor-tabla">
+          <div v-loading="loadingDatos">
+            <!-- <div v-if="transferencias.length != 0"> -->
+            <el-table
+              :data="
+                transferenciasNuevo.slice(
+                  (currentPage - 1) * pageSize,
+                  currentPage * pageSize
+                )
+              "
+              v-loading="loading"
+              :cell-style="classChecker"
+            >
+              <!-- :data="transferencias.slice((currentPage - 1) * pageSize,currentPage * pageSize)" -->
+
+              <!-- Nro -->
+              <el-table-column label="Nro." prop="nro" width="80px">
+                <template #default="props">
+                  <span>{{ props.row.transferencia.transferencia_id }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Nro -->
+              <el-table-column
+                label="Nro. pres."
+                prop="nroPresupuestacion"
+                width="100px"
+              >
+                <template #default="props">
+                  <span>{{
+                    props.row.presupuestacion.presupuestacion_id
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Nombre -->
+              <el-table-column
+                label="Presupuestación"
+                prop="presupuestacion"
+                min-width="200px"
+              >
+                <template #default="props">
+                  <span>{{
+                    props.row.presupuestacion.presupuestacion_plan_nombre
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Destino -->
+              <el-table-column label="Origen" prop="origen">
+                <template #default="props">
+                  <span>{{ props.row.deposito.deposito_nombre }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Producto -->
+              <el-table-column label="Producto" prop="producto">
+                <template #default="props">
+                  <span>{{
+                    props.row.transferencia.transferencia_producto_nombre
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Unidad de medida -->
+              <el-table-column label="U.M." prop="unidadMedida">
+                <template #default="props">
+                  <span>{{
+                    props.row.transferencia.transferencia_producto_unidad
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Cantidad a stock -->
+              <el-table-column label="Cant. stock" prop="cantSacada">
+                <template #default="props">
+                  <span>{{
+                    props.row.transferencia.transferencia_producto_stock
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Cantidad a utilizar -->
+              <el-table-column label="Cant. sacada" prop="cantSacada">
+                <template #default="props">
+                  <span>{{
+                    props.row.transferencia.transferencia_cantidad_utilizar
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Fecha inicio -->
+              <el-table-column label="Fecha" prop="fincio">
+                <template #default="props">
+                  <span>{{
+                    formatearFecha(props.row.transferencia.updated_at)
+                  }}</span>
+                </template>
+              </el-table-column>
+
+              <!-- Estado -->
+              <el-table-column label="Estado" prop="estado">
+                <template #default="props">
                   <el-select
-                    v-model="filtroEstado"
-                    placeholder="Seleccionar por estado"
-                    filterable
-                    clearable
-                    style="width: 100%"
+                    v-if="
+                      $store.state.user.tipo_usuario == 1 ||
+                      $store.state.user.tipo_usuario == 4
+                    "
+                    v-model="props.row.transferencia.transferencia_estado"
+                    class="m-2"
+                    placeholder="Selecciona un estado"
+                    @change="
+                      cambiarEstado(
+                        props.row,
+                        props.row.transferencia.transferencia_estado
+                      )
+                    "
+                    :disabled="
+                      props.row.transferencia.transferencia_estado ==
+                      'Ejecutado'
+                    "
                   >
                     <el-option
-                      v-for="item in estadosSelect"
+                      v-for="item in estadosTransferencias"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
                     />
                   </el-select>
-                </el-col>
-              </el-row>
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <div class="contenedor-paginator">
+              <el-pagination
+                layout="prev, pager, next, sizes, total, jumper"
+                :page-sizes="[10, 20, 30]"
+                :page-size="pageSize"
+                :total="transferencias.length"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange"
+                style="text-align: center; margin-top: 1%"
+              >
+              </el-pagination>
             </div>
-          </el-collapse-item>
-        </el-collapse>
-      </div>
-
-      <!-- Tabla para mostrar los datos -->
-      <div class="contenedor-tabla">
-        <div v-loading="loadingDatos">
-          <!-- <div v-if="transferencias.length != 0"> -->
-          <el-table
-            :data="
-              transferenciasNuevo.slice(
-                (currentPage - 1) * pageSize,
-                currentPage * pageSize
-              )
-            "
-            v-loading="loading"
-            :cell-style="classChecker"
-          >
-            <!-- :data="transferencias.slice((currentPage - 1) * pageSize,currentPage * pageSize)" -->
-
-            <!-- Nro -->
-            <el-table-column label="Nro." prop="nro" width="80px">
-              <template #default="props">
-                <span>{{ props.row.transferencia.transferencia_id }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Nro -->
-            <el-table-column
-              label="Nro. pres."
-              prop="nroPresupuestacion"
-              width="100px"
-            >
-              <template #default="props">
-                <span>{{ props.row.presupuestacion.presupuestacion_id }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Nombre -->
-            <el-table-column
-              label="Presupuestación"
-              prop="presupuestacion"
-              min-width="200px"
-            >
-              <template #default="props">
-                <span>{{
-                  props.row.presupuestacion.presupuestacion_plan_nombre
-                }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Destino -->
-            <el-table-column label="Origen" prop="origen">
-              <template #default="props">
-                <span>{{ props.row.deposito.deposito_nombre }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Producto -->
-            <el-table-column label="Producto" prop="producto">
-              <template #default="props">
-                <span>{{
-                  props.row.transferencia.transferencia_producto_nombre
-                }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Unidad de medida -->
-            <el-table-column label="U.M." prop="unidadMedida">
-              <template #default="props">
-                <span>{{
-                  props.row.transferencia.transferencia_producto_unidad
-                }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Cantidad a stock -->
-            <el-table-column label="Cant. stock" prop="cantSacada">
-              <template #default="props">
-                <span>{{
-                  props.row.transferencia.transferencia_producto_stock
-                }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Cantidad a utilizar -->
-            <el-table-column label="Cant. sacada" prop="cantSacada">
-              <template #default="props">
-                <span>{{
-                  props.row.transferencia.transferencia_cantidad_utilizar
-                }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Fecha inicio -->
-            <el-table-column label="Fecha" prop="fincio">
-              <template #default="props">
-                <span>{{
-                  formatearFecha(props.row.transferencia.updated_at)
-                }}</span>
-              </template>
-            </el-table-column>
-
-            <!-- Estado -->
-            <el-table-column label="Estado" prop="estado">
-              <template #default="props">
-                <el-select
-                  v-model="props.row.transferencia.transferencia_estado"
-                  class="m-2"
-                  placeholder="Selecciona un estado"
-                  @change="
-                    cambiarEstado(
-                      props.row,
-                      props.row.transferencia.transferencia_estado
-                    )
-                  "
-                  :disabled="
-                    props.row.transferencia.transferencia_estado == 'Ejecutado'
-                  "
-                >
-                  <el-option
-                    v-for="item in estadosTransferencias"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </template>
-            </el-table-column>
-          </el-table>
-
-          <div class="contenedor-paginator">
-            <el-pagination
-              layout="prev, pager, next, sizes, total, jumper"
-              :page-sizes="[10, 20, 30]"
-              :page-size="pageSize"
-              :total="transferencias.length"
-              @current-change="handleCurrentChange"
-              @size-change="handleSizeChange"
-              style="text-align: center; margin-top: 1%"
-            >
-            </el-pagination>
+            <!-- </div> -->
           </div>
-          <!-- </div> -->
         </div>
       </div>
     </el-card>
@@ -263,7 +272,7 @@ export default {
       pageSize: 20,
       currentPage: 1,
       loadingDatos: false,
-      filtroEstado: '',
+      filtroEstado: "",
 
       estadosTransferencias: [
         {
@@ -307,15 +316,14 @@ export default {
       console.log("val");
       console.log(val);
 
-      if(val == ''){
-        this.transferenciasNuevo = this.transferencias
-      }else{
-        this.transferenciasNuevo = this.buscarEstado(val)
+      if (val == "") {
+        this.transferenciasNuevo = this.transferencias;
+      } else {
+        this.transferenciasNuevo = this.buscarEstado(val);
         console.log("this.transferenciasNuevo recibido");
         console.log(this.transferenciasNuevo);
-
       }
-    }
+    },
   },
 
   methods: {
@@ -336,7 +344,7 @@ export default {
               }
             });
 
-            this.transferenciasNuevo = this.transferencias
+            this.transferenciasNuevo = this.transferencias;
 
             // this.transferencias = response.data;
             this.paginas = response.data.pagina;
@@ -392,16 +400,16 @@ export default {
     },
 
     buscarEstado(keywords) {
-      return this.transferencias.filter(item =>{
+      return this.transferencias.filter((item) => {
         // console.log("item.transferencia");
         // console.log(item.transferencia.transferencia_estado);
 
-        if(item.transferencia.transferencia_estado == keywords){
+        if (item.transferencia.transferencia_estado == keywords) {
           console.log("item");
           console.log(item);
-          return item
+          return item;
         }
-      })
+      });
     },
 
     classChecker({ row, column, rowIndex, columnIndex }) {

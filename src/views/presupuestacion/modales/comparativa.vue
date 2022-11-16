@@ -489,7 +489,8 @@
               style="margin-top: 10px"
               @click="guardarBorrador()"
               :loading="loadingBtnGuardarBorrador"
-              v-if="deshabilitarPorOrdenCompra == false"
+              v-if="deshabilitarPorOrdenCompra == false" 
+              :disabled="$store.state.user.tipo_usuario != 1 && $store.state.user.tipo_usuario != 3"
             >
               Guardar borrador
             </el-button>
@@ -500,6 +501,7 @@
               @click="generarOrdenesDeCompra()"
               :loading="loadingBtnGenerarOrdenesCompra"
               v-if="deshabilitarPorOrdenCompra == false"
+              :disabled="$store.state.user.tipo_usuario != 1 && $store.state.user.tipo_usuario != 3"
             >
               Generar órdenes de compra
             </el-button>
@@ -4416,7 +4418,7 @@ export default {
 
   } */
 
-  .el-table {
+  /* .el-table {
 
-  }
+  } */
 </style>
