@@ -10,6 +10,7 @@
         @click="$refs.modalNuevo.abrir()"
         class="btnElement"
         style="margin-left: 10px"
+        v-if="$store.state.user.tipo_usuario == 1"        
       >
         Nuevo
       </el-button>
