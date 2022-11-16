@@ -57,7 +57,7 @@
           >
             <template #default="props">
               <el-button
-                v-if="props.row.id != $store.state.user.id && $store.state.user.id == 1"
+                v-if="props.row.id != $store.state.user.id && $store.state.user.tipo_usuario == 1"
                 type="primary"
                 circle
                 @click="$refs.modalModificar.abrir(props.row.id)"
@@ -77,7 +77,7 @@
           >
             <template #default="props">
               <el-button
-                v-if="props.row.id != $store.state.user.id && $store.state.user.id == 1"
+                v-if="props.row.id != $store.state.user.id && $store.state.user.tipo_usuario == 1"
                 type="danger"
                 circle
                 @click="$refs.modalEliminar.abrir(props.row.id)"
