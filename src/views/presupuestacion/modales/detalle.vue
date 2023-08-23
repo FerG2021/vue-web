@@ -76,6 +76,18 @@
 
               </template>
             </el-table-column>
+
+            <el-table-column label="Eliminar" width="120">
+              <template #default="scope">
+                <el-button                    
+                  type="danger"                    
+                  circle 
+                  @click="$refs.modalEliminar.abrir(scope)"
+                >
+                  <span class="material-icons">delete</span>
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
 
@@ -99,13 +111,22 @@
         </div>
     </modal>
   </div>
+
+  <modal-eliminar
+    ref="modalEliminar"
+    @actualizarTabla="getDatos"
+  ></modal-eliminar>
 </template>
 
 <script>
 import { ElMessage, ElMessageBox } from "element-plus";
+import ModalEliminar from "./eliminar.vue";
+
 
 name: "nuevoProducto";
 export default {
+  components: { ModalEliminar },
+
   data() {
     return {
       id: null,
@@ -174,74 +195,6 @@ export default {
       let fecha2 = fecha1.toLocaleDateString();
       return fecha2
     },
-
-    // async categoriaObtenerTodosSelect() {
-    //   await this.axios
-    //     .get(this.base_url + "/api/categoria/obtenerTodosSelectt")
-    //     .then((response) => {
-    //       this.categoriasSelect = response.data;
-    //       console.log(this.categoriasSelect);
-    //     });
-    // },
-
-    // async unidadMedidaObtenerTodosSelect() {
-    //   await this.axios
-    //     .get(this.base_url + "/unidad-medida/obtenerTodosSelect")
-    //     .then((response) => {
-    //       this.unidadMedidaSelect = response.data;
-    //       console.log(this.categoriasSelect);
-    //     });
-    // },
-
-    // cambiarValorIDUnMed() {
-    //   this.form.idUnidadMedida = this.form.unidadMedida;
-    // },
-
-    // cambiarValorIDCategoria() {
-    //   this.form.idCategoria = this.form.categoria;
-    // },
-
-    // onSubmit() {
-    //   let params = {
-    //     id: this.id,
-    //     descripcion: this.form.nombre,
-    //     precio: this.form.precio,
-    //     stock: this.form.stock,
-    //     idCategoria: this.form.idCategoria,
-    //     idUnidadMedida: this.form.idUnidadMedida,
-    //   };
-
-    //   this.axios
-    //     .put(this.base_url + "/articulo/actualizar/" + this.id, params)
-    //     .then((response) => {
-    //       ElMessage({
-    //         type: "success",
-    //         message: "¡Producto modificado con éxito!",
-    //       });
-    //       this.$emit("actualizarTabla");
-    //       this.cerrar();
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
-
-    // deshabilitarBtnGuardar() {
-    //   if (
-    //     this.form.nombre == null ||
-    //     this.form.nombre == "" ||
-    //     this.form.precio == null ||
-    //     this.form.precio == 0 ||
-    //     this.form.precio == "" ||
-    //     this.form.stock == null ||
-    //     this.form.stock == 0 ||
-    //     this.form.stock == ""
-    //   ) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
   },
 };
 </script>
