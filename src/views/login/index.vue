@@ -2,18 +2,14 @@
   <div class="background-login">
     <el-card class="card-login">
       <template #header>
-        <div style="font-size: 5vh; text-align: center">
-          <!-- Proyecto prueba -->
+        <div class="title">
           Bienvenido a ModulAr
-          <!-- Proyecto prueba -->
-          <!-- Nutrimarg balanceados - Quimilí -->
         </div>
       </template>
       <div class="contenedor-login" v-loading="loadingLogin">
-        <div class="formulario">
+        <div class="form">
           <div class="material-icons">account_circle</div>
-          <!-- <span v-if="$store.state.auth">{{ $store.state.user.name }}</span> -->
-          <div v-if="deshabilitarInputEmail == false">
+          <div v-if="disabledInputEmail == false">
             <el-card class="card-form">
               <el-form
                 ref="form"
@@ -26,10 +22,10 @@
                 <el-form-item
                   label="Email"
                   prop="email"
-                  v-if="deshabilitarInputEmail == false"
+                  v-if="disabledInputEmail == false"
                 >
                   <el-input
-                    :disabled="deshabilitarInputEmail"
+                    :disabled="disabledInputEmail"
                     v-model="form.email"
                     placeholder="Ingrese su email..."
                     @keyup.enter="login()"
@@ -40,10 +36,10 @@
                 <el-form-item
                   label="Contraseña"
                   prop="password"
-                  v-if="deshabilitarInputPassword == false"
+                  v-if="disabledInputPassword == false"
                 >
                   <el-input
-                    :disabled="deshabilitarInputPassword"
+                    :disabled="disabledInputPassword"
                     v-model="form.password"
                     placeholder="Ingrese su contraseña..."
                     type="password"
@@ -51,12 +47,12 @@
                   />
                 </el-form-item>
 
-                <el-form-item v-if="deshabilitarInputPassword == false">
+                <el-form-item v-if="disabledInputPassword == false">
                   <el-button
-                    class="btnEnviar"
+                    class="btnSubmit"
                     type="primary"
                     @click="login()"
-                    :disabled="deshabilitarBtnIngresar()"
+                    :disabled="disabledBtnLogin()"
                   >
                     Ingresar
                   </el-button>
@@ -65,7 +61,7 @@
             </el-card>
           </div>
           <div v-else>
-            <div v-loading="loadingProveedor"></div>
+            <div v-loading="loadingProvider"></div>
           </div>
         </div>
       </div>
@@ -81,16 +77,13 @@ export default {
   data() {
     return {
       user: {},
-      ejemplo: null,
       form: {
         email: "",
         password: "",
       },
-      emailDirecto: null,
-      passwordDirecto: null,
-      deshabilitarInputEmail: false,
-      deshabilitarInputPassword: false,
-      loadingProveedor: false,
+      disabledInputEmail: false,
+      disabledInputPassword: false,
+      loadingProvider: false,
       loadingLogin: false,
       rules: {
         email: [
@@ -111,28 +104,11 @@ export default {
     };
   },
   watch: {
-    // console.log("this.user");
-    // console.log(this.user);
-
-    // this.ejemplo = this.$route
-
-    // console.log("this.$route");
-    // console.log(this.$route);
-
-    // if (this.$route.query != {}) {
-    //   // this.form.username = this.$route.query.user
-    //   console.log("hay datos");
-    //   console.log(this.$route.fullPath);
-    // }
-
     "$route.query": {
       inmediate: true,
       handler(query) {
-        console.log("watch");
-        console.log(query);
-
         if (query.user) {
-          this.loginDirecto(
+          this.directLogin(
             query.user,
             query.password,
             query.proveedorID,
@@ -151,13 +127,10 @@ export default {
     },
   },
 
-  created() {
-    console.log("this.$route created");
-    console.log(this.$route);
-  },
-
   methods: {
     async login() {
+      let errorExist = 0;
+
       if (this.form.email == null ||
           this.form.email == "" ||
           this.form.password == null ||
@@ -169,24 +142,14 @@ export default {
         });
       } else {
         this.loadingLogin = true;
-        console.log("this.form");
-        console.log(this.form);
-        // this.me()
         let params = {
           mail_usuario: this.form.email,
         };
         await this.axios
           .post("/api/usuario/obtenerDatosMail", params)
           .then((response) => {
-            console.log("response");
-            console.log(response);
             if (response) {
-              // if (response.data.data != undefined) {
               if (response.data != undefined) {
-
-                console.log("response");
-                console.log(response);
-                // console.log(response.data.data);
                 if (response.data.data) {
                   localStorage.setItem("usuarioID", response.data.data.id);
                   localStorage.setItem(
@@ -195,7 +158,6 @@ export default {
                   );
                 }
               } else {
-                console.log("usuario o contraseña incorrecta");
                 ElMessage({
                   type: "error",
                   message: "¡Usuario o contraseña incorrecta!",
@@ -203,39 +165,54 @@ export default {
                 this.loadingLogin = false;
               }
             }
+          })
+          .catch(function (error) {
+            if (error.response) {
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              console.log(error.request);
+            } else {
+              console.log("Error", error.message);
+            }
+            console.log(error.config);
           });
 
-        // this.loadingLogin = false
-        console.log("antes del login");
-        await this.$store.dispatch("login", this.form);
-        console.log("hace algo");
+        await this.axios.get("/sanctum/csrf-cookie");
+        await this.axios
+          .post("/login", this.form)
+          .then((res) => {
+            this.$store.dispatch("getUser");
+          })
+          .catch(function (error) {
+            errorExist = 1;
+          });
+
         this.loadingLogin = false;
+
+        if (errorExist == 1) {
+          ElMessage({
+            message:
+              "Usuario o contraseña incorrectos",
+            type: "error",
+          });
+        }
 
         return this.$router.replace("/");
       }
     },
 
-    async loginDirecto(
+    async directLogin(
       user,
       password,
       proveedorID,
       presupuestacionID,
       fechaLimiteCarga
     ) {
-      this.deshabilitarInputEmail = true;
-      this.deshabilitarInputPassword = true;
-      this.loadingProveedor = true;
-      console.log("user en logindirecto");
-      console.log(user);
-
-      console.log("password en logindirecto");
-      console.log(password);
-
-      console.log("proveedorID en login directo");
-      console.log(proveedorID);
-
-      console.log("presupuestacionID en login directo");
-      console.log(presupuestacionID);
+      this.disabledInputEmail = true;
+      this.disabledInputPassword = true;
+      this.loadingProvider = true;
 
       localStorage.setItem("proveedorID", proveedorID);
       localStorage.setItem("presupuestacionID", presupuestacionID);
@@ -247,23 +224,17 @@ export default {
       this.$store.state.proveedorID = proveedorID;
       this.$store.state.presupuestacionID = presupuestacionID;
 
-      console.log("this.form");
-      console.log(this.form);
-
       let params = {
         mail_usuario: this.form.email,
         proveedor_id: proveedorID,
       };
 
       await this.$store.dispatch("login", this.form);
-      console.log("hace algo");
 
       await this.axios
         .post("/api/usuario/obtenerDatosMail", params)
         .then((response) => {
           if (response) {
-            console.log("response DATOSMAIL");
-            console.log(response.data.data);
             if (response.data.data) {
               localStorage.setItem("usuarioID", response.data.data.id);
               localStorage.setItem(
@@ -277,20 +248,12 @@ export default {
       return this.$router.replace("/cargaproveedores");
     },
 
-    async me() {
-      console.log("entra me");
-      await this.axios.get("/api/user").then((res) => {
-        console.log(res.data);
-        // this.user = res.data;
-      });
-    },
-
-    deshabilitarBtnIngresar() {
+    disabledBtnLogin() {
       if (
-        this.form.email == null ||
-        this.form.email == "" ||
-        this.form.password == null ||
-        this.form.password == ""
+        this.form.email === null ||
+        this.form.email === "" ||
+        this.form.password === null ||
+        this.form.password === ""
       ) {
         return true;
       } else {
@@ -301,46 +264,42 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .background-login {
   height: 100vh;
   background-color: var(--dark);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.card-login {
-  width: 65vh;
-}
-
-.contenedor-login {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.material-icons {
-  font-size: 18vh;
-  color: var(--dark);
-}
-
-.card-form {
-  height: 100%;
-}
-
-
-
-.formulario {
-  width: 90vh;
-  height: 100%;
-  text-align: center;
-  display: block;
-}
-
-.btnEnviar {
-  width: 100%;
-  text-align: center;
+  .card-login {
+    width: 65vh;
+    .title {
+      font-size: 5vh; 
+      text-align: center;
+    }
+    .contenedor-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      .form {
+        width: 90vh;
+        height: 100%;
+        text-align: center;
+        display: block;
+        .material-icons {
+          font-size: 18vh;
+          color: var(--dark);
+        }
+        .card-form {
+          height: 100%;
+        }
+        .btnSubmit {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
 }
 </style>

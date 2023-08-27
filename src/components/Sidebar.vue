@@ -4,7 +4,6 @@
       <img src="../assets/modular_logo.jpg" alt="Vue" >
     </div>
 
-    <!-- items del menu -->
     <div class="menu-toggle-wrap" v-if="tipoUsuario != 2">
       <button class="menu-toggle">
         <span class="material-icons" @click="toggleMenu()">
@@ -15,407 +14,25 @@
 
     <h3>MENU</h3>
     <div class="menu">
-      <!-- Home -->
-      <div v-if="tipoUsuario != 2">
-        <router-link class="button" to="/" v-if="is_expanded">
-          <span class="material-icons">home</span>
-          <span class="text">Home</span>
-        </router-link>   
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Home"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">home</span>
-            <span class="text">Home</span>
-          </router-link> 
-        </el-tooltip>
+      <div v-for="item in itemsSidebar" :key="item">
+        <ItemSidebar :item="item" :is_expanded="is_expanded" v-if="item.restriction"></ItemSidebar>
       </div>
-
-      <!-- Provisión -->
-      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
-        <router-link class="button" to="/presupuestacion" v-if="is_expanded">
-          <span class="material-icons">assignment</span>
-          <span class="text">Provisión</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Provisión"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/presupuestacion" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">assignment</span>
-            <span class="text">Provisión</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Borrador -->
-      <div v-if="$store.state.user.tipo_usuario == 1 || $store.state.user.tipo_usuario == 3 || $store.state.user.tipo_usuario == 4 || $store.state.user.tipo_usuario == 5 || $store.state.user.tipo_usuario == 6">
-        <router-link class="button" to="/borrador" v-if="is_expanded">
-          <span class="material-icons">assignment_late</span>
-          <span class="text">Borrador</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Borrador"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/borrador" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">assignment_late</span>
-            <span class="text">Borrador</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Ordenes de compra -->
-      <div v-if="tipoUsuario != 2">
-        <router-link class="button" to="/ordencompra" v-if="is_expanded">
-          <span class="material-icons">receipt</span>
-          <span class="text">Órdenes de compra</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Órdenes de compra"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/ordencompra" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">receipt</span>
-            <span class="text">Órdenes de compra</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Transferencias -->
-      <div v-if="tipoUsuario != 2">
-        <router-link class="button" to="/transferencia" v-if="is_expanded">
-          <span class="material-icons">move_up</span>
-          <span class="text">Transferencias</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Transferencias"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/transferencia" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">move_up</span>
-            <span class="text">Transferencias</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Carga proveedores propio -->
-      <div v-if="tipoUsuario == 2">
-        <router-link class="button" to="/cargaproveedores" v-if="is_expanded">
-          <span class="material-icons">add_business</span>
-          <span class="text">Carga proveedores</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Carga proveedores"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/cargaproveedores" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">add_business</span>
-            <span class="text">Carga proveedores</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Planes -->
-      <div v-if="tipoUsuario != 2">
-        <router-link class="button" to="/plan" v-if="is_expanded">
-          <span class="material-icons">note_alt</span>
-          <span class="text">Planes</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Planes"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/plan" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">note_alt</span>
-            <span class="text">Planes</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Producto -->
-      <div v-if="tipoUsuario != 2">
-        <router-link class="button" to="/producto" v-if="is_expanded">
-          <span class="material-icons">inventory_2</span>
-          <span class="text">Productos</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Productos"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/producto" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">inventory_2</span>
-            <span class="text">Productos</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Proveedor -->
-      <div v-if="tipoUsuario == 1 || tipoUsuario == 3 || tipoUsuario == 4 || tipoUsuario == 5 || tipoUsuario == 6">
-        <router-link class="button" to="/proveedor" v-if="is_expanded">
-          <span class="material-icons">local_shipping</span>
-          <span class="text">Proveedores</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Proveedores"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/proveedor" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">local_shipping</span>
-            <span class="text">Proveedores</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-      <!-- Rubro -->
-      <div v-if="tipoUsuario != 2">
-        <router-link class="button" to="/rubro" v-if="is_expanded">
-          <span class="material-icons">sell</span>
-          <span class="text">Rubros</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Rubros"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/rubro" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">sell</span>
-            <span class="text">Rubros</span>
-          </router-link>
-        </el-tooltip>
-      </div>
-
-
-         
-
-      
-
-
-      
-      
-
-      <!-- Categoria -->
-      <!-- <div>
-        <router-link class="button" to="/categoria" v-if="is_expanded">
-          <span class="material-icons">category</span>
-          <span class="text">Categorias</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Categorias"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/categoria" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">category</span>
-            <span class="text">Categorias</span>
-          </router-link>
-        </el-tooltip>
-        
-      </div> -->
-      
-
-      <!-- Unidad de medida -->
-      <!-- <div>
-        <router-link class="button" to="/unidad-medida" v-if="is_expanded">
-          <span class="material-icons">balance</span>
-          <span class="text">Un. de medida</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Unid. de medida"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/unidad-medida" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">balance</span>
-            <span class="text">Un. de medida</span>
-          </router-link>
-        </el-tooltip>
-      </div> -->
-
-     
-
-      
-
-      <!-- Usuarios -->
-      <div v-if="tipoUsuario != 2 && tipoUsuario != 4 && tipoUsuario != 5 && tipoUsuario != 6">
-        <router-link class="button" to="/usuarios" v-if="is_expanded">
-          <span class="material-icons">group</span>
-          <span class="text">Usuarios</span>
-        </router-link>  
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Usuarios"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/usuarios" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">group</span>
-            <span class="text">Usuarios</span>
-          </router-link>
-        </el-tooltip>
-
-      </div>
-          
-      
-      <!-- Contacto -->
-      <!-- <div>
-        <router-link class="button" to="/contacto" v-if="is_expanded">
-          <span class="material-icons">call</span>
-          <span class="text">Contacto</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Contacto"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/contacto" v-if="!is_expanded || is_expanded">
-          <span class="material-icons">call</span>
-          <span class="text">Contacto</span>
-        </router-link>
-        </el-tooltip>
-
-      </div>             -->
     </div>
 
     <div class="flex"></div>
 
-    <!-- Mi cuenta -->
+
     <div class="menu" v-if="tipoUsuario != 2">
-      <div>
-        <router-link class="button" to="/mi-cuenta" v-if="is_expanded">
-          <span class="material-icons">account_circle</span>
-          <span class="text">{{ $store.state.user.name }}</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Mi cuenta"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/mi-cuenta" v-if="!is_expanded || is_expanded">
-          <span class="material-icons">account_circle</span>
-          <span class="text">{{ $store.state.user.name }}</span>
-        </router-link>
-        </el-tooltip>
-
-      </div>    
-
-
-      <!-- <div class="button logout" v-if="is_expanded">
-        <span class="material-icons" @click="logout()">account_circle</span>
-        <span class="text">{{  $store.state.user.name }}</span>
+      <div v-for="item in itemsSidebarBottom" :key="item">
+        <ItemSidebar :item="item" :is_expanded="is_expanded" ></ItemSidebar>
       </div>
-
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="Usuario"
-        placement="right-start"
-        v-if="!is_expanded"
-      >
-        <div class="button logout"  v-if="!is_expanded">
-          <span class="material-icons" @click="logout()">account_circle</span>
-          <span class="text">{{  $store.state.user.name }}</span>
-        </div>
-      </el-tooltip> -->
-
-      <!-- Logout -->
-      <div class="button logout" v-if="is_expanded">
-        <span class="material-icons" @click="logout()">logout</span>
-        <span class="text">Salir</span>
-      </div>
-      
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="Salir"
-        placement="right-start"
-        v-if="!is_expanded"
-      >
-        <div class="button logout" v-if="!is_expanded">
-          <span class="material-icons" @click="logout()">logout</span>
-          <span class="text">Salir</span>
-        </div>
-      </el-tooltip>
-
-
-      <!-- Configuracion -->
-      <!-- <router-link class="button" to="/configuracion" v-if="is_expanded">
-          <span class="material-icons">settings</span>
-          <span class="text">Configuración</span>
-      </router-link>  
-      
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="Configuración"
-        placement="right-start"
-        v-if="!is_expanded"
-      >
-        <router-link class="button" to="/configuracion" v-if="!is_expanded || is_expanded">
-          <span class="material-icons">settings</span>
-          <span class="text">Configuración</span>
-        </router-link>  
-      </el-tooltip> -->
     </div>
   </aside>
 </template>
 
 <script setup>
   import {ref} from 'vue'
+
 
   const is_expanded = ref(false)
   const tipoUsuario = localStorage.getItem("tipoUsuario")
@@ -429,10 +46,102 @@
     // localStorage.setItem("is_expanded", is_expanded.value) 
     // console.log("entra");
   }
+  
 </script>
 
 <script>
+  import ItemSidebar from './ItemSidebar.vue'
+
   export default {
+    data() {
+      return {
+        itemsSidebar: [
+          {
+            restriction: this.restrictionHome(),
+            route: '/',
+            icon: 'home',
+            name: 'Home',
+          },
+          {
+            restriction: this.restrictionPresupuestacion(),
+            route: '/presupuestacion',
+            icon: 'assignment',
+            name: 'Provisión',
+          },
+          {
+            restriction: this.restrictionBorrador(),
+            route: '/borrador',
+            icon: 'assignment_late',
+            name: 'Borrador',
+          },
+          {
+            restriction: this.restrictionOrdenCompra(),
+            route: '/ordencompra',
+            icon: 'receipt',
+            name: 'Órdenes de compra',
+          },
+          {
+            restriction: this.restrictionTransferencia(),
+            route: '/transferencia',
+            icon: 'move_up',
+            name: 'Transferencias',
+          },
+          {
+            restriction: this.restrictionProvidersCharge(),
+            route: '/cargaproveedores',
+            icon: 'add_business',
+            name: 'Carga proveedores',
+          },
+          {
+            restriction: this.restrictionPlans(),
+            route: '/plan',
+            icon: 'note_alt',
+            name: 'Planes',
+          },
+          {
+            restriction: this.restrictionProducts(),
+            route: '/producto',
+            icon: 'inventory_2',
+            name: 'Productos',
+          },
+          {
+            restriction: this.restrictionProviders(),
+            route: '/proveedor',
+            icon: 'local_shipping',
+            name: 'Proveedores',
+          },
+          {
+            restriction: this.restrictionRubro(),
+            route: '/rubro',
+            icon: 'sell',
+            name: 'Rubros',
+          },
+          {
+            restriction: this.restrictionUsers(),
+            route: '/usuarios',
+            icon: 'group',
+            name: 'Usuarios',
+          },
+        ],
+
+        itemsSidebarBottom: [
+          {
+            route: '/mi-cuenta',
+            icon: 'account_circle',
+            name: this.$store.state.user.name,
+          },
+          {
+            route: '/mi-cuenta',
+            icon: 'logout',
+            name: 'Salir',
+            type: 'button'
+          },
+        ]
+      }
+    },
+
+    components: { ItemSidebar },
+
     created() {
       this.ver()
     },
@@ -449,9 +158,50 @@
       ver(){
         console.log("tipo");
         console.log(localStorage.getItem("tipoUsuario"));
-        // this.tipoUsuario = localStorage.getItem("tipoUsuario")
-        // console.log("tipo");
-        // console.log(tipoUsuario);
+      },
+
+      restrictionHome() {
+        return this.tipoUsuario !== 2 ? true : false;
+      },
+
+      restrictionPresupuestacion() {
+        return this.$store.state.user.tipo_usuario == 1 || this.$store.state.user.tipo_usuario == 3 || this.$store.state.user.tipo_usuario == 4 || this.$store.state.user.tipo_usuario == 5 || this.$store.state.user.tipo_usuario == 6 ? true : false;
+      },
+
+      restrictionBorrador() {
+        return this.$store.state.user.tipo_usuario == 1 || this.$store.state.user.tipo_usuario == 3 || this.$store.state.user.tipo_usuario == 4 || this.$store.state.user.tipo_usuario == 5 || this.$store.state.user.tipo_usuario == 6 ? true : false;
+      },
+
+      restrictionOrdenCompra() {
+        return localStorage.getItem("tipoUsuario") !== 2 ? true : false;
+      },
+
+      restrictionTransferencia() {
+        return localStorage.getItem("tipoUsuario") !== 2 ? true : false;
+      },
+
+      restrictionProvidersCharge() {
+        return localStorage.getItem("tipoUsuario") === 2 ? true : false;
+      },
+
+      restrictionPlans() {
+        return localStorage.getItem("tipoUsuario") !== 2 ? true : false;
+      },
+
+      restrictionProducts() {
+        return localStorage.getItem("tipoUsuario") !== 2 ? true : false;
+      },
+
+      restrictionProviders() {
+        return localStorage.getItem("tipoUsuario") == 1 || localStorage.getItem("tipoUsuario") == 3 || localStorage.getItem("tipoUsuario") == 4 || localStorage.getItem("tipoUsuario") == 5 || localStorage.getItem("tipoUsuario") == 6 ? true : false;
+      },
+
+      restrictionRubro() {
+        return localStorage.getItem("tipoUsuario") !== 2 ? true : false;
+      },
+
+      restrictionUsers() {
+        return localStorage.getItem("tipoUsuario") != 2 && localStorage.getItem("tipoUsuario") != 4 && localStorage.getItem("tipoUsuario") != 5 && localStorage.getItem("tipoUsuario") != 6 ? true : false;
       },
     },
   }
@@ -463,7 +213,7 @@
     top: 0;
     flex-direction: column;
     width: calc(2rem + 32px);
-    min-height: 100vh;
+    height: calc(100vh - 32px);
     overflow: hidden;
     padding: 1rem;
 

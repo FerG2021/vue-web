@@ -1,13 +1,21 @@
 <template>
   <div v-if="!$store.state.auth">
-    <Login />
+    <div class="login">
+      <Login /> 
+    </div>
+    <div class="footer">
+      <h4 class="footer-text"><a href="http://fssolutions.com.ar" target="_blank">Desarrollado por FSSolutions</a></h4>
+    </div>
   </div>
-  <div class="app"  v-else>
-    <!-- SIDEBAR -->
-    <Sidebar />   
-    <router-view></router-view>
+  <div v-else>
+    <div class="app">
+      <Sidebar />   
+      <router-view></router-view>
+    </div>
+    <div class="footer">
+      <h4 class="footer-text"><a href="http://fssolutions.com.ar" target="_blank">Desarrollado por FSSolutions</a></h4>
+    </div>
   </div>
-
   
 </template>
 
@@ -58,8 +66,14 @@
     background: none;
   }
 
+  .login {
+    height: calc(100vh - 32px);
+    width: 100% !important;
+  }
+
   .app{
     display: flex;
+    height: calc(100vh - 32px);
 
     main{
       flex: 1 1 0;
@@ -67,6 +81,27 @@
 
       @media (max-width: 768px){
         padding-left: 6rem;
+      }
+    }
+
+    
+  }
+
+  .footer {
+    background: var(--dark);
+    height: 32px;
+    color: var(--light);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    .footer-text {
+      margin: auto;
+      a {
+        text-decoration: none;
+        color: var(--light);
+      }
+      a:hover {
+        color: var(--primary-alt);
       }
     }
   }

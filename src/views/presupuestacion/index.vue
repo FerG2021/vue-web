@@ -2,7 +2,7 @@
   <main>
     <el-card>
       <template #header>
-        <h1>Provisión</h1>
+        <h1>Provisiones</h1>
       </template>
       <div
         v-if="
@@ -13,26 +13,30 @@
           $store.state.user.tipo_usuario == 6
         "
       >
-        <el-button
-          type="primary"
-          @click="$refs.modalNuevo.abrir()"
-          class="btnElement"
-          style="margin-left: 10px"
-          v-if="
-            $store.state.user.tipo_usuario == 1 ||
-            $store.state.user.tipo_usuario == 4
-          "
-        >
-          Nuevo
-        </el-button>
+        <div class="button-container">
+          <el-button
+            type="primary"
+            @click="$refs.modalNuevo.abrir()"
+            class="btnElement"
+            style="margin-left: 10px"
+            v-if="
+              $store.state.user.tipo_usuario == 1 ||
+              $store.state.user.tipo_usuario == 4
+            "
+          >
+            Nuevo
+          </el-button>
+        </div>
+        
 
         <!-- Tabla para mostrar los datos -->
-        <div class="contenedor-tabla" style="margin-top: 15px">
+        <div class="contenedor-tabla">
           <el-table
-            :data="presupuestaciones"
+            :data="budgets"
             stripe
-            style="width: 100%"
             v-loading="loading"
+            class="table"
+            :height="getHeightWindow()"
           >
             <el-table-column
               prop="presupuestacion_id"
@@ -57,24 +61,6 @@
               </template>
             </el-table-column>
 
-            <!-- <el-table-column
-              prop="presupuestacion_plan_nombre"
-              label="Fecha de incio"
-            >
-              <template #default="props">
-                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_incio) }}
-              </template>
-            </el-table-column>
-
-            <el-table-column
-              prop="presupuestacion_plan_nombre"
-              label="Fecha de fin"
-            >
-              <template #default="props">
-                {{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
-              </template>
-            </el-table-column> -->
-
             <el-table-column prop="rangoProvisión" label="Rango">
               <template #default="props">
                 {{
@@ -89,8 +75,8 @@
             <el-table-column
               label="Carga"
               prop="editar"
-              header-align="right"
-              align="right"
+              header-align="center"
+              align="center"
               width="90px"
             >
               <template #default="props">
@@ -158,8 +144,6 @@
                 </el-button>
               </template>
             </el-table-column>
-
-            <!-- <el-table-column prop="address" label="Address" /> -->
           </el-table>
         </div>
       </div>
@@ -168,22 +152,9 @@
   </main>
 
   <modal-nuevo ref="modalNuevo" @actualizarTabla="obtenerTodos"></modal-nuevo>
-
   <modal-carga ref="modalCarga"></modal-carga>
-
   <modal-detalle ref="modalDetalle"></modal-detalle>
-
   <modal-comparativa ref="modalComparativa"></modal-comparativa>
-
-  <!-- <modal-modificar 
-    ref="modalModificar"
-    @actualizarTabla="obtenerTodos"
-  ></modal-modificar>
-  
-  <modal-eliminar 
-    ref="modalEliminar"
-    @actualizarTabla="obtenerTodos"
-  ></modal-eliminar> -->
 </template>
 
 <script>
@@ -191,8 +162,7 @@ import ModalNuevo from "./modales/nuevo.vue";
 import ModalDetalle from "./modales/detalle.vue";
 import ModalCarga from "./modales/carga.vue";
 import ModalComparativa from "./modales/comparativa.vue";
-//   import ModalModificar from './modales/modificar.vue'
-//   import ModalEliminar from './modales/eliminar.vue'
+import moment from 'moment';
 
 export default {
   components: {
@@ -200,75 +170,68 @@ export default {
     ModalDetalle,
     ModalCarga,
     ModalComparativa,
-    //   ModalModificar,
-    //   ModalEliminar
   },
 
   data() {
     return {
       loading: false,
-      presupuestaciones: [],
+      budgets: [],
       loading: false,
-      tipoUsuario: null,
     };
   },
 
   mounted() {
-    this.obtenerTipoUsuario();
     this.obtenerTodos();
-    this.obtenerTodosArticulo();
   },
 
   methods: {
-    obtenerTipoUsuario() {
-      this.tipoUsuario = localStorage.getItem("tipoUsuario");
-    },
     async obtenerTodos() {
       this.loading = true;
       await this.axios
         .get("/api/presupuestacion/obtenerTodos")
         .then((response) => {
-          console.log(response.data);
-          this.presupuestaciones = response.data;
-        });
-      this.loading = false;
-    },
-
-    async obtenerTodosArticulo() {
-      this.loading = true;
-      await this.axios
-        .get(this.base_url + "/api/articulo/obtenerTodos")
-        .then((response) => {
-          this.articulos = response.data;
+          this.budgets = response.data;
         });
       this.loading = false;
     },
 
     formatearFecha(fecha) {
-      let fecha1 = new Date(fecha);
-      // let fecha2 = fecha1.toLocaleString();
-      let fecha2 = fecha1.toLocaleDateString();
-      return fecha2;
+      return moment(fecha).format('DD/MM/YYYY');
     },
 
     formatearFechaSinDia(fecha) {
-      let fecha1 = new Date(fecha);
-      let fechaMostrar = fecha1.getMonth() + 1 + "/" + fecha1.getFullYear();
-      return fechaMostrar;
+      return moment(fecha).format('MM/YYYY');
+    },
+
+    getHeightWindow() {
+      var alturaPestana = window.innerHeight - 210;
+      return  alturaPestana + 'px';
     },
   },
 };
 </script>
 
-<style>
+<style scoped lang="scss">
+.button-container {
+  display: flex; 
+  flex-direction: row-reverse; 
+  margin-right: 20px;
+}
+
 .contenedor-tabla {
   overflow: hidden;
   position: relative;
   float: right;
   width: 99%;
+  margin-top: 15px;
 }
 
 .material-icons {
   font-size: 24px;
+}
+
+.table {
+  width: 100%; 
+  // height:  calc(100% - 20px);
 }
 </style>
