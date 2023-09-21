@@ -587,8 +587,6 @@ export default {
     abrir(id) {
       this.id = null;
       this.id = id;
-      console.log("id que mando");
-      console.log(this.id);
 
       this.datosAPI = [];
       this.arraySoloProductos = [];
@@ -621,8 +619,6 @@ export default {
 
 
       let t1 = document.querySelector('#tabla1');
-      console.log("t1");
-      console.log(t1);
 
       // let t2 = document.querySelector('#tabla2');
 
@@ -648,9 +644,6 @@ export default {
 
           this.arrayCondicionesPago = respuestaApi.data;
           
-          console.log("this.arrayCondicionesPago");
-          console.log(this.arrayCondicionesPago);
-
           this.arrayCondicionesPago.forEach((elemento) => {
             let fila = {
               key: elemento.condicionpago_id,
@@ -660,11 +653,6 @@ export default {
 
             this.arrayFormaPago.push(fila)
           })
-
-          console.log("this.arrayFormaPago");
-          console.log(this.arrayFormaPago);
-
-
         })
     },
 
@@ -674,23 +662,7 @@ export default {
       await this.axios
         .get("/api/presupuestacionproductosproveedor/condicionComparativa/" + this.id)
         .then((response) => {
-          console.log("response cond comparativa");
-          console.log(response);
-
-          console.log("ESTADO response cond comparativa");
-          console.log(response.data.code);
-          
-          
-
           this.estadoComparativa = response.data.code
-
-          // if (this.estadoComparativa == 201) {
-          //   this.decisionComparativa = true
-          //   // this.getDatos(0)
-          // } else {
-          //   this.decisionComparativa = false
-          // }
-
 
           if (this.estadoComparativa == 200) {
             // 200 = EXISTE UNA COMPARATIVA GENERADA (NO SE PUEDE EDITAR)
@@ -700,7 +672,6 @@ export default {
             this.getDatos(1)
           } else {
             if (this.estadoComparativa == 201) {
-              console.log("entra");
               // 201 = EXISTE UN BORRADOR (SE PUEDE EDITAR O TOMAR LOS DATOS ORIGINALES)
               this.decisionComparativa = false
               return
@@ -712,13 +683,6 @@ export default {
               } 
             }
           }
-
-          console.log("this.estadoComparativa");
-          console.log(this.estadoComparativa);
-          console.log("this.decisionComparativa");
-          console.log(this.decisionComparativa);
-
-
         })
 
     },
@@ -732,10 +696,6 @@ export default {
         datosBorrador: datosBorrador
       }
 
-      console.log("params");
-      console.log(params);
-
-
       await this.axios
         // .get("/api/presupuestacionproductosproveedor/obtenerTodos/" + this.id, params)
         .post("/api/presupuestacionproductosproveedor/obtenerTodos" ,params)
@@ -743,9 +703,6 @@ export default {
         .then((response) => {
 
           this.arrAux = response.data;
-          console.log("this.arrAux");
-          console.log(this.arrAux);
-
 
           this.arrAux.forEach((elemento) => {
             let fila = {
@@ -808,12 +765,8 @@ export default {
           this.mostrarTabla = true
 
           // this.datosAPI = response.data;
-          console.log("this.datosAPI");
-          console.log(this.datosAPI);
 
           this.longitudProveedores = this.datosAPI.length
-          console.log("this.longitudProveedores");
-          console.log(this.longitudProveedores);
 
           let productosConPP0 = []
 
@@ -825,11 +778,6 @@ export default {
               }
             })
           })
-
-          console.log("productosConPP0");
-          console.log(productosConPP0);
-
-
 
           this.datosAPI.forEach((elemento) => {
             let fila1 = {}
@@ -869,12 +817,6 @@ export default {
             this.arrayPrecioPPProveedores.push(fila)
 
           })
-
-
-          console.log("this.arrayPrecioPPProveedores");
-          console.log(this.arrayPrecioPPProveedores);
-
-          
         });
 
       this.crearArraySoloProductos();
@@ -885,7 +827,6 @@ export default {
 
     crearArraySoloProductos() {
       this.datosAPI[0].productos.forEach((elemento) => {
-        // console.log(elemento);
 
         let fila = {
           producto_id: elemento.producto_id,
@@ -904,97 +845,48 @@ export default {
         this.arraySoloProductos.push(fila);
       });
 
-      // let fila1 = {}
-      // this.arraySoloProductos.push(fila1)
-
-      // console.log("this.arraySoloProductos");
-      // console.log(this.arraySoloProductos);
-
-      
-
       this.crearArrayTodosProductos();
 
     },
 
     crearArrayTodosProductos(){
       this.datosAPI.forEach((elemento) => {
-        // console.log("elemento todos los productos");
-        // console.log(elemento.productos);
         this.arrayTodosProductos.push(elemento.productos)
       })
 
-      console.log("this.arraySoloProductos");
-      console.log(this.arraySoloProductos);
-
-      console.log("this.arrayTodosProductos");
-      console.log(this.arrayTodosProductos);
-
-
       this.arrayTodosProductos.forEach((elemento) => {
-        // console.log("elemento array");
-        // console.log(elemento);
         elemento.forEach((ele) => {
-          // console.log("ele array");
-          // console.log(ele);
           this.arrayProductos.push(ele)
         })
       })
-
-      console.log("this.arrayProductos");
-      console.log(this.arrayProductos);
-
       
       this.marcarMenor()
     },
 
     marcarMenor(){
-      console.log("this.arrayProductos");
-      console.log(this.arrayProductos);
-
-      console.log("this.arraySoloProductos");
-      console.log(this.arraySoloProductos);
-
       let yaExisteElemento;
 
       this.arraySoloProductos.forEach((elemento) => {
         yaExisteElemento = this.arrayProductos.filter(
           (x) => x.producto_id == elemento.producto_id
         );
-        // console.log("yaExisteElemento");
-        // console.log(yaExisteElemento);
         let min;
         yaExisteElemento.forEach((elemento) => {
           if (elemento.precio_pp > 0) {
             min = elemento.precio_pp
           }
         })
-        // let min = yaExisteElemento[0].precio_pp
         let producto;
 
-        // console.log("min");
-        // console.log(min);
-
-        
         yaExisteElemento.forEach((ele) => {
-          // console.log("ele");
-          // console.log(ele);
-
           if (ele.precio_pp <= min && ele.precio_pp > 0) {
             min = ele.precio_pp
             producto = ele
           }
         })
 
-        console.log("min");
-        console.log(min);
-
-        // console.log("producto");
-        // console.log(producto);
-
         this.datosAPI.forEach((elemento) => {
           elemento.productos.forEach((ele1) => {
-            // console.log("ele para datos API");
-            // console.log(ele);
             if (ele1.producto_id == producto.producto_id && ele1.proveedor_id == producto.proveedor_id ) {
               ele1.productoSeleccionado = true
             } 
@@ -1009,32 +901,15 @@ export default {
 
     moverscroll(cantidad){
       const element = document.getElementById("midiv");
-      console.log("element");
-      console.log(element);
-
       this.valorScroll = this.valorScroll + cantidad
-
       element.scrollLeft = this.valorScroll;
-
-      console.log("element.scrollLeft"); 
-      console.log(element.scrollLeft); 
-
     },
 
 
     cambiarCantidad(props){
-      console.log("props");
-      console.log(props);
-
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
-
       this.datosAPI.forEach((elemento) => {
         elemento.productos.forEach((ele) => {
           if (props.row.producto_id == ele.producto_id) {
-            console.log("ele");
-            console.log(ele);
-
             ele.cantidad_proveedor = props.row.cantidad_a_comprar * ele.factor
             let precio = ele.cantidad_proveedor * ele.precio_pu
             let precioAux = parseFloat(precio)
@@ -1054,18 +929,6 @@ export default {
     },
 
     actualizarPrecioTotal(){
-      // console.log("props");
-      // console.log(props);
-
-
-      console.log("llamando a precio total");
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
-
-      console.log("this.arrayInfoProveedores");
-      console.log(this.arrayInfoProveedores);
-
-
       this.datosAPI.forEach((elemento) => {
         let ppParcial = 0
         let proveedor_id = null
@@ -1073,34 +936,12 @@ export default {
           let precioPPParcial = Number(ele.precio_pp)
           let cantidad = Number(ele.cantidad_proveedor)
           let numero = precioPPParcial
-          console.log("ele.precio_pp");
-          console.log(ele.precio_pp);
-          console.log("ppParcial antes de sunar");
-          console.log(ppParcial);
           ppParcial = ppParcial + numero
-          console.log("ppParcial despues de sunar");
-          console.log(ppParcial);
           proveedor_id = ele
         })
 
-        console.log("ppParcial");
-        console.log(ppParcial);
-
-        console.log("proveedor@@@@@");
-        console.log(proveedor_id);
-        
         this.arrayInfoProveedores.forEach((elemento1) => {
           if (elemento1.proveedor_id == elemento.proveedor_id) {
-
-            console.log("ppParcial");
-            console.log(ppParcial);
-
-            console.log("proveedor_id");
-            console.log(proveedor_id);
-
-            console.log("elemento1");
-            console.log(elemento1);
-
             let parcial = 0
             // parcial = ppParcial + Number(elemento1.proveedor_monto_descuentos_bonificaciones) + Number(elemento1.proveedor_monto_factura_A) + Number(elemento1.proveedor_monto_flete )+ Number(elemento1.proveedor_monto_descuentos_bonificaciones)
 
@@ -1109,21 +950,10 @@ export default {
             elemento1.proveedor_monto_total_homogeneo = Number(parcial).toFixed(2)
 
             // elemento1.proveedor_monto_total_homogeneo = Number(parcial).toFixed(2)
-            console.log( "elemento1.proveedor_monto_total_homogeneo");
-            console.log( elemento1.proveedor_monto_total_homogeneo);
-
           }
         })
         
       })
-
-
-
-      console.log("/././././././././././././");
-      console.log("this.arrayInfoProveedores");
-      console.log(this.arrayInfoProveedores);
-      console.log("/./././././././././././././");
-
       this.calcularMenorMontoTotal()
       this.calcularTotalHomogeneo()      
     },
@@ -1131,10 +961,6 @@ export default {
 
     calcularMenorMontoTotal(){
       // primero limpio el campo y asigno un menor
-      console.log("/././././././././././././");
-      console.log("this.arrayInfoProveedores PREVIO");
-      console.log(this.arrayInfoProveedores);
-      console.log("/./././././././././././././");
       // let min = 0
       let menorAux = 0
       let arrayValores = []
@@ -1146,11 +972,6 @@ export default {
       })
 
       let min = Math.min(...arrayValores);
-      console.log("min");
-      console.log(min);
-
-
-      
 
       let menorTotal = 0
       this.arrayInfoProveedores.forEach((elemento) => {
@@ -1164,19 +985,9 @@ export default {
         }
       })    
       
-      console.log("/././././././././././././");
-      console.log("this.arrayInfoProveedores");
-      console.log(this.arrayInfoProveedores);
-      console.log("/./././././././././././././");
     },
 
     cambiarCantidadFactor(item, scope){
-      console.log("item cantidad factor");
-      console.log(item);
-
-      console.log("scope.row");
-      console.log(scope.row);
-      
       // cambio la cantidad proveedor
       let cantidad_proveedor_aux = scope.row.cantidad_a_comprar * item.factor
       item.cantidad_proveedor = cantidad_proveedor_aux.toFixed(2)
@@ -1193,12 +1004,6 @@ export default {
     },
 
     cambiarPNG(item, scope){
-      console.log("item");
-      console.log(item);
-
-      console.log("scope");
-      console.log(scope);
-
       // cambio el pu
       let precio_pu_aux = item.precio_png + ((Number(item.iva) * 0.01) * item.precio_png)
       item.precio_pu = Number(precio_pu_aux).toFixed(2)
@@ -1217,17 +1022,6 @@ export default {
     },
 
     agregar(scope, item, precio, index) {
-      console.log("scope");
-      console.log(scope);
-
-      console.log("item");
-      console.log(item);
-
-      console.log("precio");
-      console.log(precio);
-
-      console.log("index");
-      console.log(index);
     },
 
     mostrarLabel(prov) {
@@ -1241,18 +1035,12 @@ export default {
     },
 
     headerClick(param){
-      console.log(param)
-
-      // console.log("nombre");
-      // console.log(param.label);
-      
       let estadoProveedor = false
       let estadoOtrosProveedores = false
       let indexSeleccionado
       this.datosAPI.forEach((elemento, index) => {
         
         if (param.label == elemento.proveedor_nombre) {
-          console.log(elemento);
           indexSeleccionado = index
           // pregunto si el proveedor tiene estado de seleccionado o no
           if (elemento.proveedorSeleccionado == true) {
@@ -1281,22 +1069,12 @@ export default {
           })
 
         }
-        console.log("indexSeleccionado");
-        console.log(indexSeleccionado);
       })
     },
 
     
 
     cambiarProveedorSeleccionado(item){
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
-
-      console.log("item");
-      console.log(item);
-
-
-      
       let estadoProveedor = false
       let estadoOtrosProveedores = false
       let indexSeleccionado
@@ -1350,10 +1128,6 @@ export default {
 
       this.arrayTotal.push(fila)
 
-      console.log("this.arrayTotal");
-      console.log(this.arrayTotal);
-
-
       this.calcularPrecioPPProveedores()
     },
 
@@ -1364,11 +1138,6 @@ export default {
       this.datosAPI.forEach((elemento) => {
         elemento.productos.forEach((ele) => {
           if (ele.productoSeleccionado == true) {
-            console.log("////////");
-            console.log("ele.precio_pp");
-            console.log(ele.precio_pp);
-            console.log("precioPPParcial");
-            console.log(precioPPParcial);
             let precioPPParcialAux = parseFloat(precioPPParcial)
 
             precioPPParcial = precioPPParcialAux + ele.precio_pp
@@ -1393,18 +1162,9 @@ export default {
 
         this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
           if (elementoArrayProv.proveedor_id == elemento.proveedor_id && elementoArrayProv.booleanTotalHomogeneo == 0) {
-            console.log("*************");
-            console.log("precioPPParcial");
-            console.log(precioPPParcial);
-            console.log("**************");
             let precioPPParcialAux = parseFloat(precioPPParcial)
             elementoArrayProv.totalPP = precioPPParcialAux.toFixed(2)
             // elementoArrayProv.totalPP = parseFloat(elementoArrayProv.totalPP) +  precioPPParcialAux.toFixed(2)
-
-            console.log("elementoArrayProv.totalPP");
-            console.log(elementoArrayProv.totalPP);
-
-
           }
         })
 
@@ -1430,10 +1190,55 @@ export default {
 
     },
 
+    obtenerProductosTotalHomogeneo() {
+      // metodo que busca los productos que estan presupuestados por todos los proveedores para sacar el total homégeneo
+      let products = [];
+
+      this.datosAPI.forEach((element) => {
+        products.push(element.productos);
+      })
+
+      const nuevoArray = [];
+
+      // Obtener la longitud del primer array interno para determinar la cantidad de elementos
+      const longitudElementos = products[0].length;
+
+      // Iterar sobre la longitud de elementos
+      for (let i = 0; i < longitudElementos; i++) {
+        // Crear un nuevo array interno con los elementos en la posición i de cada array interno
+        const nuevoElemento = products.map((subArray) => subArray[i]);
+        
+        // Agregar el nuevo elemento al nuevo array resultante
+        nuevoArray.push(nuevoElemento);
+      }
+
+
+      let arrayProductosNoPresupuestados = []; // array donde voy a guardar los elementos que no sean presupuestados por todos los proveedores
+
+      nuevoArray.forEach((element) => {
+        const allElements = element.filter(item => item.precio_pp === 0);
+
+        if (allElements.length !== 0) {
+          let row = {
+            producto_id: allElements[0].producto_id,
+            producto_nombre: allElements[0].producto_nombre
+          }
+
+          arrayProductosNoPresupuestados.push(row);
+        } 
+      })
+
+      return arrayProductosNoPresupuestados;
+    },
+
     calcularTotalHomogeneo(){
-      let arrayProductosTotalPP0 = []
+      let arrayProductosTotalPP0 = [], arrayProductosTotalNoPP0 = [];
       let precioPPParcial = 0
-      let b = 0
+      let b = 0, c= 0;
+ 
+
+      const productosNoPresupuestados = this.obtenerProductosTotalHomogeneo();
+
       this.datosAPI.forEach((elemento) => {
         elemento.productos.forEach((ele) => {
           // if (ele.productoSeleccionado == true) {
@@ -1449,6 +1254,7 @@ export default {
 
           // busco los productos que tiene pp 0 para no sumarlos
           b = 0
+          ele.yaSumado = 0;
           if (ele.precio_pp == 0) {
             arrayProductosTotalPP0.forEach((ele0) => {
               if (ele.producto_id == ele0.producto_id) {
@@ -1460,12 +1266,23 @@ export default {
               arrayProductosTotalPP0.push(ele)
             }
           }
+
+          c = 0
+          if (ele.precio_pp > 0) {
+            arrayProductosTotalNoPP0.forEach((ele0) => {
+              if (ele.producto_id == ele0.producto_id) {
+                c = 1
+              }
+            })
+
+            if (c == 0) {
+              arrayProductosTotalNoPP0.push(ele)
+            }
+          }
         })
         precioPPParcial = 0
       })
 
-      console.log("arrayProductosTotalPP0");
-      console.log(arrayProductosTotalPP0);
       // limpio el campo totalHomogeneo
       this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
         if (elementoArrayProv.totalHomogeneo) {
@@ -1477,11 +1294,20 @@ export default {
         this.arrayPrecioPPProveedores.forEach((elementoArrayProv) => {
           if (elementoArrayProv.proveedor_id == elemento.proveedor_id && elementoArrayProv.booleanTotalHomogeneo == 1) {
             elemento.productos.forEach((eleProductos) => {
-              arrayProductosTotalPP0.forEach((eleProductos0) => {
-                if (eleProductos.producto_id != eleProductos0.producto_id) {
-                  elementoArrayProv.totalHomogeneo = elementoArrayProv.totalHomogeneo + parseFloat(eleProductos.precio_pp) 
+              if (productosNoPresupuestados.length === 0) {
+                elementoArrayProv.totalHomogeneo = elementoArrayProv.totalHomogeneo + parseFloat(eleProductos.precio_pp);
+                eleProductos.yaSumado = 1; 
+              } else {
+                arrayProductosTotalPP0.forEach((eleProductos0) => {
+                if (eleProductos.producto_id != eleProductos0.producto_id &&
+                    productosNoPresupuestados.filter(item => item.producto_id === eleProductos.producto_id).length === 0 &&
+                    eleProductos.yaSumado === 0
+                ) {
+                  elementoArrayProv.totalHomogeneo = elementoArrayProv.totalHomogeneo + parseFloat(eleProductos.precio_pp);
+                  eleProductos.yaSumado = 1; 
                 }
               })
+              }
             })
           }
         })
@@ -1492,8 +1318,6 @@ export default {
       this.arrayPrecioPPProveedores.forEach((elemento) => {
           
         if (elemento.totalHomogeneo) {
-          console.log("elemento");
-          console.log(elemento);
           if (elemento.totalHomogeneo > 0) {
             min = elemento.totalHomogeneo
           }
@@ -1521,14 +1345,6 @@ export default {
           }
         }
       })
-
-      console.log("min");
-      console.log(min);
-
-      console.log("this.arrayPrecioPPProveedores");
-      console.log(this.arrayPrecioPPProveedores);
-
-
     },
 
     // traigo los datos de cada uno de los proveedores para mostrar la informacion de la factura, la forma de pago, etc
@@ -1542,16 +1358,8 @@ export default {
         .post("/api/presupuestacionproductosproveedor/obtenerTodosProveedores", params )
         .then((response) => {
           const respuestaApi = response;
-          // console.log("respuestaApi de arrayInfoProveedores");
-          // console.log(respuestaApi.data);
-
           if (respuestaApi != null) {
-            // this.arrayInfoProveedores = respuestaApi.data
-            // console.log("respuestaApi de arrayInfoProveedores");
-            // console.log(respuestaApi.data);
-
             this.infoProveedores = respuestaApi.data
-
           }
       })
 
@@ -1559,16 +1367,7 @@ export default {
         .get("/api/condicionpago/obtenerTodos")
         .then((response) => {
           const respuestaApiCondicionPago = response.data;
-
-          // console.log("respuestaApiCondicionPago");
-          // console.log(respuestaApiCondicionPago);
-
           this.condicionesPago = respuestaApiCondicionPago
-          // this.arrayCondicionesPago = respuestaApi.data;
-          
-          // console.log("this.arrayCondicionesPago");
-          // console.log(this.arrayCondicionesPago);
-
         })
 
       this.infoProveedores.forEach((elemento) => {
@@ -1601,10 +1400,6 @@ export default {
 
         this.arrayInfoProveedores.push(fila)
       })
-
-      console.log("this.arrayInfoProveedores");
-      console.log(this.arrayInfoProveedores);
-      
       this.calcularMenorMontoTotal()
 
       this.loadingTabla = false;
@@ -1618,9 +1413,6 @@ export default {
     },
 
     getSummaries(param) {
-      console.log("param de getSummaries");
-      console.log(param);
-
       const  tabla = this.$refs.tablaComparativa
       const { columns, data } = param;
       const sums = [];
@@ -1640,34 +1432,14 @@ export default {
         ind=ind+6
       })
 
-      console.log("sums");
-      console.log(sums);
-
       return sums;
     },
 
     cambiarSeleccionProductoSegmentado(scope, producto){
-      console.log("cambio seleccionado");
-      console.log(scope);
       let index = scope.$index
-      console.log("index");
-      console.log(index);
-
       let cellIndex = scope.cellIndex
-      console.log("cellIndex");
-      console.log(cellIndex);
-
-
-      console.log("productos");
-      console.log(producto);
-
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
-
-      
 
       // producto.
-
       this.datosAPI.forEach((elemento, index) => {
         elemento.productos.forEach((ele, ind) => {
           // ele.productoSeleccionado = false
@@ -1686,36 +1458,9 @@ export default {
       
     },
 
-    abrirModalNotas(notas){
-      console.log("abrir");
-      console.log("notas");
-      console.log(notas);
-
-    },
-
-    gurdarNotas(elemento, notas, item){
-      console.log("elemento");
-      console.log(elemento);
-
-
-      console.log("notas");
-      console.log(notas);
-
-      console.log("item");
-      console.log(item);
-
-
-    },
-
     guardarNotas(elemento, arrayCantidadesDeposito){
-      console.log("elemento desde modal" );
-      console.log(elemento);
-
       this.arrayInfoProveedores.forEach((elementoProv) => {
         if (elementoProv.proveedor_id == elemento.item.proveedor_id) {
-          console.log("elementoProv");
-          console.log(elementoProv);
-
           elementoProv.proveedor_notas = elemento.notas
         }
       })    
@@ -1723,17 +1468,9 @@ export default {
 
     async guardarBorrador(){
       this.loadingBtnGuardarBorrador = true
-      console.log("borrador guardado");
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
-
-      console.log("this.arrayInfoProveedores");
-      console.log(this.arrayInfoProveedores);
-
       // recorro los array para cambiar los datos que faltan a datosAPI
       this.datosAPI.forEach((elemento) => {
         this.arrayInfoProveedores.forEach((ele) => {
-          console.log("ENTRAAAA");
           if (elemento.proveedor_id == ele.proveedor_id) {
             elemento.proveedor_forma_de_pago = ele.proveedor_forma_de_pago
             elemento.proveedor_monto_factura_A = parseFloat(ele.proveedor_monto_factura_A)
@@ -1749,19 +1486,8 @@ export default {
         arrayDatosBorrador: JSON.stringify(this.datosAPI)
       }
 
-      console.log("this.datosAPI actualizado");
-      console.log(this.datosAPI);
-
-      console.log("params");
-      console.log(params);
-
-      
-
       await this.axios.post("/api/presupuestacionproductosproveedor/crearBorrador", params)
         .then(response =>{
-          console.log("response");
-          console.log(response);
-
           ElMessage({
             type: 'success',
             message: response.data.message,
@@ -1774,17 +1500,9 @@ export default {
 
     async guardarBorradorOrdeCompraDirecto(){
       this.loadingBtnGenerarOrdenesCompra = true
-      console.log("borrador guardado");
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
-
-      console.log("this.arrayInfoProveedores");
-      console.log(this.arrayInfoProveedores);
-
       // recorro los array para cambiar los datos que faltan a datosAPI
       this.datosAPI.forEach((elemento) => {
         this.arrayInfoProveedores.forEach((ele) => {
-          console.log("ENTRAAAA");
           if (elemento.proveedor_id == ele.proveedor_id) {
             elemento.proveedor_forma_de_pago = ele.proveedor_forma_de_pago
             elemento.proveedor_monto_factura_A = parseFloat(ele.proveedor_monto_factura_A)
@@ -1799,27 +1517,9 @@ export default {
         presupuestacion_id: this.id, 
         arrayDatosBorrador: JSON.stringify(this.datosAPI)
       }
-
-      console.log("this.datosAPI actualizado");
-      console.log(this.datosAPI);
-
-      console.log("params");
-      console.log(params);
-
-      
-
       await this.axios.post("/api/presupuestacionproductosproveedor/crearBorrador", params)
         .then(response =>{
-          console.log("response");
-          console.log(response);
-
-          // ElMessage({
-          //   type: 'success',
-          //   message: response.data.message,
-          // })
-          // this.cerrar();
           this.loadingBtnGenerarOrdenesCompra = false
-
         })
     },
 
@@ -1830,9 +1530,6 @@ export default {
 
       this.loadingBtnGenerarOrdenesCompra = true
       this.arrayOrdenCompra = []
-      console.log("orden de compra generada");
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
 
       this.datosAPI.forEach((elemento) => {
         let arrayProductosProveedor = []
@@ -1846,10 +1543,6 @@ export default {
         arrayProductosProveedor.forEach((ele1) => {
           montoTotalOrdenCompra = montoTotalOrdenCompra +  parseFloat(ele1.precio_pp)
         })
-
-        console.log("arrayProductosProveedor");
-        console.log(arrayProductosProveedor);
-
 
         if (arrayProductosProveedor.length > 0) {
           let fila = {
@@ -1874,22 +1567,11 @@ export default {
         }
       })
 
-      console.log("this.arrayOrdenCompra");
-      console.log(this.arrayOrdenCompra);
-
-
       this.postOrdenesDeCompra(this.arrayOrdenCompra)
-
-
-      
-      
     },
 
 
     async postOrdenesDeCompra(arrayOrdenCompra){
-      console.log("arrayOrdenCompra");
-      console.log(arrayOrdenCompra);
-
       let params = {
         arrayOrdenesCompra: JSON.stringify(arrayOrdenCompra),
         arrayDatosBorrador: JSON.stringify(this.datosAPI),
@@ -1898,8 +1580,6 @@ export default {
 
       await this.axios.post("/api/ordencompra/crear", params)
         .then(response =>{
-          console.log("response");
-          console.log(response);
           ElMessage({
             type: 'success',
             message: response.data.message,
@@ -1912,17 +1592,9 @@ export default {
 
     // funcion que se va a usar para guardar los borradores de las comparativas, usando solamente el array datosAPI, ya que en ese array se guarda toda la informacion
     mostrarInfo(){
-      console.log("this.datosAPI");
-      console.log(this.datosAPI);
     },
 
     scroll(scrollLeft, scrollTop){
-      console.log("scrollLeft");
-      console.log(scrollLeft);
-
-      console.log("scrollTop");
-      console.log(scrollTop);
-
     },
 
     scrollLeft(){
@@ -2959,18 +2631,6 @@ export default {
       }
 
       if (column.label == "Proveedores") {
-        console.log("row de cell style en Proveedores");
-        console.log(row);
-
-        console.log("column de cell style en Proveedores");
-        console.log(column);
-
-        console.log("rowIndex de cell style en Proveedores");
-        console.log(rowIndex);
-
-        console.log("columnIndex de cell style en Proveedores");
-        console.log(columnIndex);
-
         return {'background' : 'blue'}
       }
 
@@ -2979,12 +2639,6 @@ export default {
 
     filterTag(value, row) {
       let value1 = value;
-      console.log("value1");
-      console.log(value1);
-
-      console.log("row");
-      console.log(row);
-
       return row
     },
 
@@ -2993,22 +2647,15 @@ export default {
     },
 
     yellowBg (row, column, rowIndex, columnIndex) {
-      console.log("entra a yellow");
       return {
         background: ''
       }
     },
 
     seleccionar(param){
-      console.log("paramSeleccionar");
-      console.log(param);
-
     },
 
     colorColumnas(columnas){
-      // console.log("color columnas");
-      // console.log(columnas);
-
       return {
           background: '#eceb3c'
         }
@@ -3018,16 +2665,6 @@ export default {
 
     // filas de datos de arriba
     classChecker({ row, column, rowIndex, columnIndex }) {
-      // console.log("*******************************");
-      // console.log("rowIndex de classchecker");
-      // console.log(rowIndex);
-
-      // console.log("columnIndex de classchecker");
-      // console.log(columnIndex);
-
-      // console.log("column de classchecker");
-      // console.log(column);
-      
       // Proveedor1
       if (columnIndex == 3) {
         return {'background': '#96ceb4' , 'color': 'black'}
@@ -4029,16 +3666,6 @@ export default {
 
     // fila de datos de la fila de abajo, no tiene header
     classCheckerTotal({ row, column, rowIndex, columnIndex }) {
-      // console.log("*******************************");
-      // console.log("rowIndex de classchecker");
-      // console.log(rowIndex);
-
-      // console.log("columnIndex de classchecker");
-      // console.log(columnIndex);
-
-      // console.log("column de classchecker");
-      // console.log(column);
-      
       // Proveedor1
       if (columnIndex == 2) {
         return {'background': '#96ceb4' , 'color': 'black'}
