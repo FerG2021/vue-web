@@ -225,63 +225,6 @@
         </el-tooltip>
       </div>
 
-
-         
-
-      
-
-
-      
-      
-
-      <!-- Categoria -->
-      <!-- <div>
-        <router-link class="button" to="/categoria" v-if="is_expanded">
-          <span class="material-icons">category</span>
-          <span class="text">Categorias</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Categorias"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/categoria" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">category</span>
-            <span class="text">Categorias</span>
-          </router-link>
-        </el-tooltip>
-        
-      </div> -->
-      
-
-      <!-- Unidad de medida -->
-      <!-- <div>
-        <router-link class="button" to="/unidad-medida" v-if="is_expanded">
-          <span class="material-icons">balance</span>
-          <span class="text">Un. de medida</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Unid. de medida"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/unidad-medida" v-if="!is_expanded || is_expanded">
-            <span class="material-icons">balance</span>
-            <span class="text">Un. de medida</span>
-          </router-link>
-        </el-tooltip>
-      </div> -->
-
-     
-
-      
-
       <!-- Usuarios -->
       <div v-if="tipoUsuario != 2 && tipoUsuario != 4 && tipoUsuario != 5 && tipoUsuario != 6">
         <router-link class="button" to="/usuarios" v-if="is_expanded">
@@ -303,29 +246,6 @@
         </el-tooltip>
 
       </div>
-          
-      
-      <!-- Contacto -->
-      <!-- <div>
-        <router-link class="button" to="/contacto" v-if="is_expanded">
-          <span class="material-icons">call</span>
-          <span class="text">Contacto</span>
-        </router-link>
-
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Contacto"
-          placement="right-start"
-          v-if="!is_expanded"
-        >
-          <router-link class="button" to="/contacto" v-if="!is_expanded || is_expanded">
-          <span class="material-icons">call</span>
-          <span class="text">Contacto</span>
-        </router-link>
-        </el-tooltip>
-
-      </div>             -->
     </div>
 
     <div class="flex"></div>
@@ -353,24 +273,6 @@
 
       </div>    
 
-
-      <!-- <div class="button logout" v-if="is_expanded">
-        <span class="material-icons" @click="logout()">account_circle</span>
-        <span class="text">{{  $store.state.user.name }}</span>
-      </div>
-
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="Usuario"
-        placement="right-start"
-        v-if="!is_expanded"
-      >
-        <div class="button logout"  v-if="!is_expanded">
-          <span class="material-icons" @click="logout()">account_circle</span>
-          <span class="text">{{  $store.state.user.name }}</span>
-        </div>
-      </el-tooltip> -->
 
       <!-- Logout -->
       <div class="button logout" v-if="is_expanded">
@@ -447,8 +349,8 @@
       },
 
       ver(){
-        console.log("tipo");
-        console.log(localStorage.getItem("tipoUsuario"));
+        // console.log("tipo");
+        // console.log(localStorage.getItem("tipoUsuario"));
         // this.tipoUsuario = localStorage.getItem("tipoUsuario")
         // console.log("tipo");
         // console.log(tipoUsuario);

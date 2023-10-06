@@ -148,118 +148,9 @@
               />
             </el-select>
           </el-form-item>
-
-          <!-- Seleccion de materiales -->
-          <!-- <h4 style="margin-top: 10px"><b>Selección de materiales</b></h4>
-          
-          <el-row 
-            :gutter="10" 
-            style="margin-top: 10px"
-            v-loading="cargando"
-          >
-            <el-col :span="7">
-              <span>Nombre del producto</span>
-              <el-select 
-                v-model="nombreProducto" 
-                placeholder="Seleccione un producto" 
-                filterable
-                style="width: 100%"
-                @change="tomarValor(nombreProducto)"
-              >
-                <el-option
-                  v-for="item in planesSelect"
-                  :key="item.plan_id"
-                  :label="item.plan_nombre"
-                  :value="item.plan_id"
-                  style="width: 100%"
-                />
-              </el-select>
-            </el-col>
-
-            <el-col :span="6">
-              <span>Unidad medida</span>
-              <el-input 
-                v-model="unidadMedidaProducto" 
-                disabled
-                style="width: 100%"
-              />
-            </el-col> 
-
-            <el-col :span="6">
-              <span>Categoría</span>
-              <el-input 
-                v-model="categoriaProducto" 
-                disabled
-                style="width: 100%"
-              />
-            </el-col>   
-
-            <el-col :span="3">
-              <span>Cantidad nec.</span>
-              <el-input-number 
-                v-model="cantidadNecesariaProducto" 
-                :controls="false"
-                style="width: 100%"
-              />
-            </el-col> 
-
-            <el-col :span="2">
-              <span style="color: white">Cantidad</span>
-              <el-button 
-                type="primary" 
-                style="width: 100%"
-                @click="agregarProducto()"
-                :disabled="deshabilitarBtnAgregarProductosArrMatUtilizar()"
-              >
-                +
-              </el-button>
-            </el-col>            
-          </el-row> -->
-
-          <!-- Tabla para mostrar los productos necesarios con sus cantidades -->
-          <!-- <div style="margin-top: 10px">
-            <el-table :data="arrMaterialesAUsar" stripe style="width: 100%">
-              <el-table-column prop="nombre" label="Nombre">
-                <template #default="props">
-                  <span>{{ props.row.nombre }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column prop="unidadMedida" label="Un. medida">
-                   <template #default="props">
-                  <span>{{ props.row.unidadMedida }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column prop="categoria" label="Categoria" >
-                   <template #default="props">
-                  <span>{{ props.row.categoria }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column prop="cantNecesaria" label="Cantidad nec." >
-                   <template #default="props">
-                  <span>{{ props.row.cantidadNecesaria }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column label="Eliminar" width="120">
-                <template #default="scope">
-                  <el-button                    
-                    type="danger"                    
-                    circle 
-                    @click="eliminar(scope.$index)"
-                  >
-                    <span class="material-icons">delete</span>
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div> -->
         </el-form>
 
         <div class="contenedorBtnSiguienteAtras">
-          <!-- :disabled="deshabilitarBtnSiguientePaso1()" -->
           <el-button
             type="primary"
             class="btnSiguiente"
@@ -272,7 +163,6 @@
 
       <!-- Precio y stock -->
       <div v-show="active == 1" style="padding: 30px">
-        <!-- mostrar los datos de la seccion anterior -->
         <el-row :gutter="10">
           <el-col :span="6">
             <span>Inicio presupuestación</span>
@@ -302,7 +192,6 @@
         </el-row>
 
         <!-- fila para seleccionar el producto -->
-        <!-- {{productosDesdePrevisionNuevo}} -->
         <el-row :gutter="10" style="margin-top: 15px">
           <el-col :span="10">
             <span>Producto</span>
@@ -314,13 +203,6 @@
               style="width: 100%"
               @change="seleccionarRubroProductoSeleccionado()"
             >
-              <!-- <el-option
-                v-for="item in productosNuevo"
-                :key="item.producto_id"
-                :label="item.producto_nombre"
-                :value="item.producto_id"
-              /> -->
-
               <el-option
                 v-for="item in productosDesdePrevisionNuevo"
                 :key="item.producto_id"
@@ -407,16 +289,6 @@
             label="Cant. depósito"
             width="120px"
           >
-            <!-- <template #default="scope">
-              <el-input-number 
-                v-model="scope.row.cantidadDeposito" 
-                :max="scope.row.cantidadAComprar"
-                :controls="false" 
-                align="center" 
-                text-align="center"
-                style="width: 100%"
-              />
-            </template> -->
             <template #default="props">
               <span v-if="props.row.cantidadDeposito != null">{{ parseFloat(props.row.cantidadDeposito) }}</span>
             </template>
@@ -483,8 +355,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- {{arrayProductosAComprar}} -->
-        <!-- {{arrayRubrosAComprar}} -->
 
         <div class="contenedorBtnSiguienteAtras">
           <el-button type="info" class="btnAtras" @click="active = 0">
@@ -832,18 +702,7 @@ export default {
   },
 
   watch: {
-    // filtroRubro(val) {
-    //   if(val == ''){
-    //     this.productosNuevo = this.productos
-    //   }else{
-    //     this.productosNuevo = this.buscarRubro(val)
-    //   }
-    // },
-
     filtroRubro(val) {
-      // this.productosDesdePrevisionNuevo = []
-      //   let arrayAux = []
-      //   let arrayAux1 = []
 
       if (val == "") {
         this.productosDesdePrevisionNuevo = [];
@@ -863,32 +722,7 @@ export default {
 
         // this.productosDesdePrevisionNuevo = this.productosDesdePrevision
       } else {
-        // this.productosDesdePrevisionNuevo = []
-        // arrayAux = []
-        // arrayAux = this.buscarRubro(val)
-        // console.log("*****Array aux");
-        // console.log(arrayAux);
-
-        // arrayAux.forEach((elemento) => {
-        //   let b = 0
-        //   this.productosDesdePrevisionNuevo.forEach((ele) => {
-        //     if (ele.producto_id == elemento.producto_id) {
-        //       b = 1
-        //     }
-        //   })
-
-        //   if (b == 0) {
-        //     this.productosDesdePrevisionNuevo.push(elemento)
-        //   }
-        // })
-
-        // console.log("*****productosDesdePrevisionNuevo");
-        // console.log(this.productosDesdePrevisionNuevo);
-
         this.productosDesdePrevisionNuevo = this.buscarRubro(val);
-
-        console.log("*****productosDesdePrevisionNuevo");
-        console.log(this.productosDesdePrevisionNuevo);
       }
     },
   },
@@ -1171,7 +1005,6 @@ export default {
       this.cargando = true;
       await this.axios.get("/api/plan/obtenerTodosSelect").then((response) => {
         this.planesSelect = response.data;
-        console.log(this.planesSelect);
       });
       this.cargando = false;
     },
@@ -1385,21 +1218,6 @@ export default {
     },
 
     async cantidadMeses() {
-      // console.log(this.form.mesesaPresupuestar[0].getMonth()+1);
-      // console.log(this.form.mesesaPresupuestar[1].getMonth()+1);
-      // console.log(this.form.mesesaPresupuestar[0].getMonth()+1);
-      // console.log("----");
-      // console.log(this.form.mesesaPresupuestar[0].getDate());
-      // console.log(this.form.mesesaPresupuestar[0].getMonth()+1);
-      // console.log(this.form.mesesaPresupuestar[0].getFullYear());
-      // console.log("----");
-      // console.log(this.form.mesesaPresupuestar[1].getDate());
-      // console.log(this.form.mesesaPresupuestar[1].getMonth()+1);
-      // console.log(this.form.mesesaPresupuestar[1].getFullYear());
-
-      
-
-      // console.log(this.form.mesesaPresupuestar[1].getMonth() - this.form.mesesaPresupuestar[0].getMonth());
       let fechaaPresupuestar0 = new Date(this.form.fechaaPresupuestar[0])
       console.log("fechaaPresupuestar0");
       console.log(fechaaPresupuestar0.getMonth());
@@ -1407,13 +1225,6 @@ export default {
       let fechaaPresupuestar1 = new Date(this.form.fechaaPresupuestar[1])
       console.log("fechaaPresupuestar1");
       console.log(fechaaPresupuestar1.getMonth());
-      // let meses =
-      //   this.form.fechaaPresupuestar[1].getMonth() -
-      //   this.form.fechaaPresupuestar[0].getMonth() +
-      //   12 *
-      //     (this.form.fechaaPresupuestar[1].getFullYear() -
-      //       this.form.fechaaPresupuestar[0].getFullYear()) +
-      //   1;
 
       let meses =
         fechaaPresupuestar1.getMonth() -
@@ -1426,14 +1237,6 @@ export default {
 
       this.form.mesesaPresupuestar = meses;
 
-      // declaro los valores para mostrar en el paso 2
-      // let mostrarFechaIncio =
-      //   this.form.fechaaPresupuestar[0].getDate() +
-      //   "/" +
-      //   (this.form.fechaaPresupuestar[0].getMonth() + 1) +
-      //   "/" +
-      //   this.form.fechaaPresupuestar[0].getFullYear();
-
       let mostrarFechaIncio =
         fechaaPresupuestar0.getDate() +
         "/" +
@@ -1441,13 +1244,6 @@ export default {
         "/" +
         fechaaPresupuestar0.getFullYear();
 
-
-      // let mostrarFechaFin =
-      //   this.form.fechaaPresupuestar[1].getDate() +
-      //   "/" +
-      //   (this.form.fechaaPresupuestar[1].getMonth() + 1) +
-      //   "/" +
-      //   this.form.fechaaPresupuestar[1].getFullYear();
 
       let mostrarFechaFin =
         fechaaPresupuestar1.getDate() +
@@ -1467,8 +1263,6 @@ export default {
         plan_id: this.form.nombreObra,
         fechaDesdePresupuestacion: this.form.fechaaPresupuestar[0],
         fechaHastaPresupuestacion: this.form.fechaaPresupuestar[1],
-        // fechaDesdePresupuestacion: this.form.fDesdePresupuestada,
-        // fechaHastaPresupuestacion: this.form.fHastaPresupuestada,
       };
 
       this.arrayBuscarProductosEnPrevision.push(fila);
@@ -1550,19 +1344,6 @@ export default {
 
     async buscarCantidadPrevision(producto_id) {
       this.loadingCantidadAComprar = true;
-
-      // let params = {
-      //   arrayDatosParaCantidadPresupestacion: JSON.stringify(this.arrayDatosParaCantidadPresupestacion)
-      // }
-
-      // await this.axios.post( "/api/prevision/obtenerCantidad", params)
-      //   .then(response => {
-      //     console.log("respuesta");
-      //     console.log(response.data);
-
-      //     this.cantidadAComprarProductoSeleccionado = response.data.cantidadPresupuestar
-
-      //   })
 
       this.productosDesdePrevisionNuevo.forEach((elemento) => {
         if (elemento.producto_id == producto_id) {

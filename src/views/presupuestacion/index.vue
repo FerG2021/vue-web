@@ -2,7 +2,7 @@
   <main>
     <el-card>
       <template #header>
-        <h1>Provisión</h1>
+        <h1>Provisiones</h1>
       </template>
       <div
         v-if="
@@ -216,7 +216,7 @@ export default {
   mounted() {
     this.obtenerTipoUsuario();
     this.obtenerTodos();
-    this.obtenerTodosArticulo();
+    // this.obtenerTodosArticulo();
   },
 
   methods: {
@@ -228,7 +228,6 @@ export default {
       await this.axios
         .get("/api/presupuestacion/obtenerTodos")
         .then((response) => {
-          console.log(response.data);
           this.presupuestaciones = response.data;
         });
       this.loading = false;

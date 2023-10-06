@@ -111,25 +111,9 @@ export default {
     };
   },
   watch: {
-    // console.log("this.user");
-    // console.log(this.user);
-
-    // this.ejemplo = this.$route
-
-    // console.log("this.$route");
-    // console.log(this.$route);
-
-    // if (this.$route.query != {}) {
-    //   // this.form.username = this.$route.query.user
-    //   console.log("hay datos");
-    //   console.log(this.$route.fullPath);
-    // }
-
     "$route.query": {
       inmediate: true,
       handler(query) {
-        console.log("watch");
-        console.log(query);
 
         if (query.user) {
           this.loginDirecto(
@@ -149,11 +133,6 @@ export default {
         console.log(password);
       },
     },
-  },
-
-  created() {
-    console.log("this.$route created");
-    console.log(this.$route);
   },
 
   methods: {

@@ -292,6 +292,10 @@
                   :cell-style="classCheckerIntermedio"
                   :header-cell-style="headerStyleIntermedio"
                   id="tabla2"
+
+                  border
+                  style="width: 100%;"
+                  scrollbar-always-on
                 >
                   <el-table-column width="254px"></el-table-column>
                   <el-table-column width="146px"></el-table-column>
@@ -386,16 +390,11 @@
                       <!-- {{item.proveedor_monto_descuentos_bonificaciones}} -->
                     </el-table-column>
                     <el-table-column width="130px" label="Total" align="center">
-                      <!-- {{item.proveedor_monto_totalPP}} -->
-                      <!-- {{item.proveedor_monto_total_homogeneo}} -->
-                      <!-- $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }} -->
-
                       <span v-if="item.menor_monto_total == 0">
                         $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }}
                       </span>
 
                       <span v-if="item.menor_monto_total == 1">
-                        <!-- $ {{ new Intl.NumberFormat('de-DE').format(item.proveedor_monto_total_homogeneo) }} -->
                         <el-tag
                           type="success"
                           class="mx-1"
@@ -413,16 +412,16 @@
                 <!-- muestro el total -->
                 <el-table 
                   :data="arrayTotal"
-                  style="margin-top: 15px"
+                  style="margin-top: 15px; width: 100%;"
                   :cell-style="classCheckerTotal"
                   :header-cell-style="headerStyleTotal"
                   stripe
+                  border
+                  scrollbar-always-on
                 >
                   <!-- <el-table-column label=""></el-table-column> -->
                   <el-table-column label="Compra seg." align="center" width="296px">
                     <template #default="props">
-                      <!-- $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }} -->
-
                       <el-tag
                         type="success"
                         class="mx-1"
@@ -430,20 +429,14 @@
                       >
                         $ {{ new Intl.NumberFormat('de-DE').format(props.row.totalHomogeneo) }}
                       </el-tag>
-                      <!-- {{props.row.totalHomogeneo}} -->
                     </template>
                   </el-table-column>
                   <el-table-column label="" width="100px"></el-table-column>
                   
                   <el-table-column v-for="(item, index) in arrayPrecioPPProveedores" :key="index" :label="item.titulo" align="center" width="99px">
-                    <!-- <template #default="scope"> -->
                       <span v-if="!isNaN(item.totalPP)" >
                         $ {{ new Intl.NumberFormat('de-DE').format(item.totalPP)}}
                       </span>
-
-                      <!-- <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
-                        $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
-                      </span> -->
 
                       <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 1" style="color: red">
                         <el-tag
@@ -455,12 +448,9 @@
                         </el-tag>
                       </span>
 
-                      
-
                       <span v-if="!isNaN(item.totalHomogeneo) && item.menorHomogeneo == 0" style="color: black">
                         $ {{ new Intl.NumberFormat('de-DE').format(item.totalHomogeneo)}}
                       </span>
-                    <!-- </template> -->
                   </el-table-column>
 
                 </el-table>
@@ -469,21 +459,10 @@
           </div>
         </el-scrollbar>
 
-        <!-- {{arrayPrecioPPProveedores}} -->
-
 
         <!-- boton para generar ordenes de compra -->
         <div style="display: flex">
           <div style="margin-left: auto">
-            <!-- <el-button
-              type="primary"
-              style="margin-top: 10px"
-              @click="mostrarInfo()"
-              :loading="loadingBtnGenerarOrdenesCompra"
-            >
-              Mostrar informacion
-            </el-button> -->
-
             <el-button
               type="primary"
               style="margin-top: 10px"
@@ -505,12 +484,8 @@
             >
               Generar órdenes de compra
             </el-button>
-
-            
           </div>
         </div>       
-
-
       </div>
     </modal>
   </div>
@@ -523,8 +498,6 @@
     ref="modalNotas"
     @update:cantidadSacarDeposito="guardarNotas($event, arrayCantidadesDeposito)"
   ></modal-notas>
-    <!-- @update:guardarNotas="gurdarNotas($event, notas, item)" -->
-
 
 </template>
 

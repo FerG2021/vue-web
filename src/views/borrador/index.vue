@@ -210,7 +210,6 @@ export default {
   mounted() {
     this.obtenerTipoUsuario();
     this.obtenerTodos();
-    this.obtenerTodosArticulo();
   },
 
   methods: {
@@ -222,10 +221,7 @@ export default {
       await this.axios
         .get("/api/borradorpresupuestacion/obtenerTodos")
         .then((response) => {
-          console.log(response.data);
           this.borradorpresupuestaciones = response.data;
-          console.log("this.borradorpresupuestaciones");
-          console.log(this.borradorpresupuestaciones);
         });
       this.loading = false;
     },
@@ -242,7 +238,6 @@ export default {
 
     formatearFecha(fecha) {
       let fecha1 = new Date(fecha);
-      // let fecha2 = fecha1.toLocaleString();
       let fecha2 = fecha1.toLocaleDateString();
       return fecha2;
     },
