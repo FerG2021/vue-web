@@ -1,325 +1,303 @@
-<template>
-  <div class="background-login">
-    <el-card class="card-login">
-      <template #header>
-        <div style="font-size: 5vh; text-align: center">
-          <!-- Proyecto prueba -->
-          Bienvenido a ModulAr
-          <!-- Proyecto prueba -->
-          <!-- Nutrimarg balanceados - Quimilí -->
-        </div>
-      </template>
-      <div class="contenedor-login" v-loading="loadingLogin">
-        <div class="formulario">
-          <div class="material-icons">account_circle</div>
-          <!-- <span v-if="$store.state.auth">{{ $store.state.user.name }}</span> -->
-          <div v-if="deshabilitarInputEmail == false">
-            <el-card class="card-form">
-              <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                status-icon
-                label-position="top"
-              >
-                <!-- email -->
-                <el-form-item
-                  label="Email"
-                  prop="email"
-                  v-if="deshabilitarInputEmail == false"
-                >
-                  <el-input
-                    :disabled="deshabilitarInputEmail"
-                    v-model="form.email"
-                    placeholder="Ingrese su email..."
-                    @keyup.enter="login()"
-                  />
-                </el-form-item>
-
-                <!-- contrasena -->
-                <el-form-item
-                  label="Contraseña"
-                  prop="password"
-                  v-if="deshabilitarInputPassword == false"
-                >
-                  <el-input
-                    :disabled="deshabilitarInputPassword"
-                    v-model="form.password"
-                    placeholder="Ingrese su contraseña..."
-                    type="password"
-                    @keyup.enter="login()"
-                  />
-                </el-form-item>
-
-                <el-form-item v-if="deshabilitarInputPassword == false">
-                  <el-button
-                    class="btnEnviar"
-                    type="primary"
-                    @click="login()"
-                    :disabled="deshabilitarBtnIngresar()"
-                  >
-                    Ingresar
-                  </el-button>
-                </el-form-item>
-              </el-form>
-            </el-card>
-          </div>
-          <div v-else>
-            <div v-loading="loadingProveedor"></div>
-          </div>
-        </div>
-      </div>
-    </el-card>
-  </div>
-</template>
-
 <script>
-import { watch } from "@vue/runtime-core";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
+
+import i18n from './logini18n';
 
 export default {
-  data() {
-    return {
-      user: {},
-      ejemplo: null,
-      form: {
-        email: "",
-        password: "",
-      },
-      emailDirecto: null,
-      passwordDirecto: null,
-      deshabilitarInputEmail: false,
-      deshabilitarInputPassword: false,
-      loadingProveedor: false,
-      loadingLogin: false,
-      rules: {
-        email: [
-          {
-            required: true,
-            message: "Por favor ingrese su mail.",
-            trigger: "change",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            message: "Por favor ingrese su contraseña.",
-            trigger: "change",
-          },
-        ],
-      },
-    };
-  },
-  watch: {
-    "$route.query": {
-      inmediate: true,
-      handler(query) {
+	name: "IndexLogin",
+	data() {
+		return {
+			user: {},
+			ejemplo: null,
+			form: {
+				email: "",
+				password: ""
+			},
+			emailDirecto: null,
+			passwordDirecto: null,
+			deshabilitarInputEmail: false,
+			deshabilitarInputPassword: false,
+			loadingProveedor: false,
+			loadingLogin: false,
+			rules: {
+				email: [{
+					required: true,
+					message: i18n.REQUIRED_MAIL,
+					trigger: "change"
+				}],
+				password: [{
+					required: true,
+					message: i18n.REQUIRED_PASSWORD,
+					trigger: "change"
+				}]
+			}
+		};
+	},
+	computed: {
+		greetingLabel() {
+			return i18n.GREETING;
+		},
+		formFieldsIsEmpty() {
+			return this.form.email == null ||
+				this.form.email == "" ||
+				this.form.password == null ||
+				this.form.password == "";
+		}
+	},
+	watch: {
+		"$route.query": {
+			inmediate: true,
+			handler(query) {
+				if (query.user) {
+					this.loginDirecto(
+						query.user,
+						query.password,
+						query.proveedorID,
+						query.presupuestacionID,
+						query.fechaLimiteCarga
+					);
+				}
+			}
+		},
 
-        if (query.user) {
-          this.loginDirecto(
-            query.user,
-            query.password,
-            query.proveedorID,
-            query.presupuestacionID,
-            query.fechaLimiteCarga
-          );
-        }
-      },
-    },
+		"$route.query.password": {
+			inmediate: true,
+			handler(password) {
+				console.log(password);
+			}
+		}
+	},
 
-    "$route.query.password": {
-      inmediate: true,
-      handler(password) {
-        console.log(password);
-      },
-    },
-  },
+	methods: {
+		async login() {
+			if (this.formFieldsIsEmpty) {
+				ElMessage({
+					type: "error",
+					message: i18n.ALL_FIELDS_REQUIRED
+				});
+			} else {
+				this.loadingLogin = true;
+				let params = { mail_usuario: this.form.email };
+				await this.axios
+					.post("/api/usuario/obtenerDatosMail", params)
+					.then((response) => {
+						if (response) {
+							if (response.data != undefined) {
+								if (response.data.data) {
+									localStorage.setItem(
+										"usuarioID",
+										response.data.data.id
+									);
+									localStorage.setItem(
+										"tipoUsuario",
+										response.data.data.tipo_usuario
+									);
+								}
+							} else {
+								console.log("usuario o contraseña incorrecta");
+								ElMessage({
+									type: "error",
+									message: i18n.INCORRECT_CREDENTIALS
+								});
+								this.loadingLogin = false;
+							}
+						}
+					});
 
-  methods: {
-    async login() {
-      if (this.form.email == null ||
-          this.form.email == "" ||
-          this.form.password == null ||
-          this.form.password == ""
-      ) {
-        ElMessage({
-          type: "error",
-          message: "¡Se deben completar todos los campos!",
-        });
-      } else {
-        this.loadingLogin = true;
-        console.log("this.form");
-        console.log(this.form);
-        // this.me()
-        let params = {
-          mail_usuario: this.form.email,
-        };
-        await this.axios
-          .post("/api/usuario/obtenerDatosMail", params)
-          .then((response) => {
-            console.log("response");
-            console.log(response);
-            if (response) {
-              // if (response.data.data != undefined) {
-              if (response.data != undefined) {
+				await this.$store.dispatch("login", this.form);
+				this.loadingLogin = false;
 
-                console.log("response");
-                console.log(response);
-                // console.log(response.data.data);
-                if (response.data.data) {
-                  localStorage.setItem("usuarioID", response.data.data.id);
-                  localStorage.setItem(
-                    "tipoUsuario",
-                    response.data.data.tipo_usuario
-                  );
-                }
-              } else {
-                console.log("usuario o contraseña incorrecta");
-                ElMessage({
-                  type: "error",
-                  message: "¡Usuario o contraseña incorrecta!",
-                });
-                this.loadingLogin = false;
-              }
-            }
-          });
+				return this.$router.replace("/");
+			}
+		},
 
-        // this.loadingLogin = false
-        console.log("antes del login");
-        await this.$store.dispatch("login", this.form);
-        console.log("hace algo");
-        this.loadingLogin = false;
+		async loginDirecto(
+			user,
+			password,
+			proveedorID,
+			presupuestacionID,
+			fechaLimiteCarga
+		) {
+			this.deshabilitarInputEmail = true;
+			this.deshabilitarInputPassword = true;
+			this.loadingProveedor = true;
 
-        return this.$router.replace("/");
-      }
-    },
+			localStorage.setItem("proveedorID", proveedorID);
+			localStorage.setItem("presupuestacionID", presupuestacionID);
+			localStorage.setItem("fechaLimiteCarga", fechaLimiteCarga);
 
-    async loginDirecto(
-      user,
-      password,
-      proveedorID,
-      presupuestacionID,
-      fechaLimiteCarga
-    ) {
-      this.deshabilitarInputEmail = true;
-      this.deshabilitarInputPassword = true;
-      this.loadingProveedor = true;
-      console.log("user en logindirecto");
-      console.log(user);
+			this.form.email = user;
+			this.form.password = password;
 
-      console.log("password en logindirecto");
-      console.log(password);
+			this.$store.state.proveedorID = proveedorID;
+			this.$store.state.presupuestacionID = presupuestacionID;
 
-      console.log("proveedorID en login directo");
-      console.log(proveedorID);
+			let params = {
+				mail_usuario: this.form.email,
+				proveedor_id: proveedorID
+			};
 
-      console.log("presupuestacionID en login directo");
-      console.log(presupuestacionID);
+			await this.$store.dispatch("login", this.form);
 
-      localStorage.setItem("proveedorID", proveedorID);
-      localStorage.setItem("presupuestacionID", presupuestacionID);
-      localStorage.setItem("fechaLimiteCarga", fechaLimiteCarga);
+			await this.axios
+				.post("/api/usuario/obtenerDatosMail", params)
+				.then((response) => {
+					if (response) {
+						if (response.data.data) {
+							localStorage.setItem(
+								"usuarioID",
+								response.data.data.id
+							);
+							localStorage.setItem(
+								"tipoUsuario",
+								response.data.data.tipo_usuario
+							);
+						}
+					}
+				});
 
-      this.form.email = user;
-      this.form.password = password;
+			return this.$router.replace("/cargaproveedores");
+		},
 
-      this.$store.state.proveedorID = proveedorID;
-      this.$store.state.presupuestacionID = presupuestacionID;
+		async me() {
+			await this.axios.get("/api/user").then((res) => {
+				console.log(res.data);
+			});
+		},
 
-      console.log("this.form");
-      console.log(this.form);
-
-      let params = {
-        mail_usuario: this.form.email,
-        proveedor_id: proveedorID,
-      };
-
-      await this.$store.dispatch("login", this.form);
-      console.log("hace algo");
-
-      await this.axios
-        .post("/api/usuario/obtenerDatosMail", params)
-        .then((response) => {
-          if (response) {
-            console.log("response DATOSMAIL");
-            console.log(response.data.data);
-            if (response.data.data) {
-              localStorage.setItem("usuarioID", response.data.data.id);
-              localStorage.setItem(
-                "tipoUsuario",
-                response.data.data.tipo_usuario
-              );
-            }
-          }
-        });
-
-      return this.$router.replace("/cargaproveedores");
-    },
-
-    async me() {
-      console.log("entra me");
-      await this.axios.get("/api/user").then((res) => {
-        console.log(res.data);
-        // this.user = res.data;
-      });
-    },
-
-    deshabilitarBtnIngresar() {
-      if (
-        this.form.email == null ||
-        this.form.email == "" ||
-        this.form.password == null ||
-        this.form.password == ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
+		deshabilitarBtnIngresar() {
+			if (
+				this.form.email == null ||
+				this.form.email == "" ||
+				this.form.password == null ||
+				this.form.password == ""
+			) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
 };
 </script>
 
+<template>
+	<div class="background-login">
+		<el-card class="card-login">
+			<template #header>
+				<div style="font-size: 5vh; text-align: center">
+					{{ greetingLabel }}
+				</div>
+			</template>
+			<div
+				v-loading="loadingLogin"
+				class="contenedor-login"
+			>
+				<div class="formulario">
+					<div class="material-icons">
+						account_circle
+					</div>
+					<!-- <span v-if="$store.state.auth">{{ $store.state.user.name }}</span> -->
+					<div v-if="deshabilitarInputEmail == false">
+						<el-card class="card-form">
+							<el-form
+								ref="form"
+								:model="form"
+								:rules="rules"
+								status-icon
+								label-position="top"
+							>
+								<!-- email -->
+								<el-form-item
+									v-if="deshabilitarInputEmail == false"
+									label="Email"
+									prop="email"
+								>
+									<el-input
+										v-model="form.email"
+										:disabled="deshabilitarInputEmail"
+										placeholder="Ingrese su email..."
+										@keyup.enter="login()"
+									/>
+								</el-form-item>
+
+								<!-- contrasena -->
+								<el-form-item
+									v-if="deshabilitarInputPassword == false"
+									label="Contraseña"
+									prop="password"
+								>
+									<el-input
+										v-model="form.password"
+										:disabled="deshabilitarInputPassword"
+										placeholder="Ingrese su contraseña..."
+										type="password"
+										@keyup.enter="login()"
+									/>
+								</el-form-item>
+
+								<el-form-item
+									v-if="deshabilitarInputPassword == false"
+								>
+									<el-button
+										class="btnEnviar"
+										type="primary"
+										:disabled="deshabilitarBtnIngresar()"
+										@click="login()"
+									>
+										Ingresar
+									</el-button>
+								</el-form-item>
+							</el-form>
+						</el-card>
+					</div>
+					<div v-else>
+						<div v-loading="loadingProveedor" />
+					</div>
+				</div>
+			</div>
+		</el-card>
+	</div>
+</template>
+
 <style scoped>
 .background-login {
-  height: 100vh;
-  background-color: var(--dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	height: 100vh;
+	background-color: var(--dark);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .card-login {
-  width: 65vh;
+	width: 65vh;
 }
 
 .contenedor-login {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
 
 .material-icons {
-  font-size: 18vh;
-  color: var(--dark);
+	font-size: 18vh;
+	color: var(--dark);
 }
 
 .card-form {
-  height: 100%;
+	height: 100%;
 }
 
-
-
 .formulario {
-  width: 90vh;
-  height: 100%;
-  text-align: center;
-  display: block;
+	width: 90vh;
+	height: 100%;
+	text-align: center;
+	display: block;
 }
 
 .btnEnviar {
-  width: 100%;
-  text-align: center;
+	width: 100%;
+	text-align: center;
 }
 </style>
