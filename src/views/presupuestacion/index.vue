@@ -1,5 +1,5 @@
 <script>
-import moment from 'moment';
+import { formatDate } from '../../utils/utils';
 
 import ModalCarga from "./modales/carga.vue";
 import ModalComparativa from "./modales/comparativa.vue";
@@ -67,11 +67,8 @@ export default {
 				});
 			this.loading = false;
 		},
-		formatearFecha(fecha) {
-			return moment(fecha).format('DD/MM/YYYY');
-		},
-		formatearFechaSinDia(fecha) {
-			return moment(fecha).format('MM/YYYY');
+		formatDate(date, format) {
+			return formatDate(date, format);
 		}
 	}
 };
@@ -85,16 +82,19 @@ export default {
 			</template>
 			<div
 				v-if="isSectionVisibleForUser"
+				class="section-container"
 			>
-				<el-button
-					v-if="isNewButtonVisibleForUser"
-					type="primary"
-					class="btnElement"
-					style="margin-left: 10px"
-					@click="$refs.modalNuevo.abrir()"
-				>
-					{{ newButtonLabel }}
-				</el-button>
+				<div class="new-button-container">
+					<el-button
+						v-if="isNewButtonVisibleForUser"
+						type="primary"
+						class="btnElement"
+						style="margin-left: 10px"
+						@click="$refs.modalNuevo.abrir()"
+					>
+						{{ newButtonLabel }}
+					</el-button>
+				</div>
 
 				<!-- Tabla para mostrar los datos -->
 				<div
@@ -118,7 +118,7 @@ export default {
 							width="150px"
 						>
 							<template #default="props">
-								{{ formatearFecha(props.row.presupuestacion_fecha_creacion) }}
+								{{ formatDate(props.row.presupuestacion_fecha_creacion, 'DD/MM/YYYY') }}
 							</template>
 						</el-table-column>
 
@@ -143,10 +143,10 @@ export default {
 						>
 							<template #default="props">
 								{{
-									formatearFechaSinDia(props.row.presupuestacion_fecha_incio)
+									formatDate(props.row.presupuestacion_fecha_incio, 'MM/YYYY')
 								}}
 								-
-								{{ formatearFechaSinDia(props.row.presupuestacion_fecha_fin) }}
+								{{ formatDate(props.row.presupuestacion_fecha_fin , 'MM/YYYY') }}
 							</template>
 						</el-table-column>
 
@@ -237,18 +237,18 @@ export default {
 .main-container {
 	.card-container {
 		height: 100%;
+		.section-container {
+			.new-button-container {
+				display: flex;
+				flex-direction: row-reverse;
+				padding: 10px;
+			}
+		}
 	}
 }
 </style>
 
 <style>
-.contenedor-tabla {
-  overflow: hidden;
-  position: relative;
-  float: right;
-  width: 99%;
-}
-
 .material-icons {
   font-size: 24px;
 }

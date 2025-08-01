@@ -1,5 +1,5 @@
 <script>
-import moment from 'moment';
+import { formatDate } from '../../utils/utils';
 
 import Configuration from './borrador.configuration';
 import ModalDetalle from "./modales/detalle.vue";
@@ -54,7 +54,7 @@ export default {
 			this.loading = false;
 		},
 		formatearFecha(fecha) {
-			return moment(fecha).format('DD/MM/YYYY');
+			return formatDate(fecha, 'DD/MM/YYYY');
 		}
 	}
 };
