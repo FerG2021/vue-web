@@ -264,21 +264,21 @@ export default {
 						<el-table-column
 							label="Código"
 							prop="proveedor_codigo"
-							width="200px"
+							width="150px"
 						/>
 
 						<!-- CUIT -->
 						<el-table-column
 							label="CUIT"
 							prop="proveedor_cuit"
-							width="300px"
+							width="150px"
 						/>
 
 						<!-- Activo -->
 						<el-table-column
 							label="Activo"
 							prop="activo"
-							width="100px"
+							width="70"
 						>
 							<template #default="props">
 								<span v-if="props.row.proveedor_activo == 1">
