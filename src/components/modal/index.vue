@@ -1,91 +1,101 @@
 <template>
-  <div>
-    <el-dialog 
-      v-model="visible" 
-      :width="width" 
-      :before-close="beforeClose" 
-      :show-close="false"
-    >
-      <template #title class="title">
-        <div class="modal-header">
-          <div class="modal-title">
-            <h1>{{ titulo }}</h1>
-          </div>
-          <button class="close-button" type="text" @click="cerrar">
-            <span class="material-icons">close</span>
-          </button>
-        </div>
-      </template>
+	<div>
+		<el-dialog
+			v-model="visible"
+			:width="width"
+			:before-close="beforeClose"
+			:show-close="false"
+		>
+			<template
+				#title
+				class="title"
+			>
+				<div class="modal-header">
+					<div class="modal-title">
+						<h1>{{ titulo }}</h1>
+					</div>
+					<button
+						class="close-button"
+						type="text"
+						@click="cerrar"
+					>
+						<span class="material-icons">close</span>
+					</button>
+				</div>
+			</template>
 
-      <div class="modal-body" :key="contentKey">
-        <slot></slot>
-      </div>
+			<div
+				:key="contentKey"
+				class="modal-body"
+			>
+				<slot />
+			</div>
 
-      <template #footer>
-        <div class="modal-footer">
-          <slot name="footer"></slot>
-        </div>
-      </template>
-    </el-dialog>
-  </div>
+			<template #footer>
+				<div class="modal-footer">
+					<slot name="footer" />
+				</div>
+			</template>
+		</el-dialog>
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'Modal',
-    props:{
-      titulo:{
-        type: String,
-        default: ''
-      },
-      width:{
-        type: String,
-        default: '900px'
-      },
-      icon:{
-        type: Object,
-        default: null
-      },
-      impedirClose:{
-        type: Boolean,
-        default: false
-      },
-    },
+export default {
+	name: 'Modal',
+	props: {
+		titulo: {
+			type: String,
+			default: ''
+		},
+		width: {
+			type: String,
+			default: '900px'
+		},
+		icon: {
+			type: Object,
+			default: null
+		},
+		impedirClose: {
+			type: Boolean,
+			default: false
+		}
+	},
 
-    data() {
-      return {
-        visible: false,
-        contentKey: 0,        
-      }
-    },
+	data() {
+		return {
+			visible: false,
+			contentKey: 0
+		};
+	},
 
-    created() {
-      const titulo = this.titulo.toLowerCase
-    },
+	created() {
+		const titulo = this.titulo.toLowerCase;
+	},
 
-    methods: {
-      abrir(){
-        this.contentKey = 1,
-        this.visible = true
-      },
+	methods: {
+		abrir() {
+			this.contentKey = 1,
+			this.visible = true;
+		},
 
-      cerrar(){
-        this.visible = false
-      },
+		cerrar() {
+			this.visible = false;
+		},
 
-      beforeClose(done) {
-        if (this.impedirClose)
-          return
+		beforeClose(done) {
+			if (this.impedirClose)
+				return;
 
-        this.$confirm('¿Está seguro de que desea cerrar la ventana?')
-          .then((_) => {
-            done()
-          })
-          .catch(() => { })
-      },
-    },
+			this.$confirm('¿Está seguro de que desea cerrar la ventana?')
+				.then((_) => {
+					done();
+				})
+				.catch(() => { });
+		}
+	}
 
-  }
+};
 </script>
 
 <style scoped>
@@ -102,8 +112,9 @@
   }
   .modal-body {
     padding: 35px;
-    padding-top: 30px;
     padding-bottom: 10px;
+	max-height: 77vh;
+	overflow-y: auto;
   }
   .modal-footer {
     padding: 35px;
@@ -112,7 +123,6 @@
   .modal-title {
     display: flex;
     color: var(--light);
-    /* font-weight: bold; */
     font-size: 10px;
   }
   .modal-title > * {
