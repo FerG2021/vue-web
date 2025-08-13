@@ -1,12 +1,15 @@
 <script>
-import Configuration from './home.configuration';
+import { routes } from '../../router/index';
 
 export default {
 	name: 'HomeIndex',
 	data() {
-		return { Configuration };
+		return { routes };
 	},
 	methods: {
+		isSectionVisibleInDashboard(visibleInDashboard) {
+			return visibleInDashboard !== false;
+		},
 		isSectionVisibleForUser(allowedRoles) {
 			return allowedRoles.includes(this.$store.state.user.tipo_usuario);
 		}
@@ -23,27 +26,29 @@ export default {
 				class="sections-container"
 			>
 				<template
-					v-for="section in Configuration.sections"
-					:key="section.route"
+					v-for="section in routes"
+					:key="section.path"
 				>
-					<div
-						v-if="isSectionVisibleForUser(section.allowedRoles)"
-						class="section-col"
-					>
-						<el-card
-							class="item-card"
-							@click="$router.replace(section.route)"
+					<template v-if="isSectionVisibleInDashboard(section.isVisibleInDashboard)">
+						<div
+							v-if="isSectionVisibleForUser(section.allowedRoles)"
+							class="section-col"
 						>
-							<h3 class="card-title">
-								{{ section.name }}
-							</h3>
-							<div class="icon-container">
-								<span class="material-icons card-icon">
-									{{ section.icon }}
-								</span>
-							</div>
-						</el-card>
-					</div>
+							<el-card
+								class="item-card"
+								@click="$router.replace(section.path)"
+							>
+								<h3 class="card-title">
+									{{ section.name }}
+								</h3>
+								<div class="icon-container">
+									<span class="material-icons card-icon">
+										{{ section.icon }}
+									</span>
+								</div>
+							</el-card>
+						</div>
+					</template>
 				</template>
 			</div>
 		</el-card>
